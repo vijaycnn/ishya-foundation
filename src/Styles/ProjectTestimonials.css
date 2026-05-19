@@ -1,0 +1,221 @@
+.testimonials-container { 
+    padding: 40px;
+    background-color: #f9f9f9;
+}
+  
+.testimonials-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+  
+.testimonials-header h2 {
+    font-size: 2.5rem;
+    color: #6D3780;
+}
+  
+.testimonials-header p {
+    font-size: 1.1rem;
+    color: #333;
+}
+  
+.testimonials-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+  
+.testimonials-tile {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+  
+.testimonials-header {
+    align-items: center;
+    margin-bottom: 20px;
+}
+  
+.testimonials-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+  
+.testimonials-info {
+    flex-grow: 1;
+}
+  
+.testimonials-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+  
+.testimonials-occupation {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 40px;
+}
+  
+.testimonials-stars {
+    color: #A6C769;
+    font-size: 1.2rem;
+}
+  
+.quote-symbol {
+    font-size: 5rem;
+    color: #A6C769;
+    position: absolute;
+    left: 10px;
+    top: 230px;
+}
+  
+.quote-line {
+    width: 80%;
+    height: 1px;
+    background-color: #A6C769;
+    position: absolute;
+    left:50px;
+    top: 250px;
+}
+  
+.testimonials-paragraph {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    margin-top: 20px;
+    padding: 20px;
+    text-align: justify;
+}
+  
+.show-more-btn {
+    display: block;
+    margin: 40px auto 0;
+    padding: 10px 20px;
+    background-color: #6D3780;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+.show-more-btn:hover {
+    background-color: #A6C769;
+}
+  
+/* Responsive styles */
+@media (max-width: 768px) {
+    .testimonials-tiles {
+        grid-template-columns: 1fr 1fr;
+    }
+    .testimonials-header h2{
+        font-size: 1.5rem; /* Smaller for mobile */
+    }
+}
+  
+@media (max-width: 480px) {
+    .testimonials-tiles {
+        grid-template-columns: 1fr;
+    }
+  
+    .testimonials-header h2{
+        flex-direction: column;
+        align-items: center;
+    }
+  
+    .testimonials-image {
+        margin-bottom: 10px;
+    }
+  
+    .testimonials-info {
+        text-align: center;
+    }
+    .testimonials-header h2{
+        font-size: 1.5rem; /* Further reduced for smaller screens */
+    }
+}
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .third-component h2 {
+        font-size: 2rem; /* Reduce heading size */
+    }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    .third-component h2 {
+        font-size: 1.8rem; /* Further reduce for mobile */
+    }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .third-component h2 {
+        font-size: 1.5rem; /* Smallest for compact screens */
+    }
+}
+
+/* Subheading */
+.third-component h3 {
+    font-family: "Arial", sans-serif;
+    font-size: 1.5rem;
+    color: #6D3780;
+    margin-bottom: 15px;
+    max-width: fit-content;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .third-component h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .third-component h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .third-component h3 {
+        font-size: 1rem;
+    }
+}
+
+/* List Items */
+.third-component ul li {
+    font-family: "Arial", sans-serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .third-component ul li {
+        font-size: 0.95rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .third-component ul li {
+        font-size: 0.9rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .third-component ul li {
+        font-size: 0.85rem;
+    }
+}

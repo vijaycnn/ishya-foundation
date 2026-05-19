@@ -1,0 +1,226 @@
+/* Container for the Latest Projects section */
+.latest-projects-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  margin-top: 20px;
+  z-index: 1;
+  width: 90%;
+}
+
+/* Header Section */
+.latest-projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.small-heading {
+  font-size: 1rem;
+  color: #6d3780;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.big-heading {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 700;
+  font-family: 'Playfair Display';
+}
+
+.big-heading-2 {
+  font-size: 1.5rem;
+  color: #A6C769;
+  font-weight: 700;
+  font-family: 'Playfair Display';
+  padding: 0;
+  margin-top: 5px;
+}
+
+.explore-more-btn {
+  background-color: #6d3780;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  height: fit-content;
+}
+
+.explore-more-btn:hover {
+  background-color: #5a2c66;
+}
+
+/* Project Tiles Section */
+.projectS-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.projectS-tile {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 500px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), 0 -4px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.projectS-tile:hover {
+  transform: translateY(-5px);
+}
+
+.green-tile {
+  background-color: #E2EFCC;
+}
+
+.purple-tile {
+  background-color: #DFCEE5;
+}
+
+.projectS-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+.projectS-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  text-align: left;
+}
+
+.projectS-category {
+  font-size: 0.8rem;
+  color: #6d3780;
+  margin-bottom: 5px;
+}
+
+.projectS-title {
+  font-size: 1.2rem;
+  font-family: 'Playfair Display';
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.projectS-description {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
+  text-align: left;
+  flex-grow: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.read-more-btn-projects {
+  background-color: transparent;
+  border: 1px solid #6d3780;
+  color: #6d3780;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.read-more-btn-projects:hover {
+  background-color: #6d3780;
+  color: white;
+}
+
+/* Tablet Styles */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .latest-projects-container {
+      padding: 15px;
+      width: 95%;
+  }
+
+  .projectS-tiles {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+  }
+
+  .projectS-tile {
+      min-height: 450px;
+  }
+
+  .projectS-image {
+      height: 200px;
+  }
+
+  .big-heading, .big-heading-2 {
+      font-size: 1.3rem;
+  }
+
+  .latest-projects-header {
+      gap: 15px;
+  }
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 767px) {
+  .latest-projects-container {
+      padding: 10px;
+      width: 95%;
+      margin: 0 auto;
+  }
+
+  .latest-projects-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+  }
+
+  .explore-more-btn {
+      margin-top: 10px;
+  }
+
+  .projectS-tiles {
+      grid-template-columns: 1fr;
+      gap: 15px;
+  }
+
+  .projectS-tile {
+      min-height: auto;
+  }
+
+  .projectS-image {
+      height: 180px;
+  }
+
+  .big-heading, .big-heading-2 {
+      font-size: 1.2rem;
+  }
+
+  .small-heading {
+      font-size: 0.9rem;
+  }
+
+  .projectS-title {
+      font-size: 1.1rem;
+  }
+
+  .projectS-description {
+      font-size: 0.85rem;
+  }
+
+  .read-more-btn-projects {
+      text-align: center;
+  }
+}

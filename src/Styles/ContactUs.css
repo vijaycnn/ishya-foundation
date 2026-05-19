@@ -1,0 +1,317 @@
+/* General container for contact section */
+.contact-us-head h1{
+  margin-top: 30px;
+  text-align: center;
+  color: #6D3780;
+}
+.contact-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center align vertically */
+  padding: 10px;
+  gap: 50px; /* Reduced gap */
+  margin-top: 20px; /* Add top margin to avoid navbar overlap */
+}
+
+/* Location Section */
+.location-section {
+  display: flex;
+  align-items: center; /* Center align the image vertically */
+}
+
+.location-image {
+  max-width: 100%;
+  max-height: 400px;
+  display: block;
+  width: 400px; /* Set width of location image */
+  height: auto;
+  
+}
+/* Zoom-in effect on hover */
+.zoom-hover {
+  transition: transform 0.3s ease-in-out;
+}
+
+.zoom-hover:hover {
+  transform: scale(1.05);
+}
+
+/* Styling clickable links */
+.address-details a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.address-details a:hover {
+  text-decoration: underline;
+}
+
+
+/* Address Section */
+.address-section {
+  background-color: #EAF7D1;
+  color: black;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: flex-start; /* Left align text */
+  width: 300px; /* Set width of the green box */
+  text-align: left;
+  overflow: hidden; /* Prevent text from overflowing */
+}
+
+.address-heading {
+  margin-bottom: 8px;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.address-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.address-item .sub-heading {
+  font-size: 14px;
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.address-item p {
+  font-size: 12px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  white-space: normal;
+  padding: 0 2px;
+  text-align: justify;
+}
+
+/* Form Section */
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px 250px;
+  gap: 60px;
+  align-items: center;
+  
+}
+
+.form-content {
+  flex: 2;
+}
+
+.form-subheading {
+  font-size: 18px;
+  color: #4caf50;
+  margin-bottom: 5px;
+}
+
+.form-heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Contact Form */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-family: 'Montserrat', sans-serif; 
+}
+
+/* Form Row: First Name and Last Name */
+.form-row {
+  display: flex;
+  gap: 30px; /* Space between First Name and Last Name inputs */
+  margin-bottom: 10px; /* Space between rows */
+}
+
+/* Form Input Styles */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: #EDF7F5;
+}
+
+.contact-form textarea {
+  height: 100px;
+}
+
+/* Submit Button */
+.send-button {
+  background-color: #6D3780;
+  color: white;
+  padding: 10px 10px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  max-width: 150px;
+  font-family: 'Montserrat', sans-serif; 
+
+}
+
+.send-button:hover {
+  background-color: #45a049;
+}
+
+/* Form Image Section */
+.form-image-section {
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.form-image {
+  width: 100%;
+  height: auto;
+  
+}
+
+/* Input and Label Styling */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Space between label and input */
+  margin-right: 10px; /* Space between inputs */
+  margin-bottom: 10px; /* Space below each input group */
+  font-family: 'Montserrat', sans-serif; 
+}
+
+.input-group label {
+  font-size: 14px;
+  
+  color: #333;
+  font-family: 'Montserrat', sans-serif; 
+}
+
+/* Ensuring proper styling for labels and inputs */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  
+}
+
+.contact-form textarea {
+  height: 100px;
+}
+
+.input-group label {
+  margin-bottom: 5px; /* Space between label and input */
+}
+/* Form Row for First Name and Last Name */
+.form-row {
+  display: flex;
+  gap: 20px; /* Space between First Name and Last Name fields */
+  margin-bottom: 20px; /* Space between rows */
+}
+
+/* Input Fields */
+.input-group {
+  flex: 1; /* Make each input field take equal space */
+}
+
+/* General input and textarea styles */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+}
+
+.contact-form textarea {
+  height: 100px;
+  font-family: 'Montserrat', sans-serif; 
+
+}
+
+
+.send-button:hover {
+  background-color: #45a049;
+}
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .location-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .address-section {
+    width: 90%;
+    text-align: center;
+    align-items: center;
+  }
+
+  .address-heading {
+    font-size: 18px;
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .form-content {
+    width: 100%;
+  }
+
+  .send-button {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-us-head h1 {
+    font-size: 20px;
+  }
+
+  .form-container {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-heading {
+    font-size: 20px;
+  }
+
+  .form-subheading {
+    font-size: 16px;
+  }
+
+  .form-image {
+    width: 70%;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .send-button {
+    padding: 12px;
+    font-size: 14px;
+  }
+}

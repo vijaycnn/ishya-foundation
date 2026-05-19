@@ -1,0 +1,121 @@
+/* Blog Hero Section */
+.blog-detail-hero {
+    width: 100%;
+    height: 350px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .blog-hero-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+  }
+  
+  .blog-detail-hero h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .blog-detail-hero p {
+    font-size: 16px;
+  }
+  
+  /* Blog Details Container */
+  .blog-details-container {
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+  }
+  
+  /* Blog Card */
+  .blog-detail-card {
+    max-width: 800px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: justify;
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Blog Main Image */
+  .blog-main-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  /* Blog Text */
+  .blog-text {
+    font-size: 18px;
+    color: #444;
+    line-height: 1.7;
+    margin-top: 20px;
+    text-align: justify;
+  }
+  
+  /* Blog Action Buttons */
+  .blog-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .like-button, .comment-button, .share-button {
+    background-color: #6D3780;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .like-button:hover, .comment-button:hover, .share-button:hover {
+    background-color: #5a2d68;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .blog-hero h1 {
+      font-size: 28px;
+    }
+  
+    .blog-card {
+      width: 100%;
+      padding: 20px;
+    }
+  
+    .blog-text {
+      font-size: 16px;
+    }
+  }
+  

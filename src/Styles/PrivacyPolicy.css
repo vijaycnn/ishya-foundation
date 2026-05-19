@@ -1,0 +1,30 @@
+.privacy-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin-top: 100px;
+  }
+  @media (max-width: 768px) {
+  .privacy-container {
+    margin-top: 100px;
+    max-width: 300px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9em; /* Adjust font size as needed */
+    line-height: 1.5;    color: #333;
+  }
+  .privacy-container h2 {
+    font-size: 1.2em;
+  }
+
+  .privacy-container h3 {
+    font-size: 1em;
+  }
+
+  .privacy-container h1 {
+    font-size: 1.6em;
+  }
+  }
