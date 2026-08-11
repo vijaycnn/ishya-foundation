@@ -26,12 +26,16 @@ const ProfileSection = () => {
           </div>
           <div className="profile-text">
             <p className="profile-description">
-              {/* My goal for ishya is to develop an organisation that combats the disparity in knowledge and poverty within the society . iam to achieve this by estabilishing a resourceful institution that promotes and focters financial autonomy for individuals. */}
-              Our goal for Ishya Foundation is to develop an organisation that
-              combats the disparity in knowledge and poverty within society. We
-              aim to achieve this by establishing a resourceful learning
-              institution that promotes education and financial autonomy for
-              individuals.
+              "We do not build for communities, we build with them, because real
+              and lasting change is created together."
+            </p>
+            <p className="profile-description">
+              At Ishya Foundation, we believe that every individual deserves the
+              opportunity to learn, live with dignity, access healthcare, and
+              build a better future. Our mission is to foster education for the
+              young, dignified livelihoods for those left behind, healthcare
+              where it is hardest to reach, and awareness that empowers
+              communities to lead their own change.
             </p>
           </div>
           <div className="profile-image-wrapper">

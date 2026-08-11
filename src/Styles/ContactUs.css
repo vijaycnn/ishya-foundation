@@ -1,8 +1,8 @@
 /* General container for contact section */
-.contact-us-head h1{
+.contact-us-head h1 {
   margin-top: 30px;
   text-align: center;
-  color: #6D3780;
+  color: #6d3780;
 }
 .contact-container {
   display: flex;
@@ -21,11 +21,10 @@
 
 .location-image {
   max-width: 100%;
-  max-height: 400px;
+  max-height: 600px;
   display: block;
-  width: 400px; /* Set width of location image */
+  width: 600px; /* Set width of location image */
   height: auto;
-  
 }
 /* Zoom-in effect on hover */
 .zoom-hover {
@@ -46,10 +45,9 @@
   text-decoration: underline;
 }
 
-
 /* Address Section */
 .address-section {
-  background-color: #EAF7D1;
+  background-color: #eaf7d1;
   color: black;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -57,12 +55,13 @@
   flex-direction: column;
   justify-content: center; /* Center content vertically */
   align-items: flex-start; /* Left align text */
-  width: 300px; /* Set width of the green box */
+  width: 400px; /* Set width of the green box */
   text-align: left;
   overflow: hidden; /* Prevent text from overflowing */
 }
 
 .address-heading {
+  margin: 0;
   margin-bottom: 8px;
   font-weight: bold;
   line-height: 1.2;
@@ -73,16 +72,33 @@
   display: flex;
   flex-direction: column;
 }
+.address-details .address-item + .address-item {
+  margin-top: 20px;
+}
 
 .address-item .sub-heading {
   font-size: 14px;
   margin-bottom: 2px;
   font-weight: bold;
 }
+.address-section .sub-heading {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 11px;
+  background: #6d3780;
+  display: inline-block;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.address-details p {
+  margin: 0 0 10px;
+}
 
 .address-item p {
-  font-size: 12px;
   line-height: 1.4;
+  font-size: 14px;
   word-wrap: break-word;
   white-space: normal;
   padding: 0 2px;
@@ -97,7 +113,6 @@
   padding: 40px 250px;
   gap: 60px;
   align-items: center;
-  
 }
 
 .form-content {
@@ -121,7 +136,7 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  font-family: 'Montserrat', sans-serif; 
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Form Row: First Name and Last Name */
@@ -138,7 +153,7 @@
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  background-color: #EDF7F5;
+  background-color: #edf7f5;
 }
 
 .contact-form textarea {
@@ -147,15 +162,14 @@
 
 /* Submit Button */
 .send-button {
-  background-color: #6D3780;
+  background-color: #6d3780;
   color: white;
   padding: 10px 10px;
   font-size: 14px;
   border: none;
   cursor: pointer;
   max-width: 150px;
-  font-family: 'Montserrat', sans-serif; 
-
+  font-family: "Montserrat", sans-serif;
 }
 
 .send-button:hover {
@@ -172,7 +186,6 @@
 .form-image {
   width: 100%;
   height: auto;
-  
 }
 
 /* Input and Label Styling */
@@ -182,14 +195,14 @@
   gap: 8px; /* Space between label and input */
   margin-right: 10px; /* Space between inputs */
   margin-bottom: 10px; /* Space below each input group */
-  font-family: 'Montserrat', sans-serif; 
+  font-family: "Montserrat", sans-serif;
 }
 
 .input-group label {
   font-size: 14px;
-  
+
   color: #333;
-  font-family: 'Montserrat', sans-serif; 
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Ensuring proper styling for labels and inputs */
@@ -199,7 +212,6 @@
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  
 }
 
 .contact-form textarea {
@@ -232,10 +244,8 @@
 
 .contact-form textarea {
   height: 100px;
-  font-family: 'Montserrat', sans-serif; 
-
+  font-family: "Montserrat", sans-serif;
 }
-
 
 .send-button:hover {
   background-color: #45a049;
