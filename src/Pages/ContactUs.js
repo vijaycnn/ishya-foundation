@@ -5,7 +5,7 @@ import Footer from "../Components/Footer";
 import FAQComponent from "../Components/Faq";
 import PageHeader from "../Components/PageHeader";
 import "../Styles/ContactUs.css";
-import Map from "../Images/BasemapImage.png";
+import Map from "../Images/foundation-map.png";
 import IshyaEntrance from "../Images/IshyaEntrance.png";
 import QrImage from "../Images/qr-code.png";
 import Quotes from "../Components/Quotes";
@@ -104,20 +104,75 @@ const ContactUs = () => {
         <div className="address-section">
           <h3 className="sub-heading">Address</h3>
           <div className="address-details">
-            <div className="address-item">
+            <div className="address-item contact-address-item">
               <p>
                 <strong>Registered address:-</strong> <br />
                 Ishya Foundation, 904, 9th Floor, Surya Kiran Building, K.G.
-                Marg, Connaught Place, Delhi – 110001
+                Marg, Connaught Place, Delhi – 110001 <br />
+                <a
+                  href="https://maps.app.goo.gl/t1dPuNHj75jCKvR38"
+                  className="map-btn"
+                  target="_blank"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="0"
+                    viewBox="0 0 24 24"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
+                  </svg>{" "}
+                  View Map
+                </a>
               </p>
               <p>
                 <strong>ISHYA Learning Center 1:- </strong> <br />
                 2B, Chhalera, Sector - 44, Noida, 201303
+                <br />
+                <a
+                  href="https://maps.app.goo.gl/bWMAVuPBj5krAz67A"
+                  className="map-btn"
+                  target="_blank"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="0"
+                    viewBox="0 0 24 24"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
+                  </svg>{" "}
+                  View Map
+                </a>
               </p>
               <p>
                 <strong>ISHYA Learning Center 2:- </strong> <br />
                 73B, khizarabad, Friends Colony East, Jamia Nagar, New Friends
-                Colony, Delhi – 110025
+                Colony, Delhi – 110025 <br />
+                <a
+                  href="https://maps.app.goo.gl/JE15SLBtGZr3a7ZE8"
+                  className="map-btn"
+                  target="_blank"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="0"
+                    viewBox="0 0 24 24"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
+                  </svg>{" "}
+                  View Map
+                </a>
               </p>
             </div>
 

@@ -7,7 +7,7 @@
 .contact-container {
   display: flex;
   justify-content: center;
-  align-items: center; /* Center align vertically */
+  align-items: flex-start; /* Center align vertically */
   padding: 10px;
   gap: 50px; /* Reduced gap */
   margin-top: 20px; /* Add top margin to avoid navbar overlap */
@@ -16,7 +16,9 @@
 /* Location Section */
 .location-section {
   display: flex;
-  align-items: center; /* Center align the image vertically */
+  align-items: flex-start;
+  position: sticky;
+  top: 80px;
 }
 
 .location-image {
@@ -60,6 +62,17 @@
   overflow: hidden; /* Prevent text from overflowing */
 }
 
+.address-details .map-btn,
+.address-details .map-btn:hover {
+  display: inline-flex;
+  gap: 0.25rem;
+  font-weight: 600;
+  align-items: center;
+  border-bottom: solid 2px #333;
+  margin: 0.5rem 0;
+  text-decoration: none;
+  font-size: 12px;
+}
 .address-heading {
   margin: 0;
   margin-bottom: 8px;
@@ -68,6 +81,11 @@
   text-align: left;
 }
 
+.contact-address-item p + p {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: dashed 2px rgba(0, 0, 0, 0.3);
+}
 .address-details {
   display: flex;
   flex-direction: column;
