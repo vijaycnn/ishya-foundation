@@ -87,18 +87,16 @@ const ContactUs = () => {
 
       <div className="contact-container">
         <div className="location-section">
-          {/* Clickable Map Image with Zoom-in Effect */}
-          <a
-            href="https://maps.app.goo.gl/rEFsj8ygSYjvvdCc9"
+          {/* <a
+            href="https://maps.app.goo.gl/t1dPuNHj75jCKvR38"
             target="_blank"
             rel="noopener noreferrer"
-          >
-            <img
-              src={Map}
-              alt="Map Location"
-              className="location-image zoom-hover"
-            />
-          </a>
+          >  </a> */}
+          <img
+            src={Map}
+            alt="Map Location"
+            className="location-image zoom-hover"
+          />
         </div>
 
         <div className="address-section">

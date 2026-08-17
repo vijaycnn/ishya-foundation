@@ -14,12 +14,6 @@
 }
 
 /* Location Section */
-.location-section {
-  display: flex;
-  align-items: flex-start;
-  position: sticky;
-  top: 80px;
-}
 
 .location-image {
   max-width: 100%;
@@ -283,8 +277,6 @@
 
   .address-section {
     width: 90%;
-    text-align: center;
-    align-items: center;
   }
 
   .address-heading {
