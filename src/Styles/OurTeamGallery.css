@@ -11,7 +11,7 @@
 .grid-heading {
   font-size: 28px;
   font-weight: bold;
-  color: #6D3780;
+  color: #6d3780;
   margin-bottom: 20px;
 }
 
@@ -37,7 +37,9 @@
 
 /* First row (3 larger images) */
 .first-row .grid-image.large {
-  width: calc(33.333% - 20px); /* Take up 1/3 width of the container, minus gap */
+  width: calc(
+    33.333% - 20px
+  ); /* Take up 1/3 width of the container, minus gap */
   height: auto; /* Maintain aspect ratio */
   object-fit: cover; /* Ensures the image covers the container without stretching */
 }
@@ -70,6 +72,9 @@
   .second-row .grid-image.small {
     width: 100%; /* Make images in the second row stack */
     height: auto;
+  }
+  .grid-wrapper {
+    padding: 0 20px;
   }
 }
 
