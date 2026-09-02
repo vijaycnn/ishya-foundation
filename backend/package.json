@@ -1,0 +1,62 @@
+{
+  "name": "Ishya-app",
+  "version": "1.0.0",
+  "description": "Ishya",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "start:pm2": "pm2 start ecosystem.config.js --no-daemon",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ishya-app.git"
+  },
+  "keywords": [
+    "Multi-tenant",
+    "Boilerplate"
+  ],
+  "author": "daniccan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ishya-app/issues"
+  },
+  "homepage": "https://github.com/ishya-app#readme",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.925.0",
+    "@aws-sdk/s3-request-presigner": "^3.932.0",
+    "@google-cloud/storage": "^6.1.0",
+    "axios": "^0.27.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "csv": "^6.0.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.17.1",
+    "express-rate-limit": "^8.5.2",
+    "fast-csv": "^4.3.6",
+    "frameguard": "^4.0.0",
+    "handlebars": "^4.7.7",
+    "helmet": "^4.6.0",
+    "jimp": "^0.16.1",
+    "joi": "^17.6.0",
+    "json2csv": "^5.0.7",
+    "jsonwebtoken": "^8.5.1",
+    "md5-nodejs": "^1.0.3",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.4",
+    "nodemailer": "^6.7.5",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "nodemon": "^2.0.15",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.5.1",
+    "pgtools": "^0.1.1",
+    "request": "^2.88.2",
+    "sequelize": "^5.21.5",
+    "sequelize-cli": "^6.4.1",
+    "util": "^0.12.4",
+    "winston": "^3.2.1",
+    "xlsx": "^0.18.5"
+  }
+}

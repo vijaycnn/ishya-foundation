@@ -1,0 +1,13 @@
+@use "sass:color";
+@use "abstracts/variables";
+@use "abstracts/mixins";
+@use "global/global";
+@use "components/header";
+@use "components/sidebar";
+@use "components/table";
+
+// Import Google Fonts
+@import url("https://fonts.googleapis.com/css2?family=Cal+Sans&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+// Import Bootstrap compiled CSS (not SCSS)
+@import "bootstrap/dist/css/bootstrap.min.css";

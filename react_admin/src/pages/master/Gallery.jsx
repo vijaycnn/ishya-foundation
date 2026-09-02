@@ -1,0 +1,709 @@
+import {Badge,Row,Col,Button,Table, Modal, Form,Alert, FloatingLabel} from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import ReactPaginate from "react-paginate";
+import { BiPencil, BiTrash } from "react-icons/bi";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import axiosInstance from "../../helper/constants/axiosInstance";
+const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
+const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
+import { FaVideo } from "react-icons/fa";
+import { getDownloadUrl } from "../../api";
+
+function Gallery() {
+  const [offset, setOffset] = useState(0);
+  const [perPage, setPerPage] = useState(20);
+  const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [items, setItems] = useState(null);
+
+  // const [loading, setLoading] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState("add"); // add | edit
+  const [editId, setEditId] = useState(null);
+
+  const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [fileError, setFileError] = useState("");
+  const [uploadMediaFile, setUploadMediaFile] = useState(null);
+  const [filteredData, setFilteredData] = useState({});
+  const [search, setSearch] = useState({
+    galleryType: "",
+    galleryStatus: "",
+  });
+  const handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    let offset = selectedPage * perPage;
+    setCurrentPage(selectedPage);
+    setOffset(offset);
+  };
+
+  const getGalleries = async () => {
+    setIsLoading(true);
+    
+    const body = { params: { offset: offset, perPage: perPage, ...filteredData } };
+    // console.log('body>>> ', body);
+    await axiosInstance.get(`/gallery/list`, body)
+			.then((response) => {
+        // console.log('>>> ', response.data);
+				setIsLoading(false)
+				if (response.data.status === "success") {
+					setPageCount(Math.ceil(response.data?.totalRecords / perPage))
+					setItems(response.data?.data)
+					setTotalRecords(response.data?.totalRecords)	
+				}
+			}).catch((error) => {
+        // console.log('>>> ', error.status, error);
+        if(error.status === 403){
+          handleLogout();
+        }
+        setIsLoading(false)
+        });
+  };
+
+  const changeStatus = async(index, currentStatus, galleryId)=>{
+    setIsLoading(true);
+    
+    const body = { galleryId, status: currentStatus == 1 ? 0 : 1 };
+    // console.log('body>>> ', body);
+    await axiosInstance.post(`/gallery/changeStatus`, body)
+			.then((response) => {
+        // console.log('>>> ', response.data);
+				setIsLoading(false)
+				if (response.data.status === "success") {
+          items[index].status = currentStatus == 1 ? 0 : 1;
+				}
+			}).catch((error) => {
+        console.log('>>> ', error.status, error);
+        if(error.status === 403){
+          // alert('Session Timeout');
+          handleLogout();
+        }
+        setIsLoading(false);
+      });
+    setIsLoading(false);  
+  }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("isAuthenticated");
+    localStorage.clear("auth-token");
+    localStorage.clear();
+    navigate(adminAlias);
+  };
+  
+  useEffect(() => {
+    if (!isLoading) {
+      getGalleries();
+    }
+  }, [offset, perPage, filteredData]);
+
+  const [formData, setFormData] = useState({
+    type: "image",
+    title: "",
+    fileUrl: "",
+    filePath: "",
+  });
+  const openAdd = () => {
+    setMode("add"); setError(""); setSuccessMsg("");  setPreviewUrl("");
+    setFormData({ type: "image", title: "", fileUrl: "", filePath : "" });
+    setUploadMediaFile(null);
+    setShow(true);
+  };
+  const [previewUrl, setPreviewUrl] = useState("");
+  const openEdit = (item) => {
+    setMode("edit"); setError(""); setSuccessMsg("");
+    setEditId(item.id);
+    setFormData({
+      type: item.type,
+      title: item.title,
+      fileUrl: item.fileUrl,
+      filePath : item.filePath,
+    });
+    setPreviewUrl(item.filePath);
+    setUploadMediaFile(null);
+    setFileError("");
+    setShow(true);
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccessMsg("");
+    setIsSubmit(true);
+    // console.log("formData >>", formData);
+    try {
+      let hasError = validation(formData);
+      if (!hasError) {
+        //Now, process with data
+        setIsLoading(true);
+        if (mode === "add") {
+          await formProcess();
+        } else {
+          if (uploadMediaFile) {
+            await formProcess(); // upload new & update
+          } else {
+            await updateMedia(editId, formData.fileUrl); // keep old
+          }
+        }
+        setIsLoading(false);  setShow(false);
+      }
+      setIsSubmit(false); 
+    } catch (error) {
+      console.log("Catch Err >>", error);
+      setError(error.message);
+      alert(error.message);
+      setIsLoading(false);
+      setIsSubmit(false);
+      return;
+    }    
+    getGalleries();
+  };
+
+  const getUploadUrl = async (file) => {
+    const response = await fetch(`${baseURL}/enquiry/generateUrl`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fileName: file.name,
+        fileType: file.type,
+      }),
+    });
+    return response.json();
+  };
+
+  const formProcess = async () => {
+    // console.log("fileObject >>", `${baseURL}/enquiry/upload-url`, uploadMediaFile);
+
+    const { uploadUrl, fileUrl } = await getUploadUrl(uploadMediaFile);
+    console.log("s3 url >>", uploadUrl, " ::::", fileUrl);
+
+    const uploadRes = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: { "Content-Type": uploadMediaFile.type },
+      body: uploadMediaFile,
+    });
+    console.log("uploadRes", uploadRes);
+    // const uploadRes = { status : 200 }
+    if (uploadRes.status == 200) {
+      if(mode == 'add'){
+        await addMedia(fileUrl.trim());
+      }else{
+        await updateMedia(editId, fileUrl.trim());
+      }
+    }
+  };
+
+  const addMedia = async (fileUrl)=>{
+    let body = {
+      type: formData.type,
+      title: formData.title,
+      fileUrl: fileUrl,
+    };
+    // console.log("data >>", data);
+    await axiosInstance
+      .post(`/gallery/create`, body)
+      .then((response) => {
+        // console.log('response >>> ', response.data);
+        if (response.data.status === "success") {
+          setFormData({
+            type: "",
+            title: "",
+            fileUrl: "",  filePath:""
+          });
+          setSuccessMsg(response?.data?.message);
+          setIsLoading(false);
+        } else if (response.data.status === "error") {
+          setError(response.data.message);
+        }
+      })
+      .catch((error) => {
+        console.log(">>> ", error.status, error);
+        if (error.status === 403) {
+          handleLogout();
+        }
+        setIsLoading(false);
+        setIsSubmit(false);
+      });
+    setIsLoading(false);
+  }
+
+  const updateMedia = async (mediaId, fileUrl)=>{
+    let body = {
+      galleryId: mediaId,
+      type: formData.type,
+      title: formData.title,
+      fileUrl: fileUrl,
+    };
+    // console.log("data >>", data);
+    await axiosInstance
+      .post(`/gallery/update`, body)
+      .then((response) => {
+        // console.log('response >>> ', response.data);
+        if (response.data.status === "success") {
+          setFormData({
+            type: "",
+            title: "",
+            fileUrl: "",  filePath:""
+          });
+          setSuccessMsg(response?.data?.message);
+          setIsLoading(false);
+        } else if (response.data.status === "error") {
+          setError(response.data.message);
+        }
+      })
+      .catch((error) => {
+        console.log(">>> ", error.status, error);
+        if (error.status === 403) {
+          handleLogout();
+        }
+        setIsLoading(false);
+        setIsSubmit(false);
+      });
+    setIsLoading(false);
+  }
+  
+    // Allowed file types
+    const allowedImgTypes = [
+      "image/svg+xml",
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
+      "image/bmp",
+      "image/tiff",
+      "image/gif",
+      "image/webp",
+    ];
+    const allowedVideoTypes = [
+        "video/mp4",
+        "audio/mpeg",
+        "video/x-ms-wmv",
+        "webm",
+        "mkv",
+        "flv",
+        "vob",
+        "mov",
+        "avi",
+        "wmv",
+        "yuv",
+        "amv",
+        "mp4",
+        "mpg",
+        "svi",
+        "3gp",
+        "3g2",
+    ];
+    const MAX_IMAGE_SIZE = 200 * 1024 * 1024; // 200 MB
+    const MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500 MB
+    const MAX_IMAGE_SIZE_LBL = "200 MB";
+    const MAX_VIDEO_SIZE_LBL = "500 MB";
+
+    const fileUploadEvent = (file) => {
+      const selected = file; //e.target.files[0];
+      setFileError(""); // reset
+      if (!selected) return;
+      console.log("fileType", selected.type, formData);
+      if(formData.type.trim() == 'video'){
+        if (!allowedVideoTypes.includes(selected.type)) {
+            setFileError(
+            "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
+            );
+            setUploadMediaFile(null);
+            return;
+        }
+        if (selected.size > MAX_VIDEO_SIZE) {
+          setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
+          setUploadMediaFile(null);
+          return;
+        }
+      }else{
+        if (!allowedImgTypes.includes(selected.type)) {
+            setFileError(
+            "Only JPEG, PNG, JPG, TIFF, GIF, WEBP, SVG, BMP files are allowed."
+            );
+            setUploadMediaFile(null);
+            return;
+        }  
+        if (selected.size > MAX_IMAGE_SIZE) {
+          setFileError(`File size must be less than ${MAX_IMAGE_SIZE_LBL}.`);
+          setUploadMediaFile(null);
+          return;
+        }      
+      }
+      setUploadMediaFile(selected);
+    };
+    const handleFileChange = (e) => {
+      // console.log("handleFileChange >>");
+      const file = e.target.files[0];
+      if (!file) return;
+
+      fileUploadEvent(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    };
+    const handleTypeChange = (type) => {
+      setFormData((prev) => ({...prev,
+        type,
+      }));
+      setUploadMediaFile(null);
+      setFileError("");
+    };
+
+    const validation = (values) => {
+        setError("");
+        let hasError = false;
+        if (!values.type || values.type == "" ) {
+            setError("Mandatory fields are missing");
+            hasError = true;
+        }
+        if (mode === "add" && (!uploadMediaFile || uploadMediaFile == null)) {
+          setError("Media file is required");
+          hasError = true;
+        }
+        if(uploadMediaFile){
+          if(formData.type.trim() == 'video'){
+            if (!allowedVideoTypes.includes(uploadMediaFile.type)) {
+                setFileError(
+                "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
+                );
+                hasError = true;
+            }
+            if (uploadMediaFile.size > MAX_VIDEO_SIZE) {
+              setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
+              hasError = true;
+            }
+          }else{
+            if (!allowedImgTypes.includes(uploadMediaFile.type)) {
+                setFileError(
+                "Only JPEG, PNG, JPG, TIFF, GIF, WEBP, SVG, BMP files are allowed."
+                );
+                hasError = true;
+            }  
+            if (uploadMediaFile.size > MAX_IMAGE_SIZE) {
+              setFileError(`File size must be less than ${MAX_IMAGE_SIZE_LBL}.`);
+              hasError = true;
+            }      
+          }
+        }
+        return hasError;
+    };
+    const getMediaFile = async (fileUrl) => {
+      if (fileUrl != "") {
+        setIsLoading(true);
+        const key = fileUrl.split(".amazonaws.com/")[1];
+        // console.log("key :: ", key);
+        let result = await getDownloadUrl(key);
+        // console.log(">>> ", result);
+        const { downloadUrl } = result;
+        window.open(downloadUrl, "_blank");  
+        setIsLoading(false);
+      }
+    };
+  
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setSearch((prev) => ({
+      ...prev,  [name]:  value,
+    }));
+  };
+  const searchData = () => {
+    setFilteredData(search);
+    setOffset(0);
+    setCurrentPage(0);
+  };
+  const reset = () => {
+    setSearch({
+      galleryType: "",
+      galleryStatus: "",
+    });
+    setFilteredData({});
+    setOffset(0);
+    setCurrentPage(0);
+  };
+
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewMedia, setPreviewMedia] = useState(null);
+    
+  const showItems = () => {
+    return isLoading == false ? (
+      <>
+        <Table responsive className="table v-align-middle table-striped medium">
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Type</th>
+              <th>File</th>
+              <th>Title</th>
+              <th>Status</th>
+              <th width="120" className="col-fixed">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody className="text-muted">
+            {items.map((item, $index) => {
+              return (
+                <>
+                  <tr key={item.id}>
+                    <td>{$index +offset +1}</td>
+                    <td>{item.type.trim() == 'image' ? "IMAGE" : 'VIDEO'}</td>
+                    <td>      
+                      {
+                        (item.type.trim() == 'image')?
+                        <><img src={item.filePath} height={100} width={100} alt="img" /></>
+                        :
+                        <>
+                        {
+                          (item.fileUrl) ?
+                          <>
+                              <div
+                                style={{ width: 100, height: 100, background: "#000", borderRadius: "6px", position: "relative", cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                  setPreviewMedia(item);
+                                  setShowPreview(true);
+                                }}
+                              >
+                                <video
+                                  src={item.filePath} muted preload="metadata" onMouseEnter={(e) => e.target.play()}
+  onMouseLeave={(e) => e.target.pause()} width={100} height={100} style={{ objectFit: "cover", borderRadius: "6px" }}
+                                />
+                                <span
+                                  style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+                                    background: "rgba(0,0,0,0.6)", color: "#fff", borderRadius: "50%", padding: "6px 10px", fontSize: "14px",
+                                  }}
+                                >
+                                  ▶
+                                </span>
+                              </div>
+                          </> : "NA"
+                        }
+                        </>
+                      }
+                    </td>
+                    <td>{item.title}</td>
+                    {/* <td>{moment(item.createdAt).format('DD-MM-YYYY')}</td> */}
+                    <td>
+                      {item.status == 1 ? <Badge bg="success" >Active</Badge> : <Badge bg="secondary" >In-active</Badge> } 
+                    </td>
+                    <td className="col-fixed">
+                        <Link title="Edit" onClick={ ()=>openEdit(item)} className="btn btn-icon">
+                            <BiPencil />
+                        </Link>
+                        &nbsp;
+                        <Link title={item.status == 1 ? 'In-Active' : 'Active'} onClick={()=>changeStatus($index, item.status, item.id)}  className="btn btn-icon">
+                            <BiTrash />
+                        </Link>
+                    </td>
+                  </tr>
+                </>
+              );
+            })}
+          </tbody>
+        </Table>
+      </>
+    ) : (
+      <LoadingSpinner />
+    );
+  };
+  return (
+    <>
+      <h1 className="h4 mb-4 font-secondary fw-medium">Gallery</h1>
+      <div className="bg-white p-4 rounded mb-4">
+        <h6 className="font-secondary text-muted fw-medium mb-4">Filters</h6>
+        <Row>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Gallery Type</Form.Label>
+              <Form.Select
+                name="galleryType"
+                value={search.galleryType}
+                onChange={handleFilterChange}
+              >
+                <option key="" value="">Select All</option>
+                <option key="image" value="image">Image</option>
+                <option key="video" value="video">Video</option>                
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Status</Form.Label>
+              <Form.Select
+                name="galleryStatus"
+                value={search.galleryStatus}
+                onChange={handleFilterChange}
+              >
+                <option key="" value="">Select All</option>
+                <option key="1" value="1">Active</option>
+                <option key="2" value="2">In-active</option>                
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <div className="d-flex justify-content-center gap-2 mt-4">
+              <Button variant="primary" size="sm" onClick={searchData}>
+                <span>Search</span>
+              </Button>
+              <Button variant="outline-secondary" size="sm" onClick={reset}>
+                Reset
+              </Button>
+            </div>
+          </Col>
+        </Row>
+        
+      </div>
+      <div className="table-view bg-white rounded-4 p-4">
+        <div className="mb-3 d-flex justify-content-between align-items-center">
+          <div className="text-muted">
+            Total Records :{" "}
+            <span className="text-dark fw-bold">{totalRecords ? totalRecords : 0}</span>
+          </div>
+          <div>
+              <Link onClick={ ()=>openAdd()} className="btn btn-primary btn-sm">
+                  <span className="nav-link-text">Add-Media</span>
+              </Link>              
+          </div>
+        </div>
+        {
+          (items && items.length > 0) ? showItems()
+          : <>
+          <div className="d-flex text-muted justify-content-center p-5 w-100 align-items-center flex-column">
+            <i className="fa fa-database fa-3x mb-3"></i>
+            <p>Sorry, no record found!</p>
+          </div>
+          </>
+        }        
+      </div>
+        <Modal id="frm" name="frm" size="" show={show} centered onHide={() => setShow(false)} backdrop="static" keyboard={false}>
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    {mode === "add" ? "Add Media" : "Edit Media"}
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {/* <Form.Group > */}
+                <Form>
+                {error && <Alert variant="danger">⚠️{error}</Alert>}
+                {successMsg && <Alert variant="success">{successMsg}</Alert>}
+                    <div className="mb-3">
+                        <Form.Check
+                            inline id="media-image"
+                            label="Image"
+                            type="radio"
+                            name="type" value="image"
+                            checked={formData.type.trim() === "image"}
+                            onChange={(e) => handleTypeChange(e.target.value)}
+                        />&nbsp;
+                        <Form.Check
+                            inline  id="media-video"
+                            label="Video"
+                            type="radio"
+                            name="type" value="video"
+                            checked={formData.type.trim() === "video"}
+                            onChange={(e) => handleTypeChange(e.target.value)}
+                        />
+                    </div>
+                    <FloatingLabel controlId="galleryTitle" label="Enter Title" className="mb-3" >
+                    <Form.Control
+                        type="text"
+                        placeholder="Enter Title"
+                        maxLength={155}
+                        name="title" value={formData.title}
+                        onChange={(e) => {
+                          console.log("typing:", e.target.value);
+                          setFormData((prev) => ({...prev, title: e.target.value, })) 
+                        }
+                        }
+                    />
+                    </FloatingLabel>
+                    {mode === "edit" && previewUrl && (
+                      <div className="mb-3 text-center">
+                        {formData.type.trim() === "image" ? (
+                          <img
+                            src={previewUrl}
+                            alt="preview"
+                            style={{ maxHeight: "150px", borderRadius: "8px" }}
+                          />
+                        ) : (
+                          <video
+                            src={previewUrl}
+                            controls
+                            style={{ maxHeight: "150px", borderRadius: "8px" }}
+                          />
+                        )}
+                        <div className="text-muted mt-1">
+                          <small>Current media</small>
+                        </div>
+                      </div>
+                    )}
+                    <Form.Group className="mb-12">
+                      <Form.Label className="fw-medium">
+                        <small>(Max. FileSize {formData.type.trim() == 'image' ? MAX_IMAGE_SIZE_LBL : MAX_VIDEO_SIZE_LBL})</small>
+                        <span className="text-danger">*</span>
+                      </Form.Label>
+                      {fileError && (
+                        <p className="mt-2 text-sm text-red-600 text-danger"><small>⚠️ {fileError}</small></p>
+                      )}
+                      <Form.Control type="file" disabled={!formData.type} onChange={handleFileChange} />
+                    </Form.Group>
+                    
+                    </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShow(false)}>
+                    Cancel
+                </Button>
+                <Button onClick={handleSubmit}  disabled={isSubmit}>
+                    <span className="nav-link-text">{mode === "add" ? "Save" : "Update"}</span>
+                </Button>                
+            </Modal.Footer>            
+        </Modal>
+
+        <Modal id="preview" name="preview" show={showPreview} onHide={() => setShowPreview(false)} centered size="lg" >
+          <Modal.Header closeButton>
+            <Modal.Title>Preview</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body className="text-center">
+            {previewMedia?.type.trim() === "image" ? (
+              <img src={previewMedia.filePath} style={{ maxWidth: "100%", borderRadius: "8px" }} />
+            ) : (
+              <video src={previewMedia?.filePath} controls autoPlay style={{ width: "100%", borderRadius: "8px" }} />
+            )}
+          </Modal.Body>
+        </Modal>
+
+      {items ? (
+        items.length > 0 ? (
+          <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={
+              "pagination justify-content-center flex-wrap mt-3"
+            }
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+          />
+        ) : null
+      ) : null}
+    </>
+  );
+}
+
+export default Gallery;

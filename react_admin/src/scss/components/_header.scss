@@ -1,0 +1,124 @@
+@use "sass:color";
+@use "../abstracts/variables";
+@use "../abstracts/mixins";
+.app {
+  &-header {
+    height: 60px;
+    padding: 0 2rem 0 2rem;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: variables.$primary;
+    color: variables.$white;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    &-auth {
+      & .btn-icon {
+        height: 50px;
+        width: 50px;
+        font-size: 1.6rem;
+        padding: 0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        & .status-badge {
+          position: absolute;
+          width: 0.7rem;
+          height: 0.7rem;
+          border-radius: 50%;
+          top: 0.75rem;
+          right: 0.7rem;
+          background-color: #dc2626;
+        }
+      }
+      & .active-user {
+        & .btn {
+          padding: 0;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background-color: #ccc;
+          color: variables.$default;
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          overflow: hidden;
+          position: relative;
+          & img {
+            @include mixins.cover;
+          }
+          &:after {
+            display: none;
+          }
+        }
+      }
+    }
+    &-search {
+      display: flex;
+      position: relative;
+      max-width: 400px;
+      flex: 1 1 auto;
+      & .form-control {
+        padding-left: 2.5rem;
+        border-color: transparent;
+        height: 45px;
+        &:focus {
+          border-color: color.adjust(variables.$black, $lightness: 85%);
+          box-shadow: none;
+        }
+      }
+      & .btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 50px;
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        padding: 0;
+        text-align: center;
+        opacity: 0.5;
+        user-select: none;
+      }
+    }
+    &-title {
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--default);
+    }
+  }
+  &-collapse-btn {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    left: -20px;
+    border-color: variables.$black;
+    color: variables.$black;
+    padding: 0;
+    border-radius: 0.25rem;
+    font-size: 1.25rem;
+    background-color: variables.$white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition-duration: 0.3s;
+    &:hover,
+    &:focus {
+      background-color: variables.$white;
+      border-color: variables.$black;
+    }
+  }
+}
+
+.sidebar-collapse {
+  & .app-collapse-btn {
+    left: 0.5rem;
+    transform: scaleX(-1);
+  }
+  & .app-header {
+    padding-left: 4rem;
+  }
+}
