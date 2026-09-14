@@ -137,7 +137,7 @@ function Banner() {
             headers: { "Content-Type": uploadMediaFile.type },
             body: uploadMediaFile,
         });
-        // console.log("uploadRes", uploadRes);
+        console.log("uploadRes", uploadRes);
         // const uploadRes = { status : 200 }
         if (uploadRes.status == 200) {
             let body = {
@@ -147,7 +147,7 @@ function Banner() {
                 fileUrl     : fileUrl
             };
 
-            // console.log("data >>", data);
+            console.log("data >>", data);
             await axiosInstance.post(`/banner/create`, body)
                 .then((response) => {
                 console.log('response >>> ', response.data);
