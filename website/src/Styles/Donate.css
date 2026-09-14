@@ -1,0 +1,331 @@
+.donate-container {
+    padding: 100px;
+    background-color: #f7f7f7;
+    color: #333;
+  }
+  
+  .donate-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .donate-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+  }
+  
+  .green-text {
+    color: #BEDB39;
+  }
+  
+  .purple-text {
+    color: purple;
+  }
+  
+  .donate-subheading {
+    text-align: left;
+    margin-bottom: 40px;
+  }
+  
+  .donate-subheading h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .donate-subheading h3 {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .donate-info-box {
+    background-color: #EDF7F5; /* Light greenish color */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  .donate-info-box p {
+    margin-bottom: 20px;
+  }
+  
+  .donate-info-box strong {
+    font-weight: bold;
+  }
+  /* Button Styles */
+/* Button Styles */
+.donate-btn {
+    background-color: #A6C769; /* Green background */
+    color: white;
+    padding: 8px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+    margin: 20px;
+    margin-left: 0%;
+    
+  }
+  .donate-now-btn {
+    background-color: #6D3780;
+    color: white;
+    padding: 10px 20px; /* Increased padding */
+    font-size: 18px; /* Bigger text */
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.donate-now-btn:hover {
+    background-color: #5a2d68;
+}
+  
+  .donate-btn:hover {
+    background-color: #A6C780; /* Darker green on hover */
+  }
+  
+  /* Down Arrow Styles */
+  .dropdown-arrow {
+    margin-left: 10px;
+    font-size: 18px;
+  }
+  
+  /* Dropdown Menu */
+  .donate-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 10px 0;
+  }
+  
+  .dropdown-item {
+    padding: 12px 20px;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #A6C769; /* Green background on hover */
+    color: white; /* Change text color to white */
+  }
+  
+  .dropdown-item:active {
+    background-color: #A6C769;
+    color: white;
+  }
+  
+  .donate-dropdown button:focus {
+    outline: none; /* Remove outline when the button is clicked */
+  }
+  /* Styling for the right-side image */
+/* Styling for the right-side image */
+/* Container for the right-side image */
+.right-image-container {
+    display: flex;
+    justify-content: flex-end; /* Align the content to the right */
+    margin-top: 30px;
+  }
+  
+  /* Styling for the right-side image */
+  .right-image {
+    position: relative; /* Make sure the container is positioned */
+    width: 100%;
+    max-width: 600px; /* Adjust to your preferred size */
+  }
+  
+  .right-image img {
+    width: 100%; /* Ensure the image takes full width of its container */
+    height: auto; /* Maintain the image's aspect ratio */
+    border-radius: 8px; /* Optional: rounded corners */
+  }
+  
+  /* Overlay text styles */
+  .quote-overlay {
+    position: absolute; /* Position it within the image */
+    top: 35%; /* Vertically center */
+    left: 65%; /* Horizontally center */
+    transform: translate(-50%, -50%); /* Adjust for exact centering */
+    color: #6D3780;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; /* Adjust text size */
+    text-align: center;
+    width: 80%; /* Adjust text width */
+    max-width: 400px; /* Prevent text from becoming too wide */
+    line-height: 1.5; /* Adjust line spacing for better readability */
+    padding: 10px;
+    box-sizing: border-box;
+    font-weight: bold;
+  }
+  
+  /* Styling for the centered big image with space on the sides */
+  .center-image {
+    display: flex;
+    justify-content: center;
+    margin-top: 200px; /* Space below everything else */
+    padding: 0 15%; /* Adds space to the left and right of the image */
+  }
+  
+  .center-image img {
+    width: 100%; /* Adjust the size of the image to be smaller */
+    max-width: 800px; /* Optional, limits the maximum size of the image */
+  }
+  .donate-reminder{
+    text-align: center;
+    font-style: italic;
+    padding: 40px;
+    color: #252A34;
+  }
+
+  /* Tablet View (768px) */
+@media screen and (max-width: 768px) {
+  .donate-container {
+    padding: 50px;
+  }
+
+  .donate-header h1 {
+    font-size: 28px;
+  }
+
+  .donate-subheading h2 {
+    font-size: 20px;
+  }
+
+  .donate-subheading h3 {
+    font-size: 22px;
+  }
+
+  .donate-info-box {
+    padding: 30px;
+    font-size: 14px;
+  }
+
+  .donate-btn {
+    font-size: 16px;
+    width: 200px;
+  }
+
+  .dropdown-menu {
+    width: 200px;
+  }
+
+  .right-image-container {
+    justify-content: center; /* Center image in tablet view */
+  }
+
+  .center-image img {
+    width: 80%; /* Reduce image size */
+  }
+  .quote-overlay {
+    position: absolute; /* Position it within the image */
+    top: 35%; /* Vertically center */
+    left: 65%; /* Horizontally center */
+    transform: translate(-50%, -50%); /* Adjust for exact centering */
+    color: #6D3780;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; /* Adjust text size */
+    text-align: center;
+    width: 80%; /* Adjust text width */
+    max-width: 400px; /* Prevent text from becoming too wide */
+    line-height: 1.5; /* Adjust line spacing for better readability */
+    padding: 10px;
+    box-sizing: border-box;
+    font-weight: bold;
+  }
+}
+
+/* Mobile View (360px) */
+@media screen and (max-width: 360px) {
+  .donate-container {
+    padding: 20px;
+  }
+
+  .donate-header h1 {
+    font-size: 24px;
+  }
+
+  .donate-subheading {
+    text-align: center;
+  }
+
+  .donate-subheading h2 {
+    font-size: 18px;
+  }
+
+  .donate-subheading h3 {
+    font-size: 20px;
+  }
+
+  .donate-info-box {
+    padding: 20px;
+    font-size: 12px;
+  }
+
+  .donate-btn {
+    font-size: 14px;
+    width: 180px;
+  }
+
+  .dropdown-menu {
+    width: 180px;
+  }
+
+  .right-image-container {
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .right-image img {
+    width: 90%;
+  }
+
+  .center-image img {
+    width: 100%;
+  }
+  .quote-overlay p {
+    padding: 10px;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 10px;
+    width: 200px;
+  }
+}
+/* Make the Dropdown Smaller */
+.donation-receipt-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.receipt-btn {
+  padding: 7px 15px;
+  background-color: #A6C769;
+  color: white;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background 0.3s;
+  border: none;
+}
+
+.receipt-btn:hover {
+  background-color: #6D3780;
+}

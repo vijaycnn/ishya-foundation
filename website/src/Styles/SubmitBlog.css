@@ -1,0 +1,43 @@
+.submit-blog-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .submit-blog-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .submit-blog-form label {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .submit-blog-form input,
+  .submit-blog-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .submit-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #A6C769;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #6D3780;
+  }
+  

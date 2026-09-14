@@ -1,0 +1,230 @@
+.footer {
+  background-color: #6D3780;
+  color: #fff;
+  padding: 40px 80px;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  clear: both;
+  min-height: 300px;
+  font-size: 0.9rem;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 200px;
+  margin: 0 10px;
+  text-align: left;
+}
+
+.footer-logo {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  font-size: 14px;
+  color: #aaa;
+}
+
+h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin: 5px 0;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #aaa;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.footer-column ul li a.donate-now {
+  color: #A6C769;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-column ul li a.donate-now:hover {
+  color: white;
+}
+
+.footer-address {
+  font-size: 14px;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.newsletter-form {
+  display: flex;
+  align-items: center;
+}
+
+.newsletter-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  flex: 1;
+  outline: none;
+}
+
+.subscribe-btn {
+  padding: 10px 20px;
+  background-color: #A6C769;
+  color: #fff;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.subscribe-btn:hover {
+  background-color: #218838;
+}
+
+.footer-note {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 10px;
+}
+
+.social-icons {
+  display: flex;
+  margin-top: 10px;
+}
+
+.social-icons .icon {
+  width: 30px;
+  height: 30px;
+  background-color: #555;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.social-icons .icon:hover {
+  background-color: #28a745;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+  .footer{
+    background-color: #6D3780;
+  color: #fff;
+  padding: 40px 20px;
+  font-family: 'Montserrat', sans-serif;
+  
+  }
+  .footer-container {
+    flex-direction: column; /* Stack footer columns vertically */
+    padding: 20px; /* Adjust padding for smaller screens */
+  }
+
+  .footer-column {
+    margin-bottom: 20px; /* Space between footer columns */
+    width: 100%; /* Make columns take full width */
+  }
+
+  .footer-logo img {
+    width: 80px; /* Reduce logo size on smaller screens */
+  }
+
+  .footer-text {
+    font-size: 13px; /* Adjust text size */
+  }
+
+  .footer-links a {
+    font-size: 14px; /* Adjust link size */
+  }
+
+  .newsletter-form {
+    flex-direction: column; /* Stack email input and button */
+    width: 100%; /* Full width for form on small screens */
+  }
+
+  .newsletter-input {
+    margin-bottom: 10px; /* Add margin between input and button */
+    width: 100%; /* Make input full width */
+  }
+
+  .subscribe-btn {
+    width: 100%; /* Make subscribe button full width */
+    border-radius: 4px; /* Adjust button border radius */
+  }
+
+  .footer-note {
+    font-size: 11px; /* Adjust note text size */
+  }
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 600px) {
+  .footer-container {
+    padding: 10px; /* Adjust padding */
+  }
+  
+  .footer-logo img {
+    width: 60px; /* Further reduce logo size */
+  }
+
+  .footer-column {
+    margin-bottom: 15px; /* Space between columns */
+  }
+
+  .footer-text {
+    font-size: 12px; /* Reduce font size */
+  }
+
+  .newsletter-form {
+    width: 100%; /* Make form full width */
+  }
+
+  .newsletter-input {
+    margin-bottom: 8px; /* Reduce space between input and button */
+  }
+
+  .subscribe-btn {
+    padding: 8px 15px; /* Adjust button size */
+  }
+
+  .footer-note {
+    font-size: 10px; /* Smaller font size for mobile */
+  }
+
+  .social-icons {
+    gap:10px;
+    flex-direction: row; /* Stack social icons vertically */
+    align-items: center; /* Center social icons */
+  }
+
+  .social-icons .icon {
+    margin: 5px 0; /* Add space between icons */
+  }
+}

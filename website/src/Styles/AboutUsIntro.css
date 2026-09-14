@@ -1,0 +1,131 @@
+/* OverlappingImageSection.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    max-width: 1024px;
+    margin: auto;
+  }
+  
+  /* Desktop View (Remains Unchanged) */
+  @media (min-width: 1024px) {
+    .container {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+    .text-container h2 {
+        color: #6D3780;
+      }
+    
+  }
+  
+  .image-container {
+    position: relative;
+    width: 500px;
+    height: 500px;
+  }
+  
+  .main-image,
+  .overlay-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border: 8px solid #A6C769;
+  }
+  
+  /* Overlay positioning */
+  .overlay-image {
+    position: absolute;
+    bottom: -40px;
+    right: -40px;
+    border: 8px solid #A6C769;
+  }
+  
+  /* Text Container */
+  .text-container {
+    text-align: center;
+    margin-top: 40px;
+    max-width: 500px;
+  }
+  
+  /* Desktop View (Remains Unchanged) */
+  @media (min-width: 1024px) {
+    .text-container {
+      margin-left: 100px;
+      text-align: left;
+    }
+  }
+  
+  /* Tablet View (768px - 1023px) */
+  @media (max-width: 1023px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .image-container {
+      width: 320px;
+      height: 320px;
+    }
+  
+    .main-image,
+    .overlay-image {
+      width: 220px;
+      height: 220px;
+    }
+  
+    .overlay-image {
+      bottom: -25px;
+      right: -25px;
+    }
+  
+    .text-container {
+      margin-top: 24px;
+      max-width: 320px;
+    }
+  
+    .text-container h2 {
+      font-size: 22px;
+      color: #6D3780;
+    }
+  
+    .text-container p {
+      font-size: 14px;
+    }
+  }
+  
+  /* Mobile View (Up to 767px) */
+  @media (max-width: 767px) {
+    .image-container {
+      width: 250px;
+      height: 250px;
+    }
+  
+    .main-image,
+    .overlay-image {
+      width: 180px;
+      height: 180px;
+    }
+  
+    .overlay-image {
+      bottom: -20px;
+      right: -20px;
+    }
+  
+    .text-container {
+      margin-top: 20px;
+      max-width: 280px;
+    }
+  
+    .text-container h2 {
+      font-size: 20px;
+      color: #6D3780;
+
+    }
+  
+    .text-container p {
+      font-size: 13px;
+    }
+  }
+  

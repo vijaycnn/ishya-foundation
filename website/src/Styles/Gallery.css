@@ -1,0 +1,129 @@
+/* Hero Section */
+.gallery-hero {
+    background: url("../Images/Gallery.png") no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    margin-top: 100px;
+  }
+  
+  .gallery-hero h1 {
+    font-size: 36px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+  }
+  
+  .gallery-hero p {
+    font-size: 18px;
+    margin-top: 10px;
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Category Tabs */
+  .category-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+  }
+  
+  .category-button {
+    background: none;
+    border: 1px solid #6D3780;
+    color: #6D3780;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .category-button:hover,
+  .category-button.active {
+    background: #6D3780;
+    color: white;
+  }
+  
+  /* Masonry Grid Layout */
+  .masonry-gallery {
+    column-count: 3;
+    column-gap: 15px;
+    padding: 20px;
+    max-width: 1100px;
+    margin: auto;
+  }
+  
+  .gallery-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .gallery-item:hover {
+    transform: scale(1.05);
+  }
+  
+  .gallery-img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  /* Lightbox Modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    max-width: 80%;
+  }
+  
+  .modal-img {
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 8px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 900px) {
+    .masonry-gallery {
+      column-count: 2;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .masonry-gallery {
+      column-count: 1;
+    }
+  
+    .gallery-hero {
+      height: 250px;
+    }
+  
+    .gallery-hero h1 {
+      font-size: 28px;
+    }
+  
+    .gallery-hero p {
+      font-size: 16px;
+    }
+  }
+  

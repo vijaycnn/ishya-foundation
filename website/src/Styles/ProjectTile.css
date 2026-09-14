@@ -1,0 +1,101 @@
+/* ProjectTile.css */
+.project-tile {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    overflow: hidden;
+    width: 350px; /* Fixed width */
+    height: 400px; /* Fixed height */
+    display: flex;
+    flex-direction: column;
+}
+
+.project-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.project-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 10px 15px;
+    color: #333;
+}
+
+.project-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 15px 10px;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    
+    -webkit-box-orient: vertical;
+}
+
+.read-more-btn {
+    background-color: #6D3780;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 15px 15px;
+}
+
+.read-more-btn:hover {
+    background-color: #A6C769;
+}
+/* Tablet View (max-width: 768px) */
+@media (max-width: 768px) {
+    .project-tile {
+        width: 320px; /* Adjust width for tablet */
+        height: auto; /* Allow flexible height */
+    }
+
+    .project-image {
+        height: 180px; /* Reduce image height */
+    }
+
+    .project-name {
+        font-size: 1.1rem;
+    }
+
+    .project-description {
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile View (max-width: 600px) */
+@media (max-width: 600px) {
+    .project-tile {
+        width: 90%; /* Full width with margin */
+        height: auto; /* Flexible height */
+        margin: auto; /* Center align */
+    }
+
+    .project-image {
+        height: 160px; /* Smaller image */
+    }
+
+    .project-name {
+        font-size: 1rem;
+        text-align: center; /* Center align for better readability */
+    }
+
+    .project-description {
+        font-size: 0.8rem;
+        text-align: center; /* Center align text */
+    }
+
+    .read-more-btn {
+        width: 100%; /* Make button full-width */
+        text-align: center;
+    }
+}

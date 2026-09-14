@@ -1,0 +1,134 @@
+/* Container with padding */
+.partner-us-container {
+    padding: 40px 10%;
+    text-align: left;
+}
+
+/* Heading */
+.partner-us-heading {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Description */
+.partner-us-description {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
+    max-width: 800px;
+}
+.partner-us-tile {
+    text-decoration: none; /* Remove default link styling */
+    color: inherit; /* Ensures text color remains unchanged */
+    display: block; /* Makes the entire tile clickable */
+    cursor: pointer; /* Indicates it's clickable */
+  }
+  .partner-us-tile:hover {
+    transform: scale(1.05); /* Zoom-in effect on hover */
+  }  
+/* Tiles container */
+.partner-us-tiles {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Individual tile */
+.partner-us-tile {
+    width: 400px;
+    height: 270px;
+    background-color: #EDF7F5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Logo */
+.partner-us-logo {
+    width: 50%;
+    margin-bottom: 10px;
+}
+
+/* Tile heading */
+.tile-heading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Tile description */
+.tile-description {
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .partner-us-container {
+        padding: 30px 5%;
+    }
+
+    .partner-us-heading {
+        font-size: 1.8rem;
+    }
+
+    .partner-us-description {
+        font-size: 1rem;
+    }
+
+    .partner-us-tiles {
+        gap: 15px;
+    }
+
+    .partner-us-tile {
+        width: 90%;
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .partner-us-heading {
+        font-size: 1.6rem;
+    }
+
+    .partner-us-description {
+        font-size: 0.95rem;
+    }
+
+    .partner-us-tile {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+        padding: 15px;
+    }
+    .partner-us-logo{
+        width: 30%;
+    }
+}
+
+@media (max-width: 480px) {
+    .partner-us-heading {
+        font-size: 1.4rem;
+    }
+
+    .partner-us-description {
+        font-size: 0.9rem;
+    }
+
+    .partner-us-tiles {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .partner-us-tile {
+        width: 100%;
+        max-width: 300px;
+        padding: 10px;
+    }
+}

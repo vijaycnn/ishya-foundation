@@ -18,7 +18,7 @@ const Sidebar = () => {
   const handleLogout = () => {
     sessionStorage.removeItem("isAuthenticated");
     localStorage.clear("auth-token");
-    localStorage.clear();app-login-logo
+    localStorage.clear();
     navigate(adminAlias);
   };
   const isActive = (paths) => {
@@ -56,12 +56,14 @@ const Sidebar = () => {
               </span>
               <span className="nav-link-text">Dashboard</span>
             </Link>
-            <Link to={`${adminAlias}/participant`} className={`nav-link ${ isActive(`${adminAlias}/participant`) ? "active" : "" }`} >
+
+
+            {/* <Link to={`${adminAlias}/participant`} className={`nav-link ${ isActive(`${adminAlias}/participant`) ? "active" : "" }`} >
               <span className="nav-link-icon">
                 <BiUser />
               </span>
               <span className="nav-link-text">Participant</span>
-            </Link>
+            </Link> */}
             {
               (hasAccess) ?
               <>
@@ -76,7 +78,7 @@ const Sidebar = () => {
                 <span className="nav-link-icon">
                   <BiGroup />
                 </span>
-                <span className="nav-link-text">Mentors</span>
+                <span className="nav-link-text">Testimonials</span>
               </Link>
               <Link to={`${adminAlias}/galleries`} className={`nav-link ${ isActive([`${adminAlias}/galleries`]) ? "active" : "" }`} >
                 <span className="nav-link-icon">
@@ -91,7 +93,7 @@ const Sidebar = () => {
                 <span className="nav-link-text">CMS Context</span>
               </Link>
 
-              <Link to={`${adminAlias}/artistusp`} className={`nav-link ${ isActive([`${adminAlias}/artistusp`]) ? "active" : "" }`} >
+              {/* <Link to={`${adminAlias}/artistusp`} className={`nav-link ${ isActive([`${adminAlias}/artistusp`]) ? "active" : "" }`} >
                 <span className="nav-link-icon">
                   <BiSliderAlt />
                 </span>
@@ -121,7 +123,7 @@ const Sidebar = () => {
                   <BiListUl />
                 </span>
                 <span className="nav-link-text">Faq Category</span>
-              </Link>
+              </Link> */}
               </>: ''
             }            
           </Nav>

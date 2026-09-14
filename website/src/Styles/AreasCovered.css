@@ -1,0 +1,141 @@
+/* Desktop Styles (Default) */
+.areas-covered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.areas-covered {
+  display: flex;
+  gap: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  width: 80%;
+  max-width: 1000px;
+}
+
+.map-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.india-map-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+
+.text-section {
+  flex: 2;
+  align-items: center;
+}
+
+.heading {
+  font-size: 1.8rem;
+  color: #6D3780;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.horizontal-bar {
+  background-color: #6D3780;
+  padding: 10px;
+}
+
+.bar-text {
+  color: #ffffff;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0;
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .areas-covered-container {
+    padding: 15px;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .areas-covered {
+    flex-direction: column;
+    width: 90%;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .map-section {
+    width: 60%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .text-section {
+    width: 100%;
+    text-align: center;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .bar-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 480px) {
+  .areas-covered-container {
+    align-items: center;
+    padding: 10px;
+  }
+
+  .areas-covered {
+    flex-direction: column;
+    width: 95%;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .map-section {
+    width: 100%;
+  }
+
+  .text-section {
+    width: 100%;
+    text-align: center;
+  }
+
+  .heading {
+    font-size: 1.2rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .horizontal-bar {
+    padding: 8px;
+  }
+
+  .bar-text {
+    font-size: 0.7rem;
+  }
+}
