@@ -1,17 +1,21 @@
 var momentz = require('moment-timezone');
 const responder = require('../utils/responder');
-const mentorService = require('../services/mentor.service');
+const learningpageService = require('../services/learningpage.service');
 const moment = require('moment');
 
 const { S3Client,  GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const s3 = new S3Client({ region: "ap-south-1" });
 
-let MentorController = {
+const { formattedType } = require("../utils/helper");
+
+let LearningpageController = {
+    
     //use this for frontend list
-    getList: async (request, response, next) => {
+    getFrontList: async (request, response, next) => {
         try {
-            let data = await mentorService.getMentorList();
+            let type = request.params.type;
+            let data = await learningpageService.getList(type);
             const rows = data.rows.map((r) => r.get({ plain: true }));
             const mentors = await Promise.all(
                 rows.map(async (row) => {
@@ -35,15 +39,17 @@ let MentorController = {
             );                
             // console.log('lit >>>>>>>:::', mentors);
             let dataList =  { 'totalRecord': data.count, 'list': mentors };
-            return responder.sendFilterResponse(response, 200, "success", dataList, "Testimonials retrieved successfully.");
+            return responder.sendFilterResponse(response, 200, "success", dataList, `${formattedType(type)} retrieved successfully.`);
         } catch (error) {
             return next(error);
         }
     },
     //use this for backend list
-    getMentorList: async (request, response, next) => {
+    getList: async (request, response, next) => {
         try {
-            let data = await mentorService.getMentorList(true);
+            let type = request.params.type;
+            console.log('>>>>>', type, request.query);
+            let data = await learningpageService.getList(type, true);
             const rows = data.rows.map((r) => r.get({ plain: true }));
             const mentors = await Promise.all(
                 rows.map(async (row) => {
@@ -67,19 +73,20 @@ let MentorController = {
             );                
             // console.log('lit >>>>>>>:::', mentors);
             let dataList =  { 'totalRecord': data.count, 'list': mentors };
-            return responder.sendFilterResponse(response, 200, "success", dataList, "Testimonials retrieved successfully.");
+            return responder.sendFilterResponse(response, 200, "success", dataList, `${formattedType(type)} retrieved successfully.`);
         } catch (error) {
             return next(error);
         }
     },
-    checkValidMentor: async (request, response, next) => {
+    checkValid: async (request, response, next) => {
         try {
             console.log('validate controller reached', request.body);
             let checkIfExist = false;
             let mentorId = request.body.mentorId ? request.body.mentorId : 0;
-            checkIfExist = await mentorService.checkExistMentor(request.body.name, request.body.title, mentorId);
+            let type = request.body.type;
+            checkIfExist = await learningpageService.checkExist(type, request.body.title, mentorId);
             if (checkIfExist == true) {
-                return responder.sendResponse(response, 200, "error", '', "Testimonial Already Exist for this name");
+                return responder.sendResponse(response, 200, "error", '', `${formattedType(type)} Already Exist for this Title`);
             } else {
                 return responder.sendResponse(response, 200, "success", '', "No match found");
             }
@@ -87,39 +94,42 @@ let MentorController = {
             return next(error);
         }
     },  
-    createMentor: async (request, response, next) => {
+    create: async (request, response, next) => {
         try {
             console.log('create controller reached', request.body, request.user);
-            if(request.body.name.trim() == ''){
+            let type = request.body.type;
+            if(request.body.type.trim() == '' || request.body.title.trim() == ''){
                 return responder.sendResponse(response, 200, "error", '', "Missing Required!");
             }
             let checkIfExist = false;
-            checkIfExist = await mentorService.checkExistMentor(request.body.name, request.body.title);
+            checkIfExist = await learningpageService.checkExist(type, request.body.title);
             if (checkIfExist == true) {
-                return responder.sendResponse(response, 200, "error", '', "Testimonial Already Exist");
+                return responder.sendResponse(response, 200, "error", '', `${formattedType(type)} Already Exist`);
             } else {
                 const mentorData = {
-                    name: request.body.name.trim(),
+                    type: request.body.type.trim(),
                     orderNumber: request.body.orderNumber,
                     title: request.body.title ? request.body.title.trim() : '',
                     fileUrl: request.body.fileUrl,
+                    attachFileUrl: request.body?.attachFileUrl ?? '',
                     remark1: request.body.remark1 ? request.body.remark1.trim() : '',
-                    remark2: request.body.remark2 ? request.body.remark2.trim() : '',
+                    // remark2: request.body.remark2 ? request.body.remark2.trim() : '',
                     createdBy: request.user.userId
                 };
-                let mentorCreate = await mentorService.createMentor(mentorData);
-                return responder.sendResponse(response, 200, "success", mentorCreate, "Testimonial created successfully.");                
+                let mentorCreate = await learningpageService.create(mentorData);
+                return responder.sendResponse(response, 200, "success", mentorCreate, `${formattedType(type)} created successfully.`);                
             }
         } catch (error) {
             return next(error);
         }
     },
-    getMentorById:async(request, response, next) =>{
+    getById:async(request, response, next) =>{
         try {
             let mentorId = request.params.mentorId;
+            let type = request.params.pageType;
             console.log('getById controller reached', request.params, request.user);
 
-            const dataList = await mentorService.getMentorById(mentorId);
+            const dataList = await learningpageService.getById(mentorId);
             if(dataList){
                 // console.log('fileUrl :::', dataList.fileUrl);
                 if(dataList.fileUrl != ''){
@@ -133,52 +143,54 @@ let MentorController = {
                     // console.log('>>>', signedUrl);
                     dataList.fileUrl = signedUrl;
                 }
-                return responder.sendResponse(response, 200, "success", dataList, "Testimonial retrieved successfully.");
+                return responder.sendResponse(response, 200, "success", dataList, `${formattedType(type)} retrieved successfully.`);
             }else{
-                return responder.sendResponse(response, 200, "error", {}, "No Testimonial found");
+                return responder.sendResponse(response, 200, "error", {}, "No Record found");
             }
         } catch (error) {
             return next(error);
         }
     },
-    updateMentor: async (request, response, next) => {
+    update: async (request, response, next) => {
         try {
             // console.log('update controller reached', request.body, request.user);
-            if(request.body.name.trim() == ''){
+            let type = request.body.type;
+            if(request.body.type.trim() == ''){
                 return responder.sendResponse(response, 200, "error", '', "Missing Required!");
             }
             let checkIfExist = false;
-            checkIfExist = await mentorService.checkExistMentor(request.body.name, request.body.title, request.body.mentorId);
+            checkIfExist = await learningpageService.checkExist(type, request.body.title, request.body.mentorId);
             if (checkIfExist == true) {
-                return responder.sendResponse(response, 200, "error", '', "Testimonial Already Exist");
+                return responder.sendResponse(response, 200, "error", '', `${formattedType(type)} Already Exist`);
             } else {
                 const mentorData = {
-                    name: request.body.name.trim(),
                     orderNumber: request.body.orderNumber,
                     title: request.body.title ? request.body.title.trim() : '',
                     fileUrl: request.body.fileUrl,
+                    attachFileUrl: request.body?.attachFileUrl ?? '',
                     remark1: request.body.remark1 ? request.body.remark1.trim() : '',
-                    remark2: request.body.remark2 ? request.body.remark2.trim() : '',
+                    // remark2: request.body.remark2 ? request.body.remark2.trim() : '',
                     updatedBy: request.user.userId,
                     updatedAt: new Date(),
                 };
-                let mentorUpdate = await mentorService.updateMentor(mentorData, request.body.mentorId);
-                return responder.sendResponse(response, 200, "success", mentorUpdate, "Testimonial updated successfully.");
+                let mentorUpdate = await learningpageService.update(mentorData, request.body.mentorId);
+                return responder.sendResponse(response, 200, "success", mentorUpdate, `${formattedType(type)} updated successfully.`);
                 
             }
         } catch (error) {
             return next(error);
         }
     },
-    changeMentorStatus: async (request, response, next) => {
+    changeStatus: async (request, response, next) => {
         try {
-            // console.log('changeFaqStatus reached', request.body, request.user);        
+            // console.log('changeFaqStatus reached', request.body, request.user);  
+            let type = request.body.pageType;      
             const mentorData = {
                 status: request.body.status,
                 mentorId: request.body.mentorId,
             };
-            let mentorUpdate = await mentorService.changeMentorStatus(mentorData);
-            return responder.sendResponse(response, 200, "success", mentorUpdate, "Testimonial updated successfully.");            
+            let mentorUpdate = await learningpageService.changeStatus(mentorData);
+            return responder.sendResponse(response, 200, "success", mentorUpdate, `${formattedType(type)} updated successfully.`);            
         } catch (error) {
             return next(error);
         }
@@ -187,4 +199,4 @@ let MentorController = {
 
 };
 
-module.exports = MentorController;
+module.exports = LearningpageController;

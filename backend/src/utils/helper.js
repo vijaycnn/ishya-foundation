@@ -7,10 +7,13 @@ const readFile = promisify(fs.readFile);
 var request = require("request");
 const fetch = require("node-fetch"); 
 
-
-// const opt = { credentials: require('amqplib').credentials.plain('neuro', 'Neuro@1009') };
-
 var https = require('follow-redirects').https;
+
+module.exports.formattedType = (type)=> {
+    return formattedType = type.replace(/([A-Z])/g, " $1")
+            .replace(/^./, (str) => str.toUpperCase());
+} 
+
 
 module.exports.getEmailSettings = async function () {
     let smsSettings = await conn.Settings.findAll({where: {settingsName: 'EMAIL'}, raw:true});

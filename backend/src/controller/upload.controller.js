@@ -35,9 +35,11 @@ export const generateUploadUrl = async (req, res) => {
 };
 export const generateUrl = async (req, res) => {
   try {
-    const { fileName, fileType } = req.body;
+    const { fileName, fileType, folderPath } = req.body;
 
-    const key = `uploads/gallery/${Date.now()}_${fileName}`;
+    let tmpPath = folderPath ?? 'gallery';
+
+    const key = `uploads/${tmpPath}/${Date.now()}_${fileName}`;    
     // const key = `uploads/${Date.now()}_${fileName}`;        //for testing
 
 

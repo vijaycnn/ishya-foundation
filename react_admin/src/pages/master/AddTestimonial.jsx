@@ -15,7 +15,7 @@ import axiosInstance from "../../helper/constants/axiosInstance";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 
-function Mentor() {
+function AddTestimonial() {
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -165,7 +165,6 @@ function Mentor() {
         title: formData.title,
         orderNumber: formData.orderNumber,
         remark1: formData.remark1,
-        remark2: formData.remark2,
         fileUrl: fileUrl,
       };
       // console.log("data >>", data);
@@ -179,13 +178,12 @@ function Mentor() {
               orderNumber: 1,
               title: "",
               remark1: "",
-              remark2: "",
               fileUrl: "",
             });
             setSuccessMsg(response?.data?.message);
             setLoading(false);
             setTimeout(() => {
-              navigate(`${adminAlias}/mentors`);
+              navigate(`${adminAlias}/testimonials`);
             }, 2000);
           } else if (response.data.status === "error") {
             setError(response.data.message);
@@ -231,9 +229,9 @@ function Mentor() {
       )}
 
       <div className="mb-3 d-flex justify-content-between align-items-center">
-        <h1 className="h4 mb-0 font-secondary fw-medium">Add Mentor</h1>
+        <h1 className="h4 mb-0 font-secondary fw-medium">Add Testimonial</h1>
         <div>
-          <Link to={`${adminAlias}/mentors`} className="btn btn-primary btn-sm">
+          <Link to={`${adminAlias}/testimonials`} className="btn btn-primary btn-sm">
             <span className="nav-link-text">Back</span>
           </Link>
         </div>
@@ -276,14 +274,14 @@ function Mentor() {
             <Col md={6}>
               <Form.Group className="mb-4">
                 <Form.Label className="fw-medium">
-                  Expertise<span className="text-danger">*</span>
+                  Designation<span className="text-danger">*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
                   name="title"
                   value={formData.title}
-                  placeholder="Enter Expertise"
-                  onChange={handleChange}
+                  placeholder="Enter Designation"
+                  onChange={handleChange} maxLength={55}
                 />
               </Form.Group>
             </Col>
@@ -319,21 +317,6 @@ function Mentor() {
               </Form.Group>
             </Col>
             <Col md={12}>
-              <Form.Group className="mb-4">
-                <Form.Label className="fw-medium">Overview</Form.Label>
-                {/* <Form.Control as="textarea" name="remark2" value={formData.remark2} 
-                        onChange={handleChange} />  */}
-                <ReactQuill
-                  theme="snow"
-                  name="remark2"
-                  value={formData.remark2}
-                  onChange={(content) =>
-                    setFormData((prev) => ({ ...prev, remark2: content }))
-                  }
-                />
-              </Form.Group>
-            </Col>
-            <Col md={12}>
               <Form.Group className="text-end">
                 <Button
                   type="submit"
@@ -353,4 +336,4 @@ function Mentor() {
   );
 }
 
-export default Mentor;
+export default AddTestimonial;

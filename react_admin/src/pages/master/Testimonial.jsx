@@ -9,7 +9,7 @@ import axiosInstance from "../../helper/constants/axiosInstance";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 
-function Mentor() {
+function Testimonial() {
   const [offset, setOffset] = useState(0);
   const [perPage, setPerPage] = useState(20);
   const [pageCount, setPageCount] = useState(0);
@@ -140,9 +140,9 @@ function Mentor() {
           <thead>
             <tr>
               <th style={{ width: "80px" }}>Order. No.</th>
-              <th>Mentor Image</th>
+              <th>Image</th>
               <th>Name</th>
-              <th>Expertise</th>
+              <th>Designaiton</th>
               {/* <th>Description</th> */}
               <th>Status</th>
               <th width="120" className="col-fixed">
@@ -178,7 +178,7 @@ function Mentor() {
                     <td className="col-fixed">
                       <Link
                         title="Edit"
-                        to={`${adminAlias}/editMentor/${base64_encode(
+                        to={`${adminAlias}/editTestimonial/${base64_encode(
                           `Hvg_myg8Bbg5vvdgvpp+` + item.id
                         )}`}
                         className="btn btn-icon"
@@ -209,7 +209,7 @@ function Mentor() {
   };
   return (
     <>
-      <h1 className="h4 mb-4 font-secondary fw-medium">Mentors</h1>
+      <h1 className="h4 mb-4 font-secondary fw-medium">Testimonials</h1>
 
       <div className="table-view bg-white rounded-4 p-4">
         <div className="mb-3 d-flex justify-content-between align-items-center">
@@ -221,10 +221,10 @@ function Mentor() {
           </div>
           <div>
             <Link
-              to={`${adminAlias}/addMentor`}
+              to={`${adminAlias}/addTestimonial`}
               className="btn btn-primary btn-sm"
             >
-              <span className="nav-link-text">Add Mentor</span>
+              <span className="nav-link-text">Add Testimonial</span>
             </Link>
           </div>
         </div>
@@ -268,4 +268,4 @@ function Mentor() {
   );
 }
 
-export default Mentor;
+export default Testimonial;

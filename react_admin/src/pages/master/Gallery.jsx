@@ -9,6 +9,8 @@ const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 import { FaVideo } from "react-icons/fa";
 import { getDownloadUrl } from "../../api";
+import { GALLERY_TYPE, GALLERY_TYPE_OPTIONS, getGalleryTypeLabel } from "../../constants/galleryType";
+
 
 function Gallery() {
   const [offset, setOffset] = useState(0);
@@ -103,14 +105,14 @@ function Gallery() {
   }, [offset, perPage, filteredData]);
 
   const [formData, setFormData] = useState({
-    type: "image",
-    title: "",
+    type: "",
+    // title: "",
     fileUrl: "",
     filePath: "",
   });
   const openAdd = () => {
     setMode("add"); setError(""); setSuccessMsg("");  setPreviewUrl("");
-    setFormData({ type: "image", title: "", fileUrl: "", filePath : "" });
+    setFormData({ type: "", fileUrl: "", filePath : "" });
     setUploadMediaFile(null);
     setShow(true);
   };
@@ -119,8 +121,8 @@ function Gallery() {
     setMode("edit"); setError(""); setSuccessMsg("");
     setEditId(item.id);
     setFormData({
-      type: item.type,
-      title: item.title,
+      type: item.type?.trim() || "",
+      // title: item.title,
       fileUrl: item.fileUrl,
       filePath : item.filePath,
     });
@@ -307,20 +309,20 @@ function Gallery() {
       setFileError(""); // reset
       if (!selected) return;
       console.log("fileType", selected.type, formData);
-      if(formData.type.trim() == 'video'){
-        if (!allowedVideoTypes.includes(selected.type)) {
-            setFileError(
-            "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
-            );
-            setUploadMediaFile(null);
-            return;
-        }
-        if (selected.size > MAX_VIDEO_SIZE) {
-          setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
-          setUploadMediaFile(null);
-          return;
-        }
-      }else{
+      // if(formData.type.trim() == 'video'){
+      //   if (!allowedVideoTypes.includes(selected.type)) {
+      //       setFileError(
+      //       "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
+      //       );
+      //       setUploadMediaFile(null);
+      //       return;
+      //   }
+      //   if (selected.size > MAX_VIDEO_SIZE) {
+      //     setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
+      //     setUploadMediaFile(null);
+      //     return;
+      //   }
+      // }else{
         if (!allowedImgTypes.includes(selected.type)) {
             setFileError(
             "Only JPEG, PNG, JPG, TIFF, GIF, WEBP, SVG, BMP files are allowed."
@@ -333,7 +335,7 @@ function Gallery() {
           setUploadMediaFile(null);
           return;
         }      
-      }
+      // }
       setUploadMediaFile(selected);
     };
     const handleFileChange = (e) => {
@@ -364,18 +366,18 @@ function Gallery() {
           hasError = true;
         }
         if(uploadMediaFile){
-          if(formData.type.trim() == 'video'){
-            if (!allowedVideoTypes.includes(uploadMediaFile.type)) {
-                setFileError(
-                "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
-                );
-                hasError = true;
-            }
-            if (uploadMediaFile.size > MAX_VIDEO_SIZE) {
-              setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
-              hasError = true;
-            }
-          }else{
+          // if(formData.type.trim() == 'video'){
+          //   if (!allowedVideoTypes.includes(uploadMediaFile.type)) {
+          //       setFileError(
+          //       "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
+          //       );
+          //       hasError = true;
+          //   }
+          //   if (uploadMediaFile.size > MAX_VIDEO_SIZE) {
+          //     setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
+          //     hasError = true;
+          //   }
+          // }else{
             if (!allowedImgTypes.includes(uploadMediaFile.type)) {
                 setFileError(
                 "Only JPEG, PNG, JPG, TIFF, GIF, WEBP, SVG, BMP files are allowed."
@@ -386,7 +388,7 @@ function Gallery() {
               setFileError(`File size must be less than ${MAX_IMAGE_SIZE_LBL}.`);
               hasError = true;
             }      
-          }
+          // }
         }
         return hasError;
     };
@@ -436,7 +438,7 @@ function Gallery() {
               <th>Sr. No.</th>
               <th>Type</th>
               <th>File</th>
-              <th>Title</th>
+              {/* <th>Title</th> */}
               <th>Status</th>
               <th width="120" className="col-fixed">
                 Action
@@ -449,42 +451,44 @@ function Gallery() {
                 <>
                   <tr key={item.id}>
                     <td>{$index +offset +1}</td>
-                    <td>{item.type.trim() == 'image' ? "IMAGE" : 'VIDEO'}</td>
+                    <td>
+                        {getGalleryTypeLabel(item.type.trim())}
+                    </td>
                     <td>      
-                      {
-                        (item.type.trim() == 'image')?
-                        <><img src={item.filePath} height={100} width={100} alt="img" /></>
-                        :
-                        <>
-                        {
-                          (item.fileUrl) ?
-                          <>
-                              <div
-                                style={{ width: 100, height: 100, background: "#000", borderRadius: "6px", position: "relative", cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                  setPreviewMedia(item);
-                                  setShowPreview(true);
-                                }}
-                              >
-                                <video
-                                  src={item.filePath} muted preload="metadata" onMouseEnter={(e) => e.target.play()}
-  onMouseLeave={(e) => e.target.pause()} width={100} height={100} style={{ objectFit: "cover", borderRadius: "6px" }}
-                                />
-                                <span
-                                  style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-                                    background: "rgba(0,0,0,0.6)", color: "#fff", borderRadius: "50%", padding: "6px 10px", fontSize: "14px",
-                                  }}
-                                >
-                                  ▶
-                                </span>
-                              </div>
-                          </> : "NA"
-                        }
-                        </>
+                      { <img src={item?.filePath} height={100} width={100} alt="img" />
+  //                       (item.type.trim() == 'image')?
+  //                       <><img src={item.filePath} height={100} width={100} alt="img" /></>
+  //                       :
+  //                       <>
+  //                       {
+  //                         (item.fileUrl) ?
+  //                         <>
+  //                             <div
+  //                               style={{ width: 100, height: 100, background: "#000", borderRadius: "6px", position: "relative", cursor: "pointer",
+  //                               }}
+  //                               onClick={() => {
+  //                                 setPreviewMedia(item);
+  //                                 setShowPreview(true);
+  //                               }}
+  //                             >
+  //                               <video
+  //                                 src={item.filePath} muted preload="metadata" onMouseEnter={(e) => e.target.play()}
+  // onMouseLeave={(e) => e.target.pause()} width={100} height={100} style={{ objectFit: "cover", borderRadius: "6px" }}
+  //                               />
+  //                               <span
+  //                                 style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+  //                                   background: "rgba(0,0,0,0.6)", color: "#fff", borderRadius: "50%", padding: "6px 10px", fontSize: "14px",
+  //                                 }}
+  //                               >
+  //                                 ▶
+  //                               </span>
+  //                             </div>
+  //                         </> : "NA"
+  //                       }
+  //                       </>
                       }
                     </td>
-                    <td>{item.title}</td>
+                    {/* <td>{item.title}</td> */}
                     {/* <td>{moment(item.createdAt).format('DD-MM-YYYY')}</td> */}
                     <td>
                       {item.status == 1 ? <Badge bg="success" >Active</Badge> : <Badge bg="secondary" >In-active</Badge> } 
@@ -517,15 +521,18 @@ function Gallery() {
         <Row>
           <Col md={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Select Gallery Type</Form.Label>
+              <Form.Label>Select Type</Form.Label>
               <Form.Select
                 name="galleryType"
                 value={search.galleryType}
                 onChange={handleFilterChange}
               >
-                <option key="" value="">Select All</option>
-                <option key="image" value="image">Image</option>
-                <option key="video" value="video">Video</option>                
+                <option key="" value="">Select</option>
+                {GALLERY_TYPE_OPTIONS.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}               
               </Form.Select>
             </Form.Group>
           </Col>
@@ -589,7 +596,7 @@ function Gallery() {
                 <Form>
                 {error && <Alert variant="danger">⚠️{error}</Alert>}
                 {successMsg && <Alert variant="success">{successMsg}</Alert>}
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                         <Form.Check
                             inline id="media-image"
                             label="Image"
@@ -606,8 +613,26 @@ function Gallery() {
                             checked={formData.type.trim() === "video"}
                             onChange={(e) => handleTypeChange(e.target.value)}
                         />
-                    </div>
-                    <FloatingLabel controlId="galleryTitle" label="Enter Title" className="mb-3" >
+                    </div> */}
+                    <FloatingLabel controlId="galleryType" label="Select Type" className="mb-3" >
+                      <Form.Select
+                        name="type"
+                        value={formData.type}
+                        onChange={(e) => {
+                          console.log("typing:", e.target.value);
+                          setFormData((prev) => ({...prev, type: e.target.value, })) 
+                        }
+                        }
+                      >
+                        <option key="" value="">Select</option>
+                        {GALLERY_TYPE_OPTIONS.map((item) => (
+                          <option key={item.value} value={item.value} >
+                            {item.label}
+                          </option>
+                        ))}               
+                      </Form.Select>
+                    </FloatingLabel>
+                    {/* <FloatingLabel controlId="galleryTitle" label="Enter Title" className="mb-3" >
                     <Form.Control
                         type="text"
                         placeholder="Enter Title"
@@ -619,22 +644,14 @@ function Gallery() {
                         }
                         }
                     />
-                    </FloatingLabel>
+                    </FloatingLabel> */}
                     {mode === "edit" && previewUrl && (
                       <div className="mb-3 text-center">
-                        {formData.type.trim() === "image" ? (
                           <img
                             src={previewUrl}
                             alt="preview"
                             style={{ maxHeight: "150px", borderRadius: "8px" }}
                           />
-                        ) : (
-                          <video
-                            src={previewUrl}
-                            controls
-                            style={{ maxHeight: "150px", borderRadius: "8px" }}
-                          />
-                        )}
                         <div className="text-muted mt-1">
                           <small>Current media</small>
                         </div>
@@ -642,7 +659,7 @@ function Gallery() {
                     )}
                     <Form.Group className="mb-12">
                       <Form.Label className="fw-medium">
-                        <small>(Max. FileSize {formData.type.trim() == 'image' ? MAX_IMAGE_SIZE_LBL : MAX_VIDEO_SIZE_LBL})</small>
+                        <small>(Max. FileSize {MAX_IMAGE_SIZE_LBL})</small>
                         <span className="text-danger">*</span>
                       </Form.Label>
                       {fileError && (
@@ -669,11 +686,7 @@ function Gallery() {
           </Modal.Header>
 
           <Modal.Body className="text-center">
-            {previewMedia?.type.trim() === "image" ? (
-              <img src={previewMedia.filePath} style={{ maxWidth: "100%", borderRadius: "8px" }} />
-            ) : (
-              <video src={previewMedia?.filePath} controls autoPlay style={{ width: "100%", borderRadius: "8px" }} />
-            )}
+            <img src={previewMedia?.filePath} style={{ maxWidth: "100%", borderRadius: "8px" }} />
           </Modal.Body>
         </Modal>
 

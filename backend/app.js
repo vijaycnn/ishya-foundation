@@ -12,12 +12,14 @@ const dotenv = require('dotenv');
 dotenv.config();
 const userRouter = require('./routes/users.route');
 const enquiryRouter = require('./routes/enquiry.route');
+const mentorRouter = require('./routes/mentor.route');
+const learningpageRouter = require('./routes/learningpage.route');
+
+const galleryRouter = require('./routes/gallery.route');
 const locationRouter = require('./routes/location.route');
 const faqRouter = require('./routes/faq.route');
-const mentorRouter = require('./routes/mentor.route');
 const bannerRouter = require('./routes/banner.route');
 const slideRouter = require('./routes/slidecontext.route');
-const galleryRouter = require('./routes/gallery.route');
 const slideFileRouter = require('./routes/slidefile.route');
 
 conn = require("./models");  
@@ -87,11 +89,15 @@ app.use(async function (req, res, next) {
 
 
 // let routePrefix = process.env.ROUTE_PREFIX.trim();
+
+app.use('/api/mentor',  mentorRouter);
+app.use('/api/learningpage',  learningpageRouter);
+
+//////
 app.use('/api/user',  userRouter);
 app.use('/api/enquiry',  enquiryRouter);
 app.use('/api/location',  locationRouter);
 app.use('/api/faq',  faqRouter);
-app.use('/api/mentor',  mentorRouter);
 app.use('/api/banner',  bannerRouter);
 app.use('/api/slide',  slideRouter);
 app.use('/api/gallery',  galleryRouter);

@@ -87,13 +87,14 @@ let GalleryDataProvider = {
     return new Promise(async function (resolve, reject) {
       // console.log('search', search);
       let filter = { isdeleted: 0 };
-      if(type == 'image' || type == 'video'){
+      if(type !== '' && type !== 'all'){
         filter = {...filter, type };
       }
+      
       let columns = ["id", "type", "title", "fileUrl", "remarks", "status", "createdAt"];
       let orderBy = [['id', 'DESC']];
       if(!all){
-        columns = ["id", "type", "title", "fileUrl", "remarks",];
+        columns = ["id", "type", "fileUrl",];
         filter = {...filter, status:1}
       }else if(galleryStatus > 0){
         if(galleryStatus == 1){

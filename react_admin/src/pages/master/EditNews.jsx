@@ -16,12 +16,13 @@ import { decode as base64_decode, encode as base64_encode } from "base-64";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 
-function EditMentor() {
+function EditNews() {
   const params = useParams();
   const decode = base64_decode(params.id);
   let id = decode.split("+")[1];
   id = parseInt(id);
 
+  const pageType = `news`;
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,7 +34,7 @@ function EditMentor() {
     setLoading(true);
     setPreviousData(null);
     await axiosInstance
-      .get(`/mentor/getById/${id}`)
+      .get(`/learningpage/getById/${pageType}/${id}`)
       .then((response) => {
         // console.log(">>> ", response.data);
         setLoading(false);
@@ -54,7 +55,7 @@ function EditMentor() {
   }, []);
 
   const [data, setData] = useState({
-    name: "",
+    type: pageType,
     orderNumber: "",
     title: "",
     remark1: "",
@@ -64,7 +65,7 @@ function EditMentor() {
   useEffect(() => {
     if (previousData) {
       setData({
-        name: previousData.name,
+        type: previousData.type,
         orderNumber : previousData.orderNumber,
         title: previousData.title,
         remark1: previousData.remark1,
@@ -126,7 +127,7 @@ function EditMentor() {
     setError("");
     let hasError = false;
     if (
-      !values.name || values.name == "" || !values.title || values.title == "" || values.orderNumber == "" || !values.orderNumber || (uploadMediaFile == null && previousData.fileUrl == "")
+      !values.type || values.type == "" || !values.title || values.title == "" || !values.remark1 || values?.remark1.trim() == "" || values.orderNumber == "" || !values.orderNumber || (uploadMediaFile == null && previousData.fileUrl == "")
     ) {
       setError("Mandatory fields are missing");
       hasError = true;
@@ -145,11 +146,11 @@ function EditMentor() {
         setLoading(true);
         let validateBody = {
           mentorId: previousData.id,
-          name: data.name,
+          type: previousData.type,
           title: data.title ? data.title : "",
         };
         await axiosInstance
-          .post(`/mentor/valid`, validateBody)
+          .post(`/learningpage/valid`, validateBody)
           .then(async (response) => {
             console.log("validate response >>> ", response.data);
             if (response.data.status === "success") {
@@ -196,6 +197,7 @@ function EditMentor() {
       body: JSON.stringify({
         fileName: file.name,
         fileType: file.type,
+        folderPath: 'News',
       }),
     });
     return response.json();
@@ -226,7 +228,7 @@ function EditMentor() {
   const formProcess = async (fileUrl) => {
     let body = {
       mentorId: previousData.id,
-      name: data.name,
+      type: previousData.type,
       orderNumber: data.orderNumber,
       title: data.title,
       remark1: data.remark1,
@@ -235,12 +237,12 @@ function EditMentor() {
     };
     // console.log("data >>", data);
     await axiosInstance
-      .post(`/mentor/update`, body)
+      .post(`/learningpage/update`, body)
       .then((response) => {
         // console.log('response >>> ', response.data);
         if (response.data.status === "success") {
           setData({
-            name: "",
+            type: pageType,
             orderNumber: "",
             title: "",
             remark1: "",
@@ -250,7 +252,7 @@ function EditMentor() {
           setSuccessMsg(response?.data?.message);
           setLoading(false);
           setTimeout(() => {
-            navigate(`${adminAlias}/mentors`);
+            navigate(`${adminAlias}/news`);
           }, 2000);
         } else if (response.data.status === "error") {
           setError(response.data.message);
@@ -294,9 +296,9 @@ function EditMentor() {
         ""
       )}
       <div className="mb-3 d-flex justify-content-between align-items-center">
-        <h1 className="h4 mb-0 font-secondary fw-medium">Edit Mentor</h1>
+        <h1 className="h4 mb-0 font-secondary fw-medium">Edit News</h1>
         <div>
-          <Link to={`${adminAlias}/mentors`} className="btn btn-primary btn-sm">
+          <Link to={`${adminAlias}/news`} className="btn btn-primary btn-sm">
             <span className="nav-link-text">Back</span>
           </Link>
         </div>
@@ -327,13 +329,13 @@ function EditMentor() {
                 <Col md={6}>
                   <Form.Group className="mb-4">
                     <Form.Label className="fw-medium">
-                      Name<span className="text-danger">*</span>
+                      Title<span className="text-danger">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      name="name"
-                      value={data.name}
-                      placeholder="Enter Name"
+                      name="title"
+                      value={data.title}
+                      placeholder="Enter Title"
                       onChange={handleChange}
                     />
                   </Form.Group>
@@ -355,20 +357,6 @@ function EditMentor() {
                 <Col md={6}>
                   <Form.Group className="mb-4">
                     <Form.Label className="fw-medium">
-                      Expertise<span className="text-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      value={data.title}
-                      placeholder="Enter Expertise"
-                      onChange={handleChange}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-4">
-                    <Form.Label className="fw-medium">
                       Order Number<span className="text-danger">*</span>
                     </Form.Label>
                     <Form.Control
@@ -384,26 +372,13 @@ function EditMentor() {
                 </Col>
                 <Col md={12}>
                   <Form.Group className="mb-4">
-                    <Form.Label className="fw-medium">Description</Form.Label>
+                    <Form.Label className="fw-medium">Description<span className="text-danger">*</span></Form.Label>
                     <ReactQuill
                       theme="snow"
                       name="remark1"
                       value={data.remark1}
                       onChange={(content) =>
                         setData((prev) => ({ ...prev, remark1: content }))
-                      }
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={12}>
-                  <Form.Group className="mb-4">
-                    <Form.Label className="fw-medium">Overview</Form.Label>
-                    <ReactQuill
-                      theme="snow"
-                      name="remark2"
-                      value={data.remark2}
-                      onChange={(content) =>
-                        setData((prev) => ({ ...prev, remark2: content }))
                       }
                     />
                   </Form.Group>
@@ -430,4 +405,4 @@ function EditMentor() {
   );
 }
 
-export default EditMentor;
+export default EditNews;
