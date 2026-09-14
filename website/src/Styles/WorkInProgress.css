@@ -1,0 +1,147 @@
+/* WorkInProgress.css */
+.container-work {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #A6C769, #6D3780);
+    flex-direction: column;
+  }
+  
+  .construction {
+    position: absolute;
+    top: 100px;
+    left: -100px;
+    width: 500px;
+  }
+  .dialog-box-work {
+    display: flex;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    animation: pop 0.5s ease-in-out;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .dialog-title-work {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #6D3780;
+  }
+  
+  .dialog-message {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #333;
+  }
+  
+  .loader-icon {
+    margin-top: 15px;
+    color: #A6C769;
+    animation: spin 1.5s linear infinite;
+  }
+  
+  @keyframes pop {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .construction-img {
+    margin-top: 10px;
+    width: 150px;
+    max-width: 250px;
+    position: relative;
+  }
+
+  @media (max-width: 1024px) {
+    .container-work {
+        margin-top: 100px;
+        padding: 10px;
+        height: auto;
+    }
+
+    .construction {
+        top: 30px;
+        left: 10px;
+        width: 150px;
+    }
+
+    .dialog-box-work {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    .dialog-title-work {
+        font-size: 1.3rem;
+    }
+
+    .dialog-message {
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+    .container-work {
+        margin-top: 100px;
+        padding: 10px;
+        flex-direction: column;
+    }
+
+    .construction {
+        top: 20px;
+        left: 0;
+        width: 120px;
+    }
+
+    .dialog-box-work {
+        max-width: 90%;
+        padding: 10px;
+    }
+
+    .dialog-title-work {
+        font-size: 1.2rem;
+    }
+
+    .dialog-message {
+        font-size: 0.8rem;
+    }
+
+    .construction-img {
+        width: 100px;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .construction {
+        margin-top: 75px;
+        width: 100px;
+        left:-22px;
+    }
+
+    .dialog-box-work {
+        padding: 8px;
+    }
+
+    .dialog-title-work {
+        font-size: 1.1rem;
+    }
+
+    .dialog-message {
+        font-size: 0.75rem;
+    }
+
+    .construction-img {
+        width: 80px;
+    }
+}

@@ -1,0 +1,101 @@
+/* Full-width video container */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Video fills container */
+.intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the video covers the entire container */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Button overlay */
+.video-button-container {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 12px 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Button Styling */
+.watch-full-video-btn {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 10px 15px;
+  display: block;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Button hover effect */
+.watch-full-video-btn:hover {
+  background-color: #ff4500;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .video-button-container {
+      bottom: 8%;
+      right: 8%;
+      padding: 10px 20px;
+  }
+
+  .watch-full-video-btn {
+      font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .video-container {
+      height: 80vh; /* Reduce height on smaller screens */
+  }
+
+  .video-button-container {
+      bottom: 10%;
+      right: 5%;
+      padding: 8px 16px;
+  }
+
+  .watch-full-video-btn {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-container {
+      height: 60vh; /* Further reduce height on very small screens */
+  }
+
+  .video-button-container {
+      bottom: 12%;
+      right: 3%;
+      padding: 6px 12px;
+      border-radius: 6px;
+  }
+
+  .watch-full-video-btn {
+      font-size: 0.8rem;
+      padding: 6px 10px;
+  }
+}

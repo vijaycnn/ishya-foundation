@@ -1,0 +1,105 @@
+/* Newsletter Page Container */
+.newsletter-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+
+  
+  /* Subtitle */
+  .newsletter-subtitle {
+    color: #666;
+    margin-bottom: 30px;    
+    margin-top: 30px;
+
+  }
+  
+  /* Newsletter List - Grid Layout */
+  .newsletter-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  /* Newsletter Card */
+  .newsletter-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    text-align: left;
+  }
+  
+  .newsletter-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Newsletter Image */
+  .newsletter-image {
+    width: 300px;
+    height: 420px;
+    object-fit: cover;
+  }
+  
+  /* Newsletter Content */
+  .newsletter-content {
+    padding: 15px;
+  }
+  
+  .newsletter-heading {
+    font-size: 20px;
+    color: #6D3780;
+    margin-bottom: 5px;
+  }
+  
+  .newsletter-description {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  
+  /* Footer Section */
+  .newsletter-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #777;
+    margin-top: 10px;
+  }
+  
+  /* Read More Button */
+  .newsletter-button {
+    background-color: #6D3780;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+  
+  .newsletter-button:hover {
+    background-color: #5a2d68;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .newsletter-container {
+      padding: 20px;
+    }
+  
+    .newsletter-title {
+      font-size: 28px;
+    }
+  
+    .newsletter-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  

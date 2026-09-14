@@ -1,0 +1,100 @@
+.projects-page-container {
+    
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure the container takes up full viewport height */
+}
+
+
+.projects-page {
+    background-color: #f5f5f5;
+  }
+
+.content-wrapper { /* Style for padding on left and right */
+    padding: 0 100px; /* 100px padding on left and right */
+    flex-grow: 1; /* Allow content to take available space */
+    align-items: center;
+}
+
+  .projects-heading {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .projects-grid {
+    padding: 100px 100PX;
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Responsive grid */
+    gap: 10px;
+    padding: 10px;
+    flex-grow: 1; /* Allow the grid to take up available space */
+}
+
+  .category-bar {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    background-color: #f0f0f0; /* Example lighter shade of purple (adjust as needed) */
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .category-button {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+  }
+  
+  .category-button.active {
+    background-color: #a0a0ff; /* Example active color (adjust as needed) */
+    color: white;
+    border-color: #a0a0ff;
+  }
+  
+  .tick-mark {
+      margin-left: 5px;
+  }
+  
+  
+  
+  @media (max-width: 1024px) { /* Tablet */
+    .content-wrapper {
+        padding: 0 50px;
+    }
+}
+
+@media (max-width: 768px) { /* Tablet and Mobile */
+    .content-wrapper {
+        padding: 0 20px;
+    }
+
+    .category-bar {
+        overflow-x: auto; /* Allows scrolling if too many categories */
+        justify-content: flex-start;
+        padding: 10px;
+        white-space: nowrap;
+        scrollbar-width: none; /* Hides scrollbar */
+        -ms-overflow-style: none;
+    }
+
+    .category-bar::-webkit-scrollbar {
+        display: none; /* Hides scrollbar */
+    }
+
+    .category-button {
+        flex-shrink: 0; /* Prevents buttons from shrinking */
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    .projects-grid {
+        padding: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusts grid for smaller screens */
+    }
+}

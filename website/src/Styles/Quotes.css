@@ -1,0 +1,82 @@
+/* Container for the quote */
+.quotes-container {
+  font-family: 'Playfair Display', serif;
+  position: relative; /* Needed for absolute image positioning */
+  background-color: #6d3780; /* Purple background */
+  color: #A6C769;
+  padding: 40px;
+  text-align: center;
+  width: 100%; /* Full screen width */
+  height: 40vh; /* Increased height */
+  margin: 0; /* No margin to keep it full-width */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; /* Includes padding in width/height calculations */
+}
+
+/* Quote text */
+.quote-text {
+  font-size: 40px; /* Larger font size for the quote */
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 80%; /* Restricts the text width for readability */
+}
+
+/* Images for decoration */
+.quote-image {
+  position: absolute;
+  width: 200px; /* Increased image size */
+  height: auto;
+  object-fit: contain;
+}
+
+/* Top-left image positioning */
+.quote-image.top-left {
+  top: 0px;
+  left: 0px;
+}
+
+/* Bottom-right image positioning */
+.quote-image.bottom-right {
+  bottom: 0px;
+  right: 0px;
+}
+
+/* Media Queries for responsiveness */
+
+/* Tablet and below */
+@media (max-width: 768px) {
+  .quotes-container {
+      padding: 20px; /* Reduce padding on smaller screens */
+      height: 30vh; /* Reduce height on tablets */
+  }
+
+  .quote-text {
+      font-size: 28px; /* Reduce font size for smaller screens */
+      max-width: 90%; /* Allow more space for text */
+  }
+
+  .quote-image {
+      width: 150px; /* Reduce image size for smaller screens */
+  }
+}
+
+/* Mobile and below */
+@media (max-width: 480px) {
+  .quotes-container {
+      padding: 15px; /* Reduce padding on mobile screens */
+      height: 25vh; /* Further reduce height for mobile screens */
+  }
+
+  .quote-text {
+      font-size: 20px; /* Further reduce font size for mobile screens */
+      max-width: 95%; /* Allow more space for text */
+  }
+
+  .quote-image {
+      width: 55px; /* Further reduce image size for mobile */
+  }
+}
