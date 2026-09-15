@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Image, Form, Button, Alert } from "react-bootstrap";
-import logo from "../assets/logo.svg";
+// import logo from "../assets/logo.svg";
+import logo from "../assets/IshyaLogo.png";
 import wallpaper from "../assets/wallpaper.jpg";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 import { forgotPasswordLinkVerify, updateForgotPassword } from "../api";
@@ -123,7 +124,7 @@ const UpdatePassword = () => {
   return (
     <section className="h-100 app-login d-flex">
       <div className="app-login-left flex-grow-1">
-        <Image src={wallpaper} alt="Login Wallpaper" />
+        {/* <Image src={wallpaper} alt="Login Wallpaper" /> */}
       </div>
 
       <div className="app-login-right bg-white d-flex flex-column align-items-center justify-content-center p-5">

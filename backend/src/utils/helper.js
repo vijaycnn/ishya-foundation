@@ -51,7 +51,7 @@ module.exports.send_mail_byEmailer = async function (to, subject, emailer, ccto 
         let ceroInfoMailPass = null;
         let mailerIconsUrl= null;
         let  whereconsearch = { settingsKey: {
-         [Op.or]: ['myousic-info-email', 'email-sender-id','email-sender-password','mailer-icons-url']
+         [Op.or]: ['info-email', 'email-sender-id','email-sender-password','mailer-icons-url']
         }};
          let ceroInfoMaildata = await conn.Settings.findAll({where: whereconsearch, raw:true});
      
@@ -59,7 +59,7 @@ module.exports.send_mail_byEmailer = async function (to, subject, emailer, ccto 
          {     
             for(let i=0;i<ceroInfoMaildata.length;i++)
             {
-                if(ceroInfoMaildata[i] && ceroInfoMaildata[i].settingsKey && ceroInfoMaildata[i].settingsKey=='cero-info-email')
+                if(ceroInfoMaildata[i] && ceroInfoMaildata[i].settingsKey && ceroInfoMaildata[i].settingsKey=='info-email')
                 {
                     ceroInfoMail =  ceroInfoMaildata[i].settingsValue?ceroInfoMaildata[i].settingsValue:"";
                 }
