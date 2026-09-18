@@ -10,53 +10,51 @@ import { generateForgotPasswordLink } from "../api";
 
 const Forgot = () => {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState('')
-  const [validateEmail, setValidateEmail] = useState(null)
-  const [submitForm, setSubmitForm] = useState(false)
+  const [userEmail, setUserEmail] = useState("");
+  const [validateEmail, setValidateEmail] = useState(null);
+  const [submitForm, setSubmitForm] = useState(false);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
-  const [alert, setAlert] = useState(null)
+  const [alert, setAlert] = useState(null);
 
-  const updatePassword = async(e) => {
-      e.preventDefault();
-      setSubmitForm(true)
-      setValidateEmail(validateEmailform(userEmail));
+  const updatePassword = async (e) => {
+    e.preventDefault();
+    setSubmitForm(true);
+    setValidateEmail(validateEmailform(userEmail));
 
-      // console.log("updatePassword called",validateEmail)
-      if(submitForm && validateEmail==''){
-        console.log(userEmail);
+    // console.log("updatePassword called",validateEmail)
+    if (submitForm && validateEmail == "") {
+      console.log(userEmail);
 
-        const body = { "emailId": userEmail }
-        try{
-          let result = await generateForgotPasswordLink(body);
-          // console.log('res >>', result);
-          if(result?.status == "success" ){
-            showSuccessAlert(result?.message)
-              setTimeout(() => {
-                navigate(adminAlias);
-              }, 2000); 
-            
-          }else{
-            showAlert(result?.message)
-          }
-        }catch(err){
-          showAlert(err)
+      const body = { emailId: userEmail };
+      try {
+        let result = await generateForgotPasswordLink(body);
+        // console.log('res >>', result);
+        if (result?.status == "success") {
+          showSuccessAlert(result?.message);
+          setTimeout(() => {
+            navigate(adminAlias);
+          }, 2000);
+        } else {
+          showAlert(result?.message);
         }
+      } catch (err) {
+        showAlert(err);
       }
-  }
+    }
+  };
   const validateEmailform = (values) => {
-      let formErr = ""
-      const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-      if (!values) {
-          formErr = "Please Enter a email"
-      }
-      else if (!regex.test(values)) {
-          formErr = "Please enter a valid email";
-      }
-      setError(formErr);
+    let formErr = "";
+    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    if (!values) {
+      formErr = "Please Enter a email";
+    } else if (!regex.test(values)) {
+      formErr = "Please enter a valid email";
+    }
+    setError(formErr);
 
-      return formErr
-  }
+    return formErr;
+  };
   // const showAlert = (message, type) => {
   //     setAlert({
   //         message: message,
@@ -82,7 +80,7 @@ const Forgot = () => {
   return (
     <section className="h-100 app-login d-flex">
       <div className="app-login-left flex-grow-1">
-        {/* <Image src={wallpaper} alt="Login Wallpaper" /> */}
+        <Image src={wallpaper} alt="Login Wallpaper" />
       </div>
 
       <div className="app-login-right bg-white d-flex flex-column align-items-center justify-content-center p-5">

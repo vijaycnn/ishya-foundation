@@ -11,7 +11,7 @@ body {
   color: variables.$default;
   margin: 0;
   padding: 0;
-  background-color: #ede9de;
+  background-color: #f5e8ff;
   min-height: 100vh;
 }
 #root {
@@ -126,7 +126,7 @@ h6 {
     }
     &:before {
       content: "";
-      background: variables.$black;
+      background: variables.$primary;
       width: 120%;
       height: 0;
       padding-bottom: 120%;
@@ -137,13 +137,14 @@ h6 {
     }
     &:after {
       content: "";
-      background: variables.$black;
+      background: variables.$primary;
       transform: translate3d(0, -100%, 0);
       transition: transform 0.4s cubic-bezier(0.1, 0, 0.3, 1);
     }
     &:hover {
       & span {
-        animation: MoveScaleUpInitial 0.3s forwards,
+        animation:
+          MoveScaleUpInitial 0.3s forwards,
           MoveScaleUpEnd 0.3s forwards 0.3s;
       }
       &:before {
@@ -307,17 +308,7 @@ textarea {
     font-weight: 900;
     display: inline-block;
     font-family: variables.$font-secondary;
-    background: linear-gradient(
-      90deg,
-      rgba(93, 21, 24, 1) 0%,
-      rgba(85, 15, 18, 1) 20%,
-      rgba(134, 12, 22, 1) 40%,
-      rgba(45, 25, 25, 1) 60%,
-      rgba(21, 18, 33, 1) 80%,
-      rgba(18, 16, 29, 1) 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: variables.$primary;
   }
   &-sub-title {
     margin: 0;
@@ -426,18 +417,66 @@ textarea {
   }
   &-login {
     min-height: 100vh;
+    padding: 1rem;
+
     &-left {
+      & .wallpaper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        border-radius: 1.5rem;
+        & img {
+          @include mixins.cover;
+        }
+        &-caption {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          padding: 10rem 2rem 2rem;
+          text-align: center;
+          z-index: 2;
+          background: #6d3780;
+          background: linear-gradient(
+            180deg,
+            rgba(109, 55, 128, 0) 0%,
+            rgba(109, 55, 128, 1) 100%
+          );
+          & h1 {
+            color: variables.$white;
+            text-transform: uppercase;
+            font-weight: 300;
+            margin: 0;
+            font-size: 2rem;
+          }
+        }
+      }
+    }
+    &-right {
+      width: 60%;
+      position: relative;
+    }
+    &-form {
+      width: 450px;
+      margin: 0 auto;
+    }
+    &-logo {
+      position: absolute;
+      top: 2rem;
+      left: -70px;
+      width: 140px;
+      height: 140px;
+      background: variables.$white;
+      z-index: 3;
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
-      overflow: hidden;
-      & img {
-        @include mixins.cover;
-      }
-    }
-    &-form {
-      width: 500px;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.1);
     }
   }
 }
