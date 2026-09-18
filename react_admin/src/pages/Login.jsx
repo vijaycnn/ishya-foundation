@@ -20,18 +20,18 @@ const Login = ({ setIsAuthenticated, onAuthStateChange }) => {
       setError(null);
     }, 2000);
   };
-  const handleEmailLogin = async(e) => {
+  const handleEmailLogin = async (e) => {
     e.preventDefault();
 
-    if (email != '' && password != '') {
+    if (email != "" && password != "") {
       const body = {
-        email: email, password: base64_encode(password)
-        };        
+        email: email,
+        password: base64_encode(password),
+      };
       let result = await login(body);
       // console.log('>>> ', result);
-      if(result?.status == "success" ){
-        if(result?.data){
-
+      if (result?.status == "success") {
+        if (result?.data) {
           const authToken = result.data.token;
           const userName = result.data.userName;
           const userEmail = result.data.userEmail;
@@ -50,13 +50,13 @@ const Login = ({ setIsAuthenticated, onAuthStateChange }) => {
           }
           navigate(`${adminAlias}/dashboard`);
         }
-      }else if(result?.status == "error"){
+      } else if (result?.status == "error") {
         showAlert(result?.message);
       }
-    }else{
+    } else {
       showAlert("Invalid email or password");
     }
-    
+
     // // ✅ Dummy credentials
     // const dummyEmail = "admin@gmail.com";
     // const dummyPassword = "admin123";
@@ -83,22 +83,30 @@ const Login = ({ setIsAuthenticated, onAuthStateChange }) => {
   return (
     <section className="h-100 app-login d-flex">
       <div className="app-login-left flex-grow-1">
-        {/* <Image src={logo} alt="Login Wallpaper" height={400} width={250} /> */}
+        <div className="wallpaper">
+          <Image src={wallpaper} alt="" height={400} width={250} />
+
+          <div className="wallpaper-caption">
+            <h1>
+              Let Us Come Together
+              <br />
+              To Make a Difference
+            </h1>
+          </div>
+        </div>
       </div>
 
-      <div className="app-login-right bg-white d-flex flex-column align-items-center justify-content-center p-5">
+      <div className="app-login-right d-flex flex-column align-items-center justify-content-center p-5">
+        <div className="app-login-logo">
+          <Image src={logo} alt="Logo" />
+        </div>
         <Form
           onSubmit={handleEmailLogin}
           className="app-login-form d-grid gap-4"
         >
-          <div className="sec-head mb-4">
-             <Image
-              className="app-login-logo mb-5 d-block"
-              src={logo}
-              alt="Logo"
-            /> 
+          <div className="sec-head">
             <h2 className="sec-title fs-2">Welcome Back, Admin!</h2>
-            <p className="sec-sub-title fw-medium">
+            <p className="fw-medium opacity-50">
               Sign in to continue managing your platform and keeping everything
               running smoothly.
             </p>
@@ -110,7 +118,8 @@ const Login = ({ setIsAuthenticated, onAuthStateChange }) => {
           {/* Email Field */}
           <Form.Group>
             <Form.Control
-              type="email" name="email"
+              type="email"
+              name="email"
               placeholder="Enter your Email ID"
               value={email}
               size="lg"
@@ -121,7 +130,8 @@ const Login = ({ setIsAuthenticated, onAuthStateChange }) => {
           {/* Password Field */}
           <Form.Group>
             <Form.Control
-              type="password" name="password"
+              type="password"
+              name="password"
               placeholder="Enter your Password"
               value={password}
               size="lg"
@@ -134,12 +144,7 @@ const Login = ({ setIsAuthenticated, onAuthStateChange }) => {
             <p className="text-end mb-3">
               <Link to="/forgot-password">Forgot Password?</Link>
             </p>
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-100 pill"
-              size="lg"
-            >
+            <Button type="submit" variant="primary" className="w-100" size="lg">
               <span>Continue</span>
             </Button>
           </Form.Group>
