@@ -14,6 +14,7 @@ const userRouter = require('./routes/users.route');
 const enquiryRouter = require('./routes/enquiry.route');
 const mentorRouter = require('./routes/mentor.route');
 const learningpageRouter = require('./routes/learningpage.route');
+const pageRouter = require('./routes/page.route');
 
 const galleryRouter = require('./routes/gallery.route');
 const locationRouter = require('./routes/location.route');
@@ -92,6 +93,7 @@ app.use(async function (req, res, next) {
 
 app.use('/api/mentor',  mentorRouter);
 app.use('/api/learningpage',  learningpageRouter);
+app.use('/api/page',  pageRouter);
 
 //////
 app.use('/api/user',  userRouter);

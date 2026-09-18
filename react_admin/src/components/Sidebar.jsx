@@ -60,11 +60,17 @@ const Sidebar = () => {
             {
               (hasAccess) ?
               <>
-              <Link to={`${adminAlias}/banner`} className={`nav-link ${ (isActive([`${adminAlias}/banner`, `${adminAlias}/addBanner`, `${adminAlias}/editBanner`]) ) ? "active" : "" }`} >
+              {/* <Link to={`${adminAlias}/banner`} className={`nav-link ${ (isActive([`${adminAlias}/banner`, `${adminAlias}/addBanner`, `${adminAlias}/editBanner`]) ) ? "active" : "" }`} >
                 <span className="nav-link-icon">
                   <BiImages />
                 </span>
                 <span className="nav-link-text">Banner</span>
+              </Link> */}
+              <Link to={`${adminAlias}/homepage`} className={`nav-link ${ isActive([`${adminAlias}/homepage`]) ? "active" : "" }`} >
+                <span className="nav-link-icon">
+                  <BiImages />
+                </span>
+                <span className="nav-link-text">Home Page</span>
               </Link>
 
 

@@ -25,6 +25,7 @@ import AddNews from "./pages/master/AddNews";
 import EditNews from "./pages/master/EditNews";
 
 import Gallery from "./pages/master/Gallery";
+import Homepage from "./pages/Homepage";
 
 ////////////////
 import Participate from "./pages/Participate";
@@ -98,6 +99,16 @@ function App() {
             }
           />
 
+          <Route
+            path={`${adminAlias}/homepage`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Homepage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
           <Route
             path={`${adminAlias}/testimonials`}
             element={
