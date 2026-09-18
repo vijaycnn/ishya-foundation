@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Nav, Image, Button } from "react-bootstrap";
-import logo from "../assets/logo.svg";
+import logo from "../assets/IshyaLogo.png";
 import {
   BiGridAlt,
-  BiGroup,
   BiLogOut,
-  BiInfoSquare,
-  BiListUl,
-  BiUser, BiImages, BiUpload, BiSliderAlt
+  BiImages,
+  BiCommentDetail,
+  BiFile,
+  BiCarousel,
+  BiNews,
+  BiWindowAlt,
 } from "react-icons/bi";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 
@@ -23,16 +25,16 @@ const Sidebar = () => {
   };
   const isActive = (paths) => {
     const currentPath = location.pathname;
-    
+
     const pathList = Array.isArray(paths) ? paths : [paths];
-    return pathList.some(path =>
-      currentPath === path || currentPath.startsWith(path + "/")
+    return pathList.some(
+      (path) => currentPath === path || currentPath.startsWith(path + "/"),
     );
   };
   //to manage menu access //it's static part. update part uploaded soon...
   const userEmail = localStorage.getItem("userEmail");
   let hasAccess = true;
-  if(userEmail == 'info@havellsmyousic.com'){
+  if (userEmail == "info@havellsmyousic.com") {
     hasAccess = false;
   }
 
@@ -40,8 +42,7 @@ const Sidebar = () => {
     <>
       <aside className="app-sidebar">
         <Link className="app-sidebar-logo" to={`${adminAlias}/dashboard`}>
-          {/* <Image src={logo} alt="" /> */}
-          Ishya-Foundation
+          <Image src={logo} alt="" />
         </Link>
         <div className="app-sidebar-nav">
           <Nav className="flex-column">
@@ -57,51 +58,67 @@ const Sidebar = () => {
               <span className="nav-link-text">Dashboard</span>
             </Link>
 
-            {
-              (hasAccess) ?
+            {hasAccess ? (
               <>
-              <Link to={`${adminAlias}/banner`} className={`nav-link ${ (isActive([`${adminAlias}/banner`, `${adminAlias}/addBanner`, `${adminAlias}/editBanner`]) ) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiImages />
-                </span>
-                <span className="nav-link-text">Banner</span>
-              </Link>
+                <Link
+                  to={`${adminAlias}/banner`}
+                  className={`nav-link ${isActive([`${adminAlias}/banner`, `${adminAlias}/addBanner`, `${adminAlias}/editBanner`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiCarousel />
+                  </span>
+                  <span className="nav-link-text">Banner</span>
+                </Link>
 
+                <Link
+                  to={`${adminAlias}/testimonials`}
+                  className={`nav-link ${isActive([`${adminAlias}/testimonials`, `${adminAlias}/addTestimonial`, `${adminAlias}/editTestimonial`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiCommentDetail />
+                  </span>
+                  <span className="nav-link-text">Testimonials</span>
+                </Link>
 
-              <Link to={`${adminAlias}/testimonials`} className={`nav-link ${ isActive([`${adminAlias}/testimonials`, `${adminAlias}/addTestimonial`, `${adminAlias}/editTestimonial`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiGroup />
-                </span>
-                <span className="nav-link-text">Testimonials</span>
-              </Link>
+                <Link
+                  to={`${adminAlias}/learningpages`}
+                  className={`nav-link ${isActive([`${adminAlias}/learningpages`, `${adminAlias}/addLearningPage`, `${adminAlias}/editLearningPage`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiFile />
+                  </span>
+                  <span className="nav-link-text">Learning Pages</span>
+                </Link>
+                <Link
+                  to={`${adminAlias}/galleries`}
+                  className={`nav-link ${isActive([`${adminAlias}/galleries`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiImages />
+                  </span>
+                  <span className="nav-link-text">Galleries</span>
+                </Link>
+                <Link
+                  to={`${adminAlias}/news`}
+                  className={`nav-link ${isActive([`${adminAlias}/news`, `${adminAlias}/addNews`, `${adminAlias}/editNews`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiNews />
+                  </span>
+                  <span className="nav-link-text">News</span>
+                </Link>
 
-              <Link to={`${adminAlias}/learningpages`} className={`nav-link ${ isActive([`${adminAlias}/learningpages`, `${adminAlias}/addLearningPage`, `${adminAlias}/editLearningPage`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiGroup />
-                </span>
-                <span className="nav-link-text">Learning Pages</span>
-              </Link>
-              <Link to={`${adminAlias}/galleries`} className={`nav-link ${ isActive([`${adminAlias}/galleries`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiSliderAlt />
-                </span>
-                <span className="nav-link-text">Galleries</span>
-              </Link>
-              <Link to={`${adminAlias}/news`} className={`nav-link ${ isActive([`${adminAlias}/news`, `${adminAlias}/addNews`, `${adminAlias}/editNews`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiGroup />
-                </span>
-                <span className="nav-link-text">News</span>
-              </Link>
+                <Link
+                  to={`${adminAlias}/slides`}
+                  className={`nav-link ${isActive([`${adminAlias}/slides`, `${adminAlias}/addSlide`, `${adminAlias}/editSlide`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiWindowAlt />
+                  </span>
+                  <span className="nav-link-text">CMS Context</span>
+                </Link>
 
-              <Link to={`${adminAlias}/slides`} className={`nav-link ${ isActive([`${adminAlias}/slides`, `${adminAlias}/addSlide`, `${adminAlias}/editSlide`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiGroup />
-                </span>
-                <span className="nav-link-text">CMS Context</span>
-              </Link>
-
-              {/* <Link to={`${adminAlias}/artistusp`} className={`nav-link ${ isActive([`${adminAlias}/artistusp`]) ? "active" : "" }`} >
+                {/* <Link to={`${adminAlias}/artistusp`} className={`nav-link ${ isActive([`${adminAlias}/artistusp`]) ? "active" : "" }`} >
                 <span className="nav-link-icon">
                   <BiSliderAlt />
                 </span>
@@ -132,8 +149,10 @@ const Sidebar = () => {
                 </span>
                 <span className="nav-link-text">Faq Category</span>
               </Link> */}
-              </>: ''
-            }            
+              </>
+            ) : (
+              ""
+            )}
           </Nav>
         </div>
         <div className="w-100 p-3">
