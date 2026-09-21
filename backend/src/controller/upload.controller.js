@@ -38,8 +38,9 @@ export const generateUrl = async (req, res) => {
     const { fileName, fileType, folderPath } = req.body;
 
     let tmpPath = folderPath ?? 'gallery';
+    const extension = path.extname(fileName).slice(1).toLowerCase();
 
-    const key = `uploads/${tmpPath}/${Date.now()}_${fileName}`;    
+    const key = `uploads/${tmpPath}/file_${Date.now()}.${extension}`;    
     // const key = `uploads/${Date.now()}_${fileName}`;        //for testing
 
 

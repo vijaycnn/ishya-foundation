@@ -6,7 +6,7 @@ import axiosInstance from "../helper/constants/axiosInstance";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 
-const BannerSection = ({ data = [], pageId, onChange }) => {
+const VideoSection = ({ data = [], pageId, onChange }) => {
 
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -27,7 +27,7 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
     const [uploadMediaFile, setUploadMediaFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState( '');
 
-    const [bannerFormData, setBannerFormData] = useState({
+    const [videoFormData, setVideoFormData] = useState({
         id: currentBanner?.id || 0,
         pageId: currentBanner?.pageId || pageId,
         type: currentBanner?.type || "",
@@ -37,26 +37,24 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
     
     useEffect(() => {
         const banner = data?.[0];
-        console.log('banner data', banner)
+        console.log('video data', banner)
         if (banner) {
-            setBannerFormData({
+            setVideoFormData({
                 id: banner.id || 0,
                 pageId: banner.pageId || pageId,
-                type: banner.type || "",
+                type: banner?.type || "",
                 fileUrl: banner.fileUrl || "",
                 fileViewUrl : banner.fileViewUrl,
             });
 
-            // setPreviewUrl(banner.fileUrl || "");
         } else {
-            setBannerFormData({
+            setVideoFormData({
                 id: 0,
                 pageId,
                 type: "",
                 fileUrl: "", fileViewUrl: "",
             });
 
-            // setPreviewUrl("");
         }
         setUploadMediaFile(null);
     }, [data, pageId]);
@@ -74,54 +72,42 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
     ];
     const allowedVideoTypes = [
         "video/mp4",
-        "audio/mpeg",
-        "video/x-ms-wmv",
-        "webm",
-        "mkv",
-        "flv",
-        "vob",
-        "mov",
-        "avi",
-        "wmv",
-        "yuv",
-        "amv",
-        "mp4",
-        "mpg",
-        "svi",
-        "3gp",
-        "3g2",
+        "video/webm",
+        "video/quicktime",     // MOV
+        "video/x-msvideo",     // AVI
+        "video/x-ms-wmv",      // WMV
+        "video/mpeg",          // MPG/MPEG
+        "video/3gpp",          // 3GP
+        "video/3gpp2",         // 3G2
     ];
     const MAX_IMAGE_SIZE = 200 * 1024 * 1024; // 200 MB
-    const MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500 MB
+    const MAX_VIDEO_SIZE = 200 * 1024 * 1024; // 200 MB
     const MAX_IMAGE_SIZE_LBL = "200 MB";
-    const MAX_VIDEO_SIZE_LBL = "500 MB";
+    const MAX_VIDEO_SIZE_LBL = "200 MB";
 
     const fileUploadEvent = (file) => {
       const selected = file; //e.target.files[0];
       setFileError(""); // reset
       if (!selected) return;
       console.log("fileType", selected.type );
-      if(selected.type.includes('video')){
-        setBannerFormData((prev)=> ({
-            ...prev, type: selected.type
-        }));
-      //   if (!allowedVideoTypes.includes(selected.type)) {
-      //       setFileError(
-      //       "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
-      //       );
-      //       setUploadMediaFile(null);
-      //       return;
-      //   }
-      //   if (selected.size > MAX_VIDEO_SIZE) {
-      //     setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
-      //     setUploadMediaFile(null);
-      //     return;
-      //   }
-      }else if(selected.type.includes('image')){
-        setBannerFormData((prev)=> ({
+        setVideoFormData((prev)=> ({
             ...prev, type: selected.type
         }));
 
+      if(selected.type.includes('video')){
+        
+        if (!allowedVideoTypes.includes(selected.type)) {
+            setFileError("Only WEBM, MP4, AVI, MOV, MPG, WMV, 3GP, 3G2 files are allowed.");
+            setUploadMediaFile(null);
+            return;
+        }
+        if (selected.size > MAX_VIDEO_SIZE) {
+          setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
+          setUploadMediaFile(null);
+          return;
+        }
+      }else if(selected.type.includes('image')){
+        
         if (!allowedImgTypes.includes(selected.type)) {
             setFileError(
             "Only JPEG, PNG, JPG, TIFF, GIF, WEBP, SVG, BMP files are allowed."
@@ -134,10 +120,6 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
           setUploadMediaFile(null);
           return;
         }      
-      }else{
-        setBannerFormData((prev)=> ({
-            ...prev, type: ""
-        }));
       }
       setUploadMediaFile(selected);
     };
@@ -169,12 +151,14 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
           setError("Media file is required");
           hasError = true;
         }
+        if(!values.type || values.type.trim() == ''){
+          setError("Media information is missing");
+          hasError = true;
+        }
         if(uploadMediaFile){
           if(values.type.includes('video')){
             if (!allowedVideoTypes.includes(uploadMediaFile.type)) {
-                setFileError(
-                "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
-                );
+                setFileError("Only WEBM, MP4, AVI, MOV, MPG, WMV, 3GP, 3G2 files are allowed.");
                 hasError = true;
             }
             if (uploadMediaFile.size > MAX_VIDEO_SIZE) {
@@ -183,18 +167,13 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
             }
           }else if(values.type.includes('image') ){
             if (!allowedImgTypes.includes(uploadMediaFile.type)) {
-                setFileError(
-                "Only JPEG, PNG, JPG, TIFF, GIF, WEBP, SVG, BMP files are allowed."
-                );
+                setFileError("Only JPEG, PNG, JPG, TIFF, GIF, WEBP, SVG, BMP files are allowed.");
                 hasError = true;
             }  
             if (uploadMediaFile.size > MAX_IMAGE_SIZE) {
               setFileError(`File size must be less than ${MAX_IMAGE_SIZE_LBL}.`);
               hasError = true;
             }      
-          }else{
-            setFileError("Invalid File");
-            hasError = true;
           }
         }
         return hasError;
@@ -205,9 +184,9 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
         setError("");
         setSuccessMsg("");
         setIsSubmit(true);
-        console.log("formData >>", bannerFormData);
+        console.log("formData >>", videoFormData);
         try {
-        let hasError = validation(bannerFormData);
+        let hasError = validation(videoFormData);
         if (!hasError) {
             //Now, process with data
             setIsLoading(true);
@@ -224,8 +203,7 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
         setIsLoading(false);
         setIsSubmit(false);
         return;
-        }    
-        // getGalleries();
+        } 
     };
 
     const formProcess = async () => {
@@ -243,10 +221,10 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
         if (uploadRes.status !== 200) {
             throw new Error("Media upload failed");
         }            
-        if(!bannerFormData.id){
+        if(!videoFormData.id){
             await addMedia(fileUrl.trim());
         }else{
-            await updateMedia(bannerFormData.id, fileUrl.trim());
+            await updateMedia(videoFormData.id, fileUrl.trim());
         }
     };
 
@@ -254,18 +232,18 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
 
         const body = {
             pageId,
-            type: bannerFormData.type,
+            type: videoFormData.type,
             fileUrl,
         };
-        console.log("add banner >>", body);
+        console.log("add video >>", body);
         try {
-            const response = await axiosInstance.post(`/page/addBanner`,body);
+            const response = await axiosInstance.post(`/page/addPagevideo`,body);
 
             if (response.data.status === "success") {
                 const savedBanner = response.data.data;
 
-                setBannerFormData(savedBanner);
-                setPreviewUrl(savedBanner.fileUrl);
+                setVideoFormData(savedBanner);
+                // setPreviewUrl(savedBanner.fileUrl);
                 setUploadMediaFile(null);
 
                 setSuccessMsg(response.data.message);
@@ -277,12 +255,12 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
             }
 
         } catch (error) {
-            console.log("Add banner error:", error);
+            console.log("Add video error:", error);
             if (error.status === 403) {
                 handleLogout();
             }
 
-            setError(error.response?.data?.message || error.message || "Unable to save banner" );
+            setError(error.response?.data?.message || error.message || "Unable to save video" );
 
         } finally {
             setIsLoading(false);
@@ -290,24 +268,24 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
         }
     };
 
-    const updateMedia = async (bannerId, fileUrl) => {
+    const updateMedia = async (videoId, fileUrl) => {
 
         const body = {
-            bannerId,
-            type: bannerFormData.type,
+            videoId,
+            type: videoFormData.type,
             fileUrl,
         };
 
         try {
 
-            const response = await axiosInstance.post(`/page/updateBanner`, body);
+            const response = await axiosInstance.post(`/page/updatePagevideo`, body);
 
             if (response.data.status === "success") {
 
                 const updatedBanner = response.data.data;
-                console.log('update banner', updateBanner, response.data);
+                console.log('update video', updateBanner, response.data);
 
-                setBannerFormData(updatedBanner);
+                setVideoFormData(updatedBanner);
                 setUploadMediaFile(null);
 
                 setSuccessMsg(response.data.message);
@@ -320,11 +298,11 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
 
         } catch (error) {
 
-            console.log("Update banner error:", error);
+            console.log("Update video error:", error);
             if (error.status === 403) {
                 handleLogout();
             }
-            setError( error.response?.data?.message || error.message || "Unable to update banner");
+            setError( error.response?.data?.message || error.message || "Unable to update video");
 
         } finally {
 
@@ -332,61 +310,16 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
             setIsSubmit(false);
         }
     };
-    const updateMediaOld = async (mediaId, fileUrl)=>{
-        let body = {
-        galleryId: mediaId,
-        type: formData.type,
-        title: formData.title,
-        fileUrl: fileUrl,
-        };
-        // console.log("data >>", data);
-        await axiosInstance
-        .post(`/gallery/update`, body)
-        .then((response) => {
-            // console.log('response >>> ', response.data);
-            if (response.data.status === "success") {
-            setFormData({
-                type: "",
-                title: "",
-                fileUrl: "",  filePath:""
-            });
-            setSuccessMsg(response?.data?.message);
-            setIsLoading(false);
-            } else if (response.data.status === "error") {
-            setError(response.data.message);
-            }
-        })
-        .catch((error) => {
-            console.log(">>> ", error.status, error);
-            if (error.status === 403) {
-            handleLogout();
-            }
-            setIsLoading(false);
-            setIsSubmit(false);
-        });
-        setIsLoading(false);
-    }
 
-  const addBanner = () => {
-    onChange([
-      ...data,
-      {
-        title: "",
-        subtitle: "",
-        description: "",
-        image: "",
-        buttonText: "",
-        buttonUrl: "",
-        sortOrder: data.length + 1,
-        status: true,
-      },
-    ]);
-  };
+    const isImage = (fileType) => {
+        console.log('isImage aya ', fileType)
+        return fileType?.includes("image");
+    };
 
-  const removeBanner = (index) => {
-    // const updated = data.filter((_, i) => i !== index);
-    onChange([]);
-  };
+    const isVideo = (fileType) => {
+        console.log('isVideo aya ', fileType)
+        return fileType?.includes("video");
+    };
 
   const updateBanner = (index, field, value) => {
     const updated = [...data];
@@ -401,14 +334,13 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
 
   return (
     <>
-      {/* {data?.map((item, index) => ( */}
         <Card className="mb-3" key="banner">
           <Card.Body>
 
             <div className="d-flex justify-content-between mb-3">
-              <h6>Banner </h6>
+              <h6>Image / Video </h6>
 
-              {/* {bannerFormData?.id > 0 && (
+              {/* {videoFormData?.id > 0 && (
                     <Button
                     variant="outline-danger"
                     size="sm"
@@ -428,7 +360,7 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
                 <div className="col-md-6">
                     <Form.Group className="mb-12">
                         <Form.Label className="fw-medium">
-                        <small>(Max. FileSize {MAX_IMAGE_SIZE_LBL})</small>
+                        <small>(Max. FileSize {MAX_VIDEO_SIZE_LBL})</small>
                         <span className="text-danger">*</span>
                         </Form.Label>
                         {fileError && (
@@ -440,28 +372,90 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
                 </div>
                 <div className="col-md-6">
                     <div className="mb-3 text-center">
-                    {
+                        {isImage(videoFormData.type)}
+                        {uploadMediaFile &&
+                            previewUrl &&
+                            isImage(videoFormData.type) && (
+                                <img
+                                    src={previewUrl}
+                                    alt="Preview"
+                                    style={{
+                                        maxHeight: "200px",
+                                        maxWidth: "100%",
+                                        borderRadius: "8px"
+                                    }}
+                                />
+                            )
+                        }
+
+                        {/* New selected VIDEO */}
+                        {uploadMediaFile &&
+                            previewUrl &&
+                            isVideo(videoFormData.type) && (
+                                <video
+                                    src={previewUrl}
+                                    controls
+                                    style={{
+                                        maxHeight: "200px",
+                                        maxWidth: "100%",
+                                        borderRadius: "8px"
+                                    }}
+                                />
+                            )
+                        }
+
+                        {/* Existing IMAGE */}
+                        {!uploadMediaFile &&
+                            videoFormData.fileViewUrl &&
+                            isImage(videoFormData.type) && (
+                                <img
+                                    src={videoFormData.fileViewUrl}
+                                    alt="Current media"
+                                    style={{
+                                        maxHeight: "200px",
+                                        maxWidth: "100%",
+                                        borderRadius: "8px"
+                                    }}
+                                />
+                            )
+                        }
+
+
+                        {/* Existing VIDEO */}
+                        {!uploadMediaFile &&
+                            videoFormData.fileViewUrl &&
+                            isVideo(videoFormData.type) && (
+                                <video
+                                    src={videoFormData.fileViewUrl}
+                                    controls
+                                    style={{
+                                        maxHeight: "200px",
+                                        maxWidth: "100%",
+                                        borderRadius: "8px"
+                                    }}
+                                />
+                            )
+                        }
+                        
+                    {/* {
                         (uploadMediaFile && previewUrl) && 
                         <>
                         <img src={previewUrl} alt="preview" style={{ maxHeight: "150px", borderRadius: "8px" }} />
                         </>
                     }
                     {
-                        (!uploadMediaFile && bannerFormData.fileViewUrl) &&
+                        (!uploadMediaFile && videoFormData.fileViewUrl) &&
                         <>
-                            <img src={bannerFormData.fileViewUrl} height={100} width={100} alt="img" />
+                            <img src={videoFormData.fileViewUrl} height={100} width={100} alt="img" />
                         </>
 
-                    }
-                    <div className="text-muted mt-1">
-                        <small>{bannerFormData?.id ? "Current banner" :  (uploadMediaFile ? "New banner preview" : "")}</small>
-                    </div>
+                    } */}
                     </div>
                 </div> 
 
                 <div className="text-end mt-3">
                     <Button variant="outline-primary" onClick={handleSubmit} disabled={isLoading || !uploadMediaFile} >
-                        {isLoading ? "Saving..." : bannerFormData?.id ? "Replace Banner" : "Save Banner"}
+                        {isLoading ? "Saving..." : videoFormData?.id ? "Update" : "Save"}
                     </Button>
                 </div>
                           
@@ -471,13 +465,7 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
 
           </Card.Body>
         </Card>
-      {/* ))} */}
-      {/* { 
-        (data[0]?.id == 0 || !data) &&
-        <Button variant="outline-primary" onClick={addBanner}>+ Add Banner</Button>
-      } */}
-
     </>
   );
 };
-export default BannerSection;
+export default VideoSection;

@@ -296,7 +296,7 @@ function EditTestimonial() {
       <div className="mb-3 d-flex justify-content-between align-items-center">
         <h1 className="h4 mb-0 font-secondary fw-medium">Edit Testimonial</h1>
         <div>
-          <Link to={`${adminAlias}/mentors`} className="btn btn-primary btn-sm">
+          <Link to={`${adminAlias}/testimonials`} className="btn btn-primary btn-sm">
             <span className="nav-link-text">Back</span>
           </Link>
         </div>
