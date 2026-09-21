@@ -3,6 +3,12 @@ const router = express.Router();
 const pageController = require('../src/controller/page.controller');
 const auth = require('../middleware/auth');  
 
+//////////////////Frontend /////////////////////
+router.get('/detail/:type',  function (request, response, next) {
+    console.log('pageData route reached', request.body);
+    pageController.getHomePage(request, response, next);
+});
+
 ///////////////////////////// pageData /////////////////////
 router.get('/:type',  [auth.login], function (request, response, next) {
     console.log('pageData route reached', request.body);

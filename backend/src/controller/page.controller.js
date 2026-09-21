@@ -12,6 +12,102 @@ const { formattedType } = require("../utils/helper");
 let PageController = {
     
     //use this for frontend list
+    
+    getHomePage: async (request, response, next) => {
+        try {
+            const type = request.params.type;
+
+            console.log("Page type >>>", type);
+
+            const data = await pageService.getPageData(type, true);
+
+            const rows = data.rows?.map((row) => row.get({ plain: true }) ) || [];
+
+            const filterRow = await Promise.all(
+                rows.map(async (row) => {
+
+                    const banner = row.PageBanners?.[0];
+                    const video = row.PageVideos?.[0];
+                    const map = row.PageMaps?.[0];
+                    const about = row.PageAbouts?.[0];
+
+                    const [
+                        bannerUrl,
+                        videoUrl,
+                        mapUrl,
+                        aboutUrl1,
+                        aboutUrl2
+                    ] = await Promise.all([
+
+                        banner?.fileUrl
+                            ? PageController.generateSignedUrl(
+                                banner.fileUrl
+                            )
+                            : null,
+
+                        video?.fileUrl
+                            ? PageController.generateSignedUrl(
+                                video.fileUrl
+                            )
+                            : null,
+
+                        map?.fileUrl
+                            ? PageController.generateSignedUrl(
+                                map.fileUrl
+                            )
+                            : null,
+
+                        about?.fileUrl1
+                            ? PageController.generateSignedUrl(
+                                about.fileUrl1
+                            )
+                            : null,
+
+                        about?.fileUrl2
+                            ? PageController.generateSignedUrl(
+                                about.fileUrl2
+                            )
+                            : null
+                    ]);
+
+                    if (banner) {
+                        banner.fileViewUrl = bannerUrl;
+                    }
+
+                    if (video) {
+                        video.fileViewUrl = videoUrl;
+                    }
+
+                    if (map) {
+                        map.fileViewUrl = mapUrl;
+                    }
+
+                    if (about) {
+                        about.fileViewUrl1 = aboutUrl1;
+                        about.fileViewUrl2 = aboutUrl2;
+                    }
+
+                    return row;
+                })
+            );
+
+            const dataList = {
+                totalRecord: data.count,
+                list: filterRow
+            };
+
+            return responder.sendFilterResponse(
+                response,
+                200,
+                "success",
+                dataList,
+                "Page retrieved successfully."
+            );
+
+        } catch (error) {
+            return next(error);
+        }
+    },
     getFrontList: async (request, response, next) => {
         try {
             let type = request.params.type;
