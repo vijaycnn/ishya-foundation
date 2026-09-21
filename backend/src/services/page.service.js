@@ -3,11 +3,33 @@ let DataProvider = {
 
   getPageData: async (type, all = false) => {
     return new Promise(async function (resolve, reject) {
-      // console.log('search', search);
       let filter = { status: 1, name: type };
       
       await conn.PageMasters.findAndCountAll({
         where: filter,
+        include: [
+          {
+            model: conn.PageBanners,
+            attributes: ['id', 'pageId', 'type', 'fileUrl'],
+            where: { status: 1},
+            required: false
+          },
+          {
+            model: conn.PageAbouts,
+            where: { status: 1},
+            required: false
+          },
+          {
+            model: conn.PageMaps,
+            where: { status: 1},
+            required: false
+          },
+          {
+            model: conn.PageVideos,
+            where: { status: 1},
+            required: false
+          },
+        ],
         // raw: true,
         logging:console.log
       })
@@ -18,6 +40,108 @@ let DataProvider = {
         });
     });
   },
+
+  ///////Page Banner service //////////////
+  addBanner: async (body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageBanners.create(body)
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  editBanner: async (bannerId, body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageBanners.update(body, {
+        where: { id: bannerId },
+      })
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  ///////End Page Banner  ////////////////
+
+  ///////Page Map service //////////////
+  addPagemap: async (body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageMaps.create(body)
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  editPagemap: async (id, body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageMaps.update(body, {
+        where: { id: id },
+      })
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  ///////End Page Map  ////////////////
+
+  ///////Page About service //////////////
+  addPageabout: async (body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageAbouts.create(body)
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  editPageabout: async (id, body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageAbouts.update(body, {
+        where: { id: id },
+      })
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  ///////End Page About  ////////////////
+  
+  ///////Page Video service //////////////
+  addPagevideo: async (body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageVideos.create(body)
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  editPagevideo: async (videoId, body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageVideos.update(body, {
+        where: { id: videoId },
+      })
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  ///////End Page Video  ////////////////
+
+
   getList: async (type, all = false) => {
     return new Promise(async function (resolve, reject) {
       // console.log('search', search);

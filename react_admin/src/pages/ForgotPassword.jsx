@@ -80,17 +80,25 @@ const Forgot = () => {
   return (
     <section className="h-100 app-login d-flex">
       <div className="app-login-left flex-grow-1">
-        <Image src={wallpaper} alt="Login Wallpaper" />
+        <div className="wallpaper">
+          <Image src={wallpaper} alt="" height={400} width={250} />
+
+          <div className="wallpaper-caption">
+            <h1>
+              Let Us Come Together
+              <br />
+              To Make a Difference
+            </h1>
+          </div>
+        </div>
       </div>
 
-      <div className="app-login-right bg-white d-flex flex-column align-items-center justify-content-center p-5">
+      <div className="app-login-right d-flex flex-column align-items-center justify-content-center p-5">
+        <div className="app-login-logo">
+          <Image src={logo} alt="Logo" />
+        </div>
         <Form onSubmit={updatePassword} className="app-login-form d-grid gap-4">
           <div className="sec-head mb-4">
-            <Image
-              className="app-login-logo mb-5 d-block"
-              src={logo}
-              alt="Logo"
-            />
             <h2 className="sec-title fs-2">Forgot Password?</h2>
             {/* <p className="sec-sub-title fw-medium">
               Lorem ipsum dolor sit amet consectetur, adipisicing elit.
@@ -117,12 +125,7 @@ const Forgot = () => {
 
           {/* Submit Button */}
           <Form.Group>
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-100 pill"
-              size="lg"
-            >
+            <Button type="submit" variant="primary" className="w-100" size="lg">
               <span>Submit</span>
             </Button>
             <p className="text-center mt-3">

@@ -1,13 +1,13 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class PageBanner extends Model {
+  class PageBanners extends Model {
     static associate(models) {
       // define association here
-      PageBanner.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
+      PageBanners.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
     }
   }
-  PageBanner.init({
+  PageBanners.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'PageBanner',
+    modelName: 'PageBanners',
   });
-  return PageBanner;
+  return PageBanners;
 };
