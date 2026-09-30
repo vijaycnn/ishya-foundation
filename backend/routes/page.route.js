@@ -53,6 +53,14 @@ router.post("/addPagevideo", [auth.login], function (request, response, next) {
 router.post("/updatePagevideo", [auth.login], function (request, response, next) {
     pageController.updatePagevideo(request, response, next)
 });
+/////////////pageProject /////////////
+router.post("/updatePageproject", [auth.login], function (request, response, next) {
+    pageController.updatePageproject(request, response, next)
+});
+/////////////pageTestimonial /////////////
+router.post("/updatePagetestimonial", [auth.login], function (request, response, next) {
+    pageController.updatePagetestimonial(request, response, next)
+});
 
 router.get("/getById/:pageType/:mentorId", [auth.login], function (request, response, next) {
     pageController.getById(request, response, next)

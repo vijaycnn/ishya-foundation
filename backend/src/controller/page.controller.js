@@ -568,6 +568,70 @@ let PageController = {
         }
     },
 
+    ////////////////////PageProject////////////////    
+    updatePageproject: async (request, response, next) => {
+        try {
+            // console.log('create controller reached', request.body, request.user);
+            if(!request.body.pageId || request.body.pageId == null || request.body.partnerPageTitle.trim() == '' ){
+                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
+            }
+            
+            const pageId = request.body.pageId;
+            const data = {
+                partnerPageTitle: request.body.partnerPageTitle.trim(),
+                partnerPageHeading: request.body.partnerPageHeading.trim(),
+                partnerPageSubHeading: request.body.partnerPageSubHeading.trim(),
+                updatedBy: request.user.userId
+            };
+            let updated = await pageService.updatePageMaster(data, pageId);
+            if (updated){
+                updated = {
+                    pageId,
+                    partnerPageTitle: request.body.partnerPageTitle.trim(),
+                    partnerPageHeading: request.body.partnerPageHeading.trim(),
+                    partnerPageSubHeading: request.body.partnerPageSubHeading.trim(),
+                }
+                
+                // console.log('>>>>>', updated);
+                return responder.sendResponse(response, 200, "success", updated, "Details updated successfully.");
+            }
+            return responder.sendResponse(response, 200, "error", '', "Details updation failed!");            
+        } catch (error) {
+            return next(error);
+        }
+    }, 
+    ////////////////////PageTestimonial////////////////    
+    updatePagetestimonial: async (request, response, next) => {
+        try {
+            // console.log('create controller reached', request.body, request.user);
+            if(!request.body.pageId || request.body.pageId == null || request.body.testimonialTitle.trim() == '' ){
+                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
+            }
+            
+            const pageId = request.body.pageId;
+            const data = {
+                testimonialTitle: request.body.testimonialTitle.trim(),
+                testimonialHeading: request.body.testimonialHeading.trim(),
+                updatedBy: request.user.userId
+            };
+            let updated = await pageService.updatePageMaster(data, pageId);
+            if (updated){
+                updated = {
+                    pageId,
+                    testimonialTitle: request.body.testimonialTitle.trim(),
+                    testimonialHeading: request.body.testimonialHeading.trim(),
+                }
+                
+                // console.log('>>>>>', updated);
+                return responder.sendResponse(response, 200, "success", updated, "Details updated successfully.");
+            }
+            return responder.sendResponse(response, 200, "error", '', "Details updation failed!");            
+        } catch (error) {
+            return next(error);
+        }
+    }, 
+
+
     ///////////////PageVideo ////////////////////    
     addPagevideo: async (request, response, next) => {
         try {

@@ -9,10 +9,11 @@ const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 import BannerSection from "../components/BannerSection";
 import AboutSection from "../components/AboutSection";
 import FootprintSection from "../components/FootprintSection";
+import ProjectSection from "../components/ProjectSection";
+import TestimonialSection from "../components/TestimonialSection";
 import VideoSection from "../components/VideoSection";
-// import ProjectSection from "./components/ProjectSection";
-// import TestimonialSection from "./components/TestimonialSection";
-// import ZigZagSection from "./components/ZigZagSection";
+import ZigZagSection from "../components/VideoSection";
+
 // import PartnershipSection from "./components/PartnershipSection";
 // import OtherSection from "./components/OtherSection";
 
@@ -61,7 +62,7 @@ const HomePage = () => {
   );
 
   const initialFormData = {
-    
+    pageData: {},
     banner:pageBanner,
     about: pageAbout,
     footprints: pageMap,
@@ -72,8 +73,6 @@ const HomePage = () => {
     },
 
     testimonials: {
-        mode: "latest",
-        limit: 3,
         testimonialIds: []
     },
 
@@ -118,6 +117,7 @@ const HomePage = () => {
           setPageId(id);
 
           setFormData({
+            pageData: pageData,
             banner: pageData?.PageBanners || [],
             about: pageData?.PageAbouts || pageAbout,
             footprints: pageData?.PageMaps || pageMap,
@@ -243,9 +243,41 @@ const HomePage = () => {
           </Accordion.Body>
         </Accordion.Item>
 
+        <Accordion.Item eventKey="3">
+          <Accordion.Header>
+            Section 4 - Latest Projects
+          </Accordion.Header>
+
+          <Accordion.Body>
+            <ProjectSection
+              data={formData.pageData}
+              pageId={pageId}
+              onChange={(value) =>
+                handleSectionChange("projects", value)
+              }
+            />
+          </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="4">
+          <Accordion.Header>
+            Section 5 - Testimonial
+          </Accordion.Header>
+
+          <Accordion.Body>
+            <TestimonialSection
+              data={formData.pageData}
+              pageId={pageId}
+              onChange={(value) =>
+                handleSectionChange("testimonials", value)
+              }
+            />
+          </Accordion.Body>
+        </Accordion.Item>
+
         <Accordion.Item eventKey="5">
           <Accordion.Header>
-            Section 4 - Image / Video
+            Section 6 - Image / Video
           </Accordion.Header>
 
           <Accordion.Body>
@@ -258,21 +290,22 @@ const HomePage = () => {
             />
           </Accordion.Body>
         </Accordion.Item>
-
-        {/* <Accordion.Item eventKey="3">
+        <Accordion.Item eventKey="6">
           <Accordion.Header>
-            Section 4 - Latest Projects
+            Section 7 - Zig-Zag Sections
           </Accordion.Header>
 
           <Accordion.Body>
-            <ProjectSection
-              data={formData.projects}
+            <ZigZagSection
+              data={formData.zigZag}
               onChange={(value) =>
-                handleSectionChange("projects", value)
+                handleSectionChange("zigZag", value)
               }
             />
           </Accordion.Body>
         </Accordion.Item>
+
+        {/* 
 
         <Accordion.Item eventKey="4">
           <Accordion.Header>
@@ -290,20 +323,7 @@ const HomePage = () => {
         </Accordion.Item>
 
 
-        <Accordion.Item eventKey="6">
-          <Accordion.Header>
-            Section 7 - Zig-Zag Sections
-          </Accordion.Header>
-
-          <Accordion.Body>
-            <ZigZagSection
-              data={formData.zigZag}
-              onChange={(value) =>
-                handleSectionChange("zigZag", value)
-              }
-            />
-          </Accordion.Body>
-        </Accordion.Item>
+        
 
         <Accordion.Item eventKey="7">
           <Accordion.Header>

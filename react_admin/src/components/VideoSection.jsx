@@ -35,29 +35,50 @@ const VideoSection = ({ data = [], pageId, onChange }) => {
         fileViewUrl: currentBanner?.fileViewUrl || "",
     });    
     
+    // useEffect(() => {
+    //     const banner = data?.[0];
+    //     if (banner) {
+    //         console.log('video data', banner)
+    //         setVideoFormData({
+    //             id: banner.id || 0,
+    //             pageId: banner.pageId || pageId,
+    //             type: banner?.type || "",
+    //             fileUrl: banner.fileUrl || "",
+    //             fileViewUrl : banner.fileViewUrl,
+    //         });
+
+    //     } else {
+    //         setVideoFormData({
+    //             id: 0,
+    //             pageId,
+    //             type: "",
+    //             fileUrl: "", fileViewUrl: "",
+    //         });
+
+    //     }
+    //     setUploadMediaFile(null);
+    // }, [data, pageId]);
+
     useEffect(() => {
         const banner = data?.[0];
-        console.log('video data', banner)
-        if (banner) {
-            setVideoFormData({
-                id: banner.id || 0,
-                pageId: banner.pageId || pageId,
-                type: banner?.type || "",
-                fileUrl: banner.fileUrl || "",
-                fileViewUrl : banner.fileViewUrl,
-            });
 
-        } else {
-            setVideoFormData({
-                id: 0,
-                pageId,
-                type: "",
-                fileUrl: "", fileViewUrl: "",
-            });
+        setVideoFormData({
+            id: banner?.id || 0,
+            pageId: banner?.pageId || pageId,
+            type: banner?.type || "",
+            fileUrl: banner?.fileUrl || "",
+            fileViewUrl: banner?.fileViewUrl || "",
+        });
 
-        }
         setUploadMediaFile(null);
-    }, [data, pageId]);
+    }, [
+        data?.[0]?.id,
+        data?.[0]?.pageId,
+        data?.[0]?.type,
+        data?.[0]?.fileUrl,
+        data?.[0]?.fileViewUrl,
+        pageId,
+    ]);
 
     // Allowed file types
     const allowedImgTypes = [
@@ -312,12 +333,12 @@ const VideoSection = ({ data = [], pageId, onChange }) => {
     };
 
     const isImage = (fileType) => {
-        console.log('isImage aya ', fileType)
+        // console.log('isImage aya ', fileType)
         return fileType?.includes("image");
     };
 
     const isVideo = (fileType) => {
-        console.log('isVideo aya ', fileType)
+        // console.log('isVideo aya ', fileType)
         return fileType?.includes("video");
     };
 
@@ -372,7 +393,6 @@ const VideoSection = ({ data = [], pageId, onChange }) => {
                 </div>
                 <div className="col-md-6">
                     <div className="mb-3 text-center">
-                        {isImage(videoFormData.type)}
                         {uploadMediaFile &&
                             previewUrl &&
                             isImage(videoFormData.type) && (

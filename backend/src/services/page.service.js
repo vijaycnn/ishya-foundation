@@ -40,6 +40,19 @@ let DataProvider = {
         });
     });
   },
+  ////////////////Edit PageMaster////////////////////
+  updatePageMaster: async (body, pageId) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageMasters.update(body, {
+        where: { id: pageId },
+      })
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
 
   ///////Page Banner service //////////////
   addBanner: async (body) => {
@@ -215,18 +228,6 @@ let DataProvider = {
         });
     });
   },
-  update: async (body, mentorId) => {
-    return new Promise(function (resolve, reject) {
-      conn.LearningPages.update(body, {
-        where: { id: mentorId },
-      })
-        .then(data => {
-          resolve(data);
-        }).catch(err => {
-          reject(err);
-        });
-    });
-  },
   
   //Use this service to soft delete purpose
   changeStatus: async (body) => {
@@ -238,24 +239,6 @@ let DataProvider = {
       })
         .then(data => {
           resolve(data);
-        }).catch(err => {
-          reject(err);
-        });
-    });
-  },
-  delete: async (mentorId) => {
-    return new Promise(function (resolve, reject) {
-      conn.LearningPages.update({
-        isdeleted : 1
-      },{
-        where: { id: mentorId },
-      })
-        .then(data => {
-          if (data !== null) {
-            resolve(data);
-          } else {
-            reject('No Record found');
-          }
         }).catch(err => {
           reject(err);
         });

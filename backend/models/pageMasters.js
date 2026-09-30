@@ -22,19 +22,39 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER,
       defaultValue:1
     },
-    videofileUrl: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },  
-    videofileStatus:{
-      type:DataTypes.INTEGER,
-      defaultValue:0
-    },
     partnerPageTitle: {
       allowNull: true,
       type: DataTypes.STRING
     },  
+    partnerPageHeading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },  
+    partnerPageSubHeading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },  
     partnerPageStatus:{
+      type:DataTypes.INTEGER,
+      defaultValue:0
+    },
+    testimonialTitle: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },  
+    testimonialHeading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    }, 
+    testimonialStatus:{
+      type:DataTypes.INTEGER,
+      defaultValue:0
+    },
+    zigzagTitle: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },  
+    zigzagStatus:{
       type:DataTypes.INTEGER,
       defaultValue:0
     },
