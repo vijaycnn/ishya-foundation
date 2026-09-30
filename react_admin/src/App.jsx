@@ -29,6 +29,7 @@ import AddNews from "./pages/master/AddNews";
 import EditNews from "./pages/master/EditNews";
 
 import Gallery from "./pages/master/Gallery";
+import PartnerLogo from "./pages/master/PartnerLogo";
 import Homepage from "./pages/Homepage";
 
 ////////////////
@@ -247,9 +248,19 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path={`${adminAlias}/partners`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <PartnerLogo />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
 
-          /////////////
+          /////////////Not in use /////////////////
           <Route
             path={`${adminAlias}/participant`}
             element={

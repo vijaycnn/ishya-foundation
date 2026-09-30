@@ -18,6 +18,7 @@ const learningpageRouter = require('./routes/learningpage.route');
 const pageRouter = require('./routes/page.route');
 
 const galleryRouter = require('./routes/gallery.route');
+const partnerRouter = require('./routes/partner.route');
 const locationRouter = require('./routes/location.route');
 const faqRouter = require('./routes/faq.route');
 const bannerRouter = require('./routes/banner.route');
@@ -95,7 +96,9 @@ app.use(async function (req, res, next) {
 app.use('/api/program',  programRouter);
 app.use('/api/mentor',  mentorRouter);
 app.use('/api/learningpage',  learningpageRouter);
+app.use('/api/gallery',  galleryRouter);
 app.use('/api/page',  pageRouter);
+app.use('/api/partner',  partnerRouter);
 
 //////
 app.use('/api/user',  userRouter);
@@ -104,7 +107,6 @@ app.use('/api/location',  locationRouter);
 app.use('/api/faq',  faqRouter);
 app.use('/api/banner',  bannerRouter);
 app.use('/api/slide',  slideRouter);
-app.use('/api/gallery',  galleryRouter);
 app.use('/api/slideFile',  slideFileRouter);
 
 
