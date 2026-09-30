@@ -76,6 +76,17 @@ const Sidebar = () => {
                 <span className="nav-link-text">Home Page</span>
                 </Link>
 
+
+                <Link
+                  to={`${adminAlias}/programs`}
+                  className={`nav-link ${isActive([`${adminAlias}/programs`, `${adminAlias}/addProgram`, `${adminAlias}/editProgram`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiCommentDetail />
+                  </span>
+                  <span className="nav-link-text">Programs</span>
+                </Link>
+
                 <Link
                   to={`${adminAlias}/testimonials`}
                   className={`nav-link ${isActive([`${adminAlias}/testimonials`, `${adminAlias}/addTestimonial`, `${adminAlias}/editTestimonial`]) ? "active" : ""}`}

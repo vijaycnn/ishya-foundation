@@ -17,6 +17,10 @@ import Testimonials from "./pages/master/Testimonial";
 import AddTestimonial from "./pages/master/AddTestimonial";
 import EditTestimonial from "./pages/master/EditTestimonial";
 
+import Programs from "./pages/master/Program";
+import AddProgram from "./pages/master/AddProgram";
+import EditProgram from "./pages/master/EditProgram";
+
 import LearningPages from "./pages/master/LearningPages";
 import AddLearningPage from "./pages/master/AddLearningPage";
 import EditLearningPage from "./pages/master/EditLearningPage";
@@ -109,6 +113,39 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+
+          <Route
+            path={`${adminAlias}/programs`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Programs />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/addProgram`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <AddProgram />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/editProgram/:id`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <EditProgram />
+                </Layout>
+              </ProtectedRoute>
+            }
+          /> 
+
           <Route
             path={`${adminAlias}/testimonials`}
             element={

@@ -12,6 +12,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const userRouter = require('./routes/users.route');
 const enquiryRouter = require('./routes/enquiry.route');
+const programRouter = require('./routes/program.route');
 const mentorRouter = require('./routes/mentor.route');
 const learningpageRouter = require('./routes/learningpage.route');
 const pageRouter = require('./routes/page.route');
@@ -91,6 +92,7 @@ app.use(async function (req, res, next) {
 
 // let routePrefix = process.env.ROUTE_PREFIX.trim();
 
+app.use('/api/program',  programRouter);
 app.use('/api/mentor',  mentorRouter);
 app.use('/api/learningpage',  learningpageRouter);
 app.use('/api/page',  pageRouter);

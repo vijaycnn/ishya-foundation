@@ -1,58 +1,38 @@
 'use strict';
-const {  Model } = require('sequelize');
+const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Mentors extends Model {
-    
+  class ProgramNeeds extends Model {
     static associate(models) {
       // define association here
+      ProgramNeeds.belongsTo(models.Programs, {foreignKey: 'programId'});
     }
   }
-  Mentors.init({
+  ProgramNeeds.init({
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    name: {
-      allowNull: false,     
-      type: DataTypes.STRING,
-    },
-    orderNumber:{
-      type:DataTypes.INTEGER,
-      defaultValue:1
+    programId :{
+        allowNull: false,
+        type: DataTypes.INTEGER
     },
     title: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    rating:{
-      allowNull: true,
-      type:DataTypes.INTEGER,
-    },
-    programId:{
-      allowNull: true,
-      type:DataTypes.INTEGER,
-    },
     fileUrl: {
-      allowNull: true,
+      allowNull: false,
       type: DataTypes.STRING
     },
-    remark1: {
-      allowNull: true,
-      type: DataTypes.TEXT
-    },
-    remark2: {
-      allowNull: true,
+    remarks: {
+      allowNull: false,
       type: DataTypes.TEXT
     },
     status:{
       type:DataTypes.INTEGER,
       defaultValue:1
-    },
-    isdeleted:{
-      type:DataTypes.INTEGER,
-      defaultValue:0
     },
     createdAt: {
         allowNull: false,
@@ -72,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'Mentors',
+    modelName: 'ProgramNeeds',
   });
-  return Mentors;
+  return ProgramNeeds;
 };
