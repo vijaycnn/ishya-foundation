@@ -647,63 +647,119 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                     "Unable to save Zig-Zag section."
                 );
             }
+            ////////////////////////////////////////////////////////////////////
+            
 
-
+            /////////////////////////////////////
             // ------------------------------------------
-            // Update frontend state
+            // Update frontend state after Save
             // ------------------------------------------
 
-            const savedItems =response.data?.data?.items ||items;
+            const savedItems = response.data?.data?.items || items;
+
+            const currentItems = sectionData.items;
+
+            // Preserve local preview URLs
+            const updatedPreviewUrls = {};
+
+            const finalItems = savedItems.map(
+                (savedItem, index) => {
+
+                    const currentItem =
+                        currentItems[index];
+
+                    const oldItemKey =
+                        getItemKey(
+                            currentItem,
+                            index
+                        );
+
+                    const newItemKey = getItemKey(savedItem,index);
+
+                    if (savedItem.fileViewUrl) {
+
+                        // Backend has provided signed URL
+                        // so local preview is no longer required.
+
+                    } else if (previewUrls[oldItemKey]) {
+
+                        updatedPreviewUrls[newItemKey] = previewUrls[oldItemKey];
+
+                    } else if (currentItem?.fileViewUrl) {
+                        updatedPreviewUrls[newItemKey] =currentItem.fileViewUrl;
+                    }
 
 
-            /*
-             * Backend should ideally return:
-             *
-             * id
-             * fileUrl
-             * fileViewUrl
-             * remarks
-             * orderNumber
-             *
-             * after Save.
-             */
+                    return {
+                        ...savedItem,
+
+                        // File has already been uploaded
+                        file: null,
+                    };
+                }
+            );
+
+
+            // Update preview state
+            setPreviewUrls(
+                (prev) => {
+
+                    const finalPreviewUrls = {
+                        ...prev,
+                        ...updatedPreviewUrls,
+                    };
+
+                    /*
+                    * Remove old temporary keys
+                    * when a new DB id is available.
+                    */
+                    currentItems.forEach(
+                        (currentItem, index) => {
+
+                            const oldItemKey =
+                                getItemKey(
+                                    currentItem,
+                                    index
+                                );
+
+                            const savedItem =
+                                savedItems[index];
+
+                            const newItemKey =
+                                getItemKey(
+                                    savedItem,
+                                    index
+                                );
+
+                            if (
+                                oldItemKey !==
+                                newItemKey
+                            ) {
+                                delete finalPreviewUrls[
+                                    oldItemKey
+                                ];
+                            }
+                        }
+                    );
+
+                    return finalPreviewUrls;
+                }
+            );
+
+
+            // Update parent
             updateSection({
                 title:
                     response.data?.data
                         ?.zigzagTitle ||
                     title,
 
-                items:
-                    savedItems.map(
-                        (item) => ({
-                            ...item,
-
-                            // File has now been uploaded
-                            file: null,
-                        })
-                    ),
+                items: finalItems,
             });
 
 
-            // ------------------------------------------
-            // Clear local preview URLs
-            // ------------------------------------------
 
-            setPreviewUrls(
-                (prev) => {
-
-                    Object.values(
-                        prev
-                    ).forEach(
-                        (url) =>
-                            URL.revokeObjectURL(
-                                url
-                            )
-                    );
-
-                    return {};
-                }
-            );
+            ///////////////////////////////////////
 
 
             setDeletedIds([]);
