@@ -12,9 +12,8 @@ import FootprintSection from "../components/FootprintSection";
 import ProjectSection from "../components/ProjectSection";
 import TestimonialSection from "../components/TestimonialSection";
 import VideoSection from "../components/VideoSection";
-import ZigZagSection from "../components/VideoSection";
+import ZigZagSection from "../components/ZigZagSection";
 
-// import PartnershipSection from "./components/PartnershipSection";
 // import OtherSection from "./components/OtherSection";
 
 
@@ -76,9 +75,10 @@ const HomePage = () => {
         testimonialIds: []
     },
 
-    zigZag: [],
-
-    partnerships: [],
+    zigZag: {
+      title: "",
+      items: []
+    },
 
     other: [],
   };
@@ -122,8 +122,12 @@ const HomePage = () => {
             about: pageData?.PageAbouts || pageAbout,
             footprints: pageData?.PageMaps || pageMap,
             video: pageData?.PageVideos || pageVideo,
+            zigZag: {
+              title: pageData?.zigzagTitle || "",
+              items: pageData?.PageZigZags || [],
+            }
           });
-					setItems(response.data?.data);
+					// setItems(response.data?.data);
           // setPageBanner(response.data?.data?.pageBanner);
 				}
 			}).catch((error) => {
@@ -298,6 +302,7 @@ const HomePage = () => {
           <Accordion.Body>
             <ZigZagSection
               data={formData.zigZag}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("zigZag", value)
               }
@@ -307,42 +312,10 @@ const HomePage = () => {
 
         {/* 
 
-        <Accordion.Item eventKey="4">
-          <Accordion.Header>
-            Section 5 - Testimonials
-          </Accordion.Header>
-
-          <Accordion.Body>
-            <TestimonialSection
-              data={formData.testimonials}
-              onChange={(value) =>
-                handleSectionChange("testimonials", value)
-              }
-            />
-          </Accordion.Body>
-        </Accordion.Item>
-
-
-        
 
         <Accordion.Item eventKey="7">
           <Accordion.Header>
-            Section 8 - Partnership Logos
-          </Accordion.Header>
-
-          <Accordion.Body>
-            <PartnershipSection
-              data={formData.partnerships}
-              onChange={(value) =>
-                handleSectionChange("partnerships", value)
-              }
-            />
-          </Accordion.Body>
-        </Accordion.Item>
-
-        <Accordion.Item eventKey="8">
-          <Accordion.Header>
-            Section 9 - Other Section
+            Section 7 - Other Section
           </Accordion.Header>
 
           <Accordion.Body>

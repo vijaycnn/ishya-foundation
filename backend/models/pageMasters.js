@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       PageMasters.hasMany(models.PageAbouts, {foreignKey: 'pageId'});
       PageMasters.hasMany(models.PageMaps, {foreignKey: 'pageId'});
       PageMasters.hasMany(models.PageVideos, {foreignKey: 'pageId'});
+      PageMasters.hasMany(models.PageZigZags, {foreignKey: 'pageId'});
     }
   }
   PageMasters.init({

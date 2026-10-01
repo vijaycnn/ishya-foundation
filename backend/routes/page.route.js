@@ -62,6 +62,12 @@ router.post("/updatePagetestimonial", [auth.login], function (request, response,
     pageController.updatePagetestimonial(request, response, next)
 });
 
+
+/////////////pageZigZag /////////////
+router.post("/zigzag/save", [auth.login], function (request, response, next) {
+    pageController.saveZigZag(request, response, next)
+});
+
 router.get("/getById/:pageType/:mentorId", [auth.login], function (request, response, next) {
     pageController.getById(request, response, next)
 });

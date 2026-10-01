@@ -279,6 +279,18 @@ let PageController = {
                             about.fileViewUrl2 = await PageController.generateSignedUrl(about.fileUrl2);
                         }
                     }
+                    if(row.PageZigZags && row.PageZigZags.length > 0){
+                        //fetch here signed url for each row
+                        row.PageZigZags = await Promise.all(
+                            row.PageZigZags.map(async (zigZag) => {
+
+                                if (zigZag.fileUrl) {
+                                    zigZag.fileViewUrl = await PageController.generateSignedUrl(zigZag.fileUrl);
+                                }
+                                return zigZag;
+                            })
+                        );                    
+                    }
                     return row;
                 })
             );                
@@ -681,6 +693,22 @@ let PageController = {
             return next(error);
         }
     }, 
+    saveZigZag: async (request, response, next) => {
+        try {
+            const result = await pageService.saveZigZag(request.body,request);
+
+            return response.status(200).json({
+                status: "success",
+                data: result,
+                message:"Zig-Zag details saved successfully.",
+            });
+
+        } catch (error) {
+            console.error("saveZigZag controller error:",error);
+
+            return next(error);
+        }
+    },
 
 
     ///////////////PageVideo ////////////////////    
