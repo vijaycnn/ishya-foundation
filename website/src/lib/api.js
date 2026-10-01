@@ -7,8 +7,9 @@ const callAPI = async (endURL)=> {
     if (!API_BASE_URL) {
         throw new Error("API_BASE_URL is not configured");
     }
-
-  const response = await fetch(`${API_BASE_URL}${endURL}`,{
+  const url = API_BASE_URL+endURL;
+  console.log('API Endpoint >>>>', url);
+  const response = await fetch(url,{
       next: {
         revalidate: 300, // 5 minutes
       },
@@ -16,7 +17,7 @@ const callAPI = async (endURL)=> {
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch menu");
+    throw new Error("Failed to fetch API data");
   }
 
   return response.json();
@@ -43,4 +44,14 @@ export async function getHomePage() {
   console.log("HOME PAGE LIST >>>", result?.data[0]);
 //   console.log("partners >>>", result?.data[0]?.partners);
   return result?.data?.[0] || null;
+}
+
+export async function getLearningPage() { 
+  
+  const result = await callAPI(`/learningpage/pageList/learningPage`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  console.log("API RESULT >>>", result);
+  return result?.data || null;
 }

@@ -214,6 +214,10 @@ let PageController = {
             return next(error);
         }
     },
+    /////////////////////////////End Frontend ///////////////////
+
+
+
     generateSignedUrl: async (fileUrl) => {
         if (!fileUrl) {
             return null;
