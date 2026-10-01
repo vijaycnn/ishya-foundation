@@ -78,6 +78,18 @@ let PageController = {
                     const map = row.PageMaps?.[0];
                     const about = row.PageAbouts?.[0];
 
+                    if(row.PageZigZags && row.PageZigZags.length > 0){
+                        row.PageZigZags = await Promise.all(
+                            row.PageZigZags.map(async (zigZag) => {
+
+                                if (zigZag.fileUrl) {
+                                    zigZag.fileViewUrl = await PageController.generateSignedUrl(zigZag.fileUrl);
+                                }
+                                return zigZag;
+                            })
+                        );
+                    }
+
                     const [
                         bannerUrl,
                         videoUrl,

@@ -10,7 +10,7 @@ import AreasCoveredComponent from "@/Components/home/AreasCovered";
 import Testimonials from "@/Components/home/Testimonials";
 import Projects from "@/Components/home/Projects";
 import Partners from "@/Components/home/Partners";
-// import Testimonial from "@/Components/home/Testimonial";
+import ZigZagSection from "@/Components/home/ZigZagSection";
 
 export default async function HomePage() {
   const homeData = await getHomePage();
@@ -65,7 +65,8 @@ export default async function HomePage() {
       }
 
       <Partners data={homeData.partners} />
-
+      
+      <ZigZagSection  homeData={homeData} data={homeData.PageZigZags}/>
       </div>      
       <Footer/>
     </main>
