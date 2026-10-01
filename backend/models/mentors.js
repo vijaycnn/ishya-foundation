@@ -26,6 +26,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING
     },
+    rating:{
+      allowNull: true,
+      type:DataTypes.INTEGER,
+    },
+    programId:{
+      allowNull: true,
+      type:DataTypes.INTEGER,
+    },
     fileUrl: {
       allowNull: true,
       type: DataTypes.STRING

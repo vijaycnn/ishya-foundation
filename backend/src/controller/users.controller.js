@@ -275,7 +275,7 @@ genereateToken= async (data)=>{
   return new Promise(async function (resolve, reject) {
 
     // let expTimeData = await conn.Settings.findOne({where: {settingsKey:'token-expiry-time-minutes'}, raw:true});
-    let ExpTime=15;
+    let ExpTime= 30;   //15;
     // if(expTimeData && expTimeData.settingsKey!='' && expTimeData.settingsValue!='')
     // {
     //   ExpTime=expTimeData.settingsValue;

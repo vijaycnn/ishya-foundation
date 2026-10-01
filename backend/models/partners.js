@@ -1,23 +1,18 @@
 'use strict';
-const {Model} = require('sequelize');
+const {  Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class PagePartner extends Model {
+  class Partners extends Model {
+    
     static associate(models) {
       // define association here
-      PagePartner.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
     }
   }
-  PagePartner.init({
+  Partners.init({
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
-    },
-    pageId: DataTypes.INTEGER,
-    title: {
-      allowNull: true,
-      type: DataTypes.STRING
     },
     fileUrl: {
       allowNull: false,
@@ -45,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'PagePartner',
+    modelName: 'Partners',
   });
-  return PagePartner;
+  return Partners;
 };

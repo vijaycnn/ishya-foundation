@@ -3,6 +3,12 @@ const router = express.Router();
 const pageController = require('../src/controller/page.controller');
 const auth = require('../middleware/auth');  
 
+//////////////////Frontend /////////////////////
+router.get('/detail/:type',  function (request, response, next) {
+    console.log('pageData route reached', request.body);
+    pageController.getHomePage(request, response, next);
+});
+
 ///////////////////////////// pageData /////////////////////
 router.get('/:type',  [auth.login], function (request, response, next) {
     console.log('pageData route reached', request.body);
@@ -46,6 +52,24 @@ router.post("/addPagevideo", [auth.login], function (request, response, next) {
 });
 router.post("/updatePagevideo", [auth.login], function (request, response, next) {
     pageController.updatePagevideo(request, response, next)
+});
+/////////////pageProject /////////////
+router.post("/updatePageproject", [auth.login], function (request, response, next) {
+    pageController.updatePageproject(request, response, next)
+});
+/////////////pageTestimonial /////////////
+router.post("/updatePagetestimonial", [auth.login], function (request, response, next) {
+    pageController.updatePagetestimonial(request, response, next)
+});
+
+
+/////////////pageZigZag /////////////
+router.post("/zigzag/save", [auth.login], function (request, response, next) {
+    pageController.saveZigZag(request, response, next)
+});
+/////////////pageFeature /////////////
+router.post("/feature/save", [auth.login], function (request, response, next) {
+    pageController.saveFeature(request, response, next)
 });
 
 router.get("/getById/:pageType/:mentorId", [auth.login], function (request, response, next) {

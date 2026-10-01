@@ -6,14 +6,19 @@ const auth = require('../middleware/auth');
 // const uservalidate = require('../middleware/validate.middelware');
 
 ///////////////////////////// LearningPage /////////////////////
-router.get('/getList:type', function (request, response, next) {
+
+router.get('/pageList/:type', function (request, response, next) {
     // console.log('list route reached', request.body);
     learningpageController.getFrontList(request, response, next);
 });
+/////////////////  End Frontend /////////////////////////
+
+
 router.get('/list/:type',  [auth.login], function (request, response, next) {
     // console.log('list route reached', request.body);
     learningpageController.getList(request, response, next);
 });
+
 router.post("/valid", [auth.login], function (request, response, next) {
     learningpageController.checkValid(request, response, next)
 });
