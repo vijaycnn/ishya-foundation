@@ -13,8 +13,7 @@ import ProjectSection from "../components/ProjectSection";
 import TestimonialSection from "../components/TestimonialSection";
 import VideoSection from "../components/VideoSection";
 import ZigZagSection from "../components/ZigZagSection";
-
-// import OtherSection from "./components/OtherSection";
+import FeatureSection from "../components/FeatureSection";
 
 
 const HomePage = () => {
@@ -80,7 +79,9 @@ const HomePage = () => {
       items: []
     },
 
-    other: [],
+    feature: {
+      items: []
+    },
   };
   const [formData, setFormData] = useState(initialFormData);
 
@@ -125,6 +126,9 @@ const HomePage = () => {
             zigZag: {
               title: pageData?.zigzagTitle || "",
               items: pageData?.PageZigZags || [],
+            },
+            feature: {
+              items: pageData?.PageFeatures || []
             }
           });
 					// setItems(response.data?.data);
@@ -310,24 +314,22 @@ const HomePage = () => {
           </Accordion.Body>
         </Accordion.Item>
 
-        {/* 
-
-
         <Accordion.Item eventKey="7">
           <Accordion.Header>
-            Section 7 - Other Section
+            Section 8 - Feature Program
           </Accordion.Header>
 
           <Accordion.Body>
-            <OtherSection
-              data={formData.other}
+            <FeatureSection
+              data={formData.feature}
+              pageId={pageId}
               onChange={(value) =>
-                handleSectionChange("other", value)
+                handleSectionChange("feature", value)
               }
             />
           </Accordion.Body>
         </Accordion.Item>
-*/}
+
       </Accordion> 
 
       <div className="text-end mt-4">

@@ -23,6 +23,9 @@ const MAX_ITEMS = 4;
 
 const emptyItem = {
     id: 0,
+    title: "",
+    btnText: "",
+    btnLink: "",
     fileUrl: "",
     fileViewUrl: "",
     file: null,
@@ -31,7 +34,6 @@ const emptyItem = {
 };
 
 const initialData = {
-    title: "",
     items: [],
 };
 
@@ -50,7 +52,7 @@ const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
 const MAX_IMAGE_SIZE_LBL = "10 MB";
 
 
-const ZigZagSection = ({ data, pageId, onChange }) => {
+const FeatureSection = ({ data, pageId, onChange }) => {
 
     const navigate = useNavigate();
 
@@ -58,27 +60,9 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
     const [success, setSuccess] = useState("");
     const [saving, setSaving] = useState(false);
 
-    /*
-     * Stores local browser preview URLs.
-     *
-     * Example:
-     * {
-     *   "new-abc123": "blob:http://localhost/....",
-     *   "id-15": "blob:http://localhost/...."
-     * }
-     */
     const [previewUrls, setPreviewUrls] = useState({});
 
-    /*
-     * Existing DB records removed by the user.
-     * They will be soft-deleted when Save is clicked.
-     */
     const [deletedIds, setDeletedIds] = useState([]);
-
-
-    // --------------------------------------------------
-    // Logout
-    // --------------------------------------------------
 
     const handleLogout = () => {
         sessionStorage.removeItem("isAuthenticated");
@@ -87,11 +71,6 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
         navigate(adminAlias);
     };
-
-
-    // --------------------------------------------------
-    // Section data
-    // --------------------------------------------------
 
     const sectionData = {
         ...initialData,
@@ -132,12 +111,12 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
     // Title
     // --------------------------------------------------
 
-    const handleTitleChange = (value) => {
-        updateSection({
-            ...sectionData,
-            title: value,
-        });
-    };
+    // const handleTitleChange = (value) => {
+    //     updateSection({
+    //         ...sectionData,
+    //         title: value,
+    //     });
+    // };
 
 
     // --------------------------------------------------
@@ -187,16 +166,12 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                 .toString(36)
                 .substring(2, 9)}`,
 
-            orderNumber:
-                sectionData.items.length + 1,
+            orderNumber: sectionData.items.length + 1,
         };
 
         updateSection({
             ...sectionData,
-            items: [
-                ...sectionData.items,
-                newItem,
-            ],
+            items: [...sectionData.items,newItem,],
         });
     };
 
@@ -395,26 +370,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
             };
         });
 
-
-        /*
-         * IMPORTANT:
-         *
-         * Do NOT clear fileUrl here.
-         *
-         * Existing record may have:
-         *
-         * fileUrl      = old S3 URL
-         * fileViewUrl  = old signed URL
-         * file         = newly selected File
-         *
-         * The local preview takes priority
-         * until Save succeeds.
-         */
-        handleItemChange(
-            index,
-            "file",
-            file
-        );
+        handleItemChange(index,"file",file);
 
 
         // Allow selecting same file again
@@ -529,19 +485,11 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                 );
             }
 
-            const title = sectionData.title?.trim();
-            if (!title) {
-                throw new Error(
-                    "Please enter Zig-Zag section title."
-                );
-            }
-
             if (sectionData.items.length ===0) {
                 throw new Error(
-                    "Please add at least one Zig-Zag subsection."
+                    "Please add at least one Feature subsection."
                 );
             }
-
 
             // ------------------------------------------
             // Validate items
@@ -549,10 +497,18 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
             sectionData.items.forEach(
                 (item, index) => {
+                    const title = item.title?.trim();    
+                    if (!title) {
+                        throw new Error(
+                            `Please enter title ${
+                                index + 1
+                            }.`
+                        );
+                    }
 
                     if (!item.fileUrl && !item.file) {
                         throw new Error(
-                            `Please upload image for Sub Section ${
+                            `Please upload image for Section ${
                                 index + 1
                             }.`
                         );
@@ -561,7 +517,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
                     if (isQuillEmpty(item.remarks)) {
                         throw new Error(
-                            `Please enter remarks for Sub Section ${
+                            `Please enter remarks for Section ${
                                 index + 1
                             }.`
                         );
@@ -575,49 +531,25 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
             // ------------------------------------------
 
             const items = [];
+            for (const item of sectionData.items) {
 
+                let fileUrl = item.fileUrl || "";
 
-            for (
-                const item
-                of sectionData.items
-            ) {
-
-                let fileUrl =
-                    item.fileUrl || "";
-
-
-                /*
-                 * Existing item:
-                 * item.file = null
-                 *
-                 * No upload required.
-                 *
-                 * New/replaced image:
-                 * item.file exists.
-                 */
                 if (item.file) {
 
                     const uploaded = await uploadFile(item.file);
 
                     fileUrl =uploaded.fileUrl;
                 }
-
-
                 items.push({
-                    id:
-                        item.id || 0,
-
+                    id:item.id || 0,
+                    title: item.title?.trim(),
+                    btnText: item.btnText?.trim() || null,
+                    btnLink: item.btnLink?.trim() || null,
                     fileUrl,
 
-                    remarks:
-                        isQuillEmpty(
-                            item.remarks
-                        )
-                            ? ""
-                            : item.remarks,
-
-                    orderNumber:
-                        item.orderNumber,
+                    remarks: isQuillEmpty(item.remarks)? "": item.remarks,
+                    orderNumber:item.orderNumber,
                 });
             }
 
@@ -628,23 +560,18 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
             const payload = {
                 pageId,
-
-                zigzagTitle:
-                    title,
-
                 items,
-
                 deletedIds,
             };
 
 
-            const response = await axiosInstance.post("/page/zigzag/save",payload);
+            const response = await axiosInstance.post("/page/feature/save",payload);
 
 
             if (response.data?.status !=="success") {
                 throw new Error(
                     response.data?.message ||
-                    "Unable to save Zig-Zag section."
+                    "Unable to save Feature section."
                 );
             }
             ////////////////////////////////////////////////////////////////////
@@ -665,8 +592,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
             const finalItems = savedItems.map(
                 (savedItem, index) => {
 
-                    const currentItem =
-                        currentItems[index];
+                    const currentItem = currentItems[index];
 
                     const oldItemKey =
                         getItemKey(
@@ -749,29 +675,21 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
             // Update parent
             updateSection({
-                title:
-                    response.data?.data
-                        ?.zigzagTitle ||
-                    title,
-
                 items: finalItems,
             });
-
-
-
             ///////////////////////////////////////
 
 
             setDeletedIds([]);
 
             setSuccess(
-                "Zig-Zag section saved successfully."
+                "Feature section saved successfully."
             );
 
         } catch (err) {
 
             console.error(
-                "Save Zig-Zag error:",
+                "Save Feature error:",
                 err
             );
 
@@ -789,7 +707,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                 err?.response?.data
                     ?.message ||
                 err?.message ||
-                "Unable to save Zig-Zag section."
+                "Unable to save Feature section."
             );
 
         } finally {
@@ -830,12 +748,6 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
         <Card>
 
             <Card.Body>
-
-                {/* <h5 className="mb-3">
-                    Zig-Zag Section
-                </h5> */}
-
-
                 {/* Error */}
 
                 {error && (
@@ -868,10 +780,10 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
                 {/* Section Title */}
 
-                <Form.Group className="mb-4">
+                {/* <Form.Group className="mb-4">
 
                     <Form.Label>
-                        Title<span className="text-danger">*</span>
+                        Section Title
                     </Form.Label>
 
                     <Form.Control
@@ -887,16 +799,14 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                         placeholder="Enter section title"
                     />
 
-                </Form.Group>
+                </Form.Group> */}
 
 
                 {/* Sub Sections Header */}
 
                 <div className="d-flex justify-content-between align-items-center mb-3">
 
-                    <h6 className="mb-0">
-                        Sub Sections
-                    </h6>
+                    <h6 className="mb-0"></h6>
 
 
                     <Button
@@ -909,7 +819,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                             MAX_ITEMS
                         }
                     >
-                        + Add Sub Section
+                        + Add Section
                     </Button>
 
                 </div>
@@ -920,8 +830,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                 {sectionData.items
                     .length === 0 && (
                     <Alert variant="info">
-                        No zig-zag subsection
-                        added yet.
+                        No section added yet.
                     </Alert>
                 )}
 
@@ -964,7 +873,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                                     <div className="d-flex justify-content-between align-items-center">
 
                                         <strong>
-                                            Sub Section{" "}
+                                            Section{" "}
                                             {index +
                                                 1}
                                         </strong>
@@ -1040,6 +949,53 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
                                     <Row>
 
+                                        <Col md={12}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Title<span className="text-danger">*</span></Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={
+                                                        sectionData.title
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleItemChange(index, "title", e.target.value)
+                                                    }
+                                                    placeholder="Enter section title"
+                                                />
+                                            </Form.Group>
+                                        </Col>
+
+                                        <Col md={6}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Button Text</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={
+                                                        sectionData.btnText
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleItemChange(index, "btnText", e.target.value)
+                                                    }
+                                                    placeholder="Enter section Text"
+                                                />
+                                            </Form.Group>
+                                        </Col>
+
+                                        <Col md={6}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Button Link</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={
+                                                        sectionData.btnLink
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleItemChange(index, "btnLink", e.target.value)
+                                                    }
+                                                    placeholder="Enter section Link"
+                                                />
+                                            </Form.Group>
+                                        </Col>
                                         {/* Image */}
 
                                         <Col md={4}>
@@ -1047,7 +1003,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                                             <Form.Group className="mb-3">
 
                                                 <Form.Label>
-                                                    Image
+                                                    Image<span className="text-danger">*</span>
                                                 </Form.Label>
 
 
@@ -1107,7 +1063,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                                             <Form.Group className="mb-3">
 
                                                 <Form.Label>
-                                                    Remarks
+                                                    Remarks<span className="text-danger">*</span>
                                                 </Form.Label>
 
 
@@ -1117,14 +1073,8 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                                                         item.remarks ||
                                                         ""
                                                     }
-                                                    onChange={(
-                                                        content
-                                                    ) =>
-                                                        handleItemChange(
-                                                            index,
-                                                            "remarks",
-                                                            content
-                                                        )
+                                                    onChange={(content) =>
+                                                        handleItemChange(index,"remarks",content)
                                                     }
                                                 />
 
@@ -1154,7 +1104,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                                 .length
                         }{" "}
                         / {MAX_ITEMS}{" "}
-                        subsections added
+                        sections added
 
                     </div>
                 )}
@@ -1186,4 +1136,4 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
     );
 };
 
-export default ZigZagSection;
+export default FeatureSection;

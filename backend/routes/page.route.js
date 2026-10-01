@@ -67,6 +67,10 @@ router.post("/updatePagetestimonial", [auth.login], function (request, response,
 router.post("/zigzag/save", [auth.login], function (request, response, next) {
     pageController.saveZigZag(request, response, next)
 });
+/////////////pageFeature /////////////
+router.post("/feature/save", [auth.login], function (request, response, next) {
+    pageController.saveFeature(request, response, next)
+});
 
 router.get("/getById/:pageType/:mentorId", [auth.login], function (request, response, next) {
     pageController.getById(request, response, next)

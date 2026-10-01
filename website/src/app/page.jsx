@@ -11,6 +11,7 @@ import Testimonials from "@/Components/home/Testimonials";
 import Projects from "@/Components/home/Projects";
 import Partners from "@/Components/home/Partners";
 import ZigZagSection from "@/Components/home/ZigZagSection";
+import FeatureSection from "@/Components/home/FeatureSection";
 
 export default async function HomePage() {
   const homeData = await getHomePage();
@@ -67,6 +68,10 @@ export default async function HomePage() {
       <Partners data={homeData.partners} />
       
       <ZigZagSection  homeData={homeData} data={homeData.PageZigZags}/>
+
+      <FeatureSection data={homeData.PageFeatures}/>
+
+      
       </div>      
       <Footer/>
     </main>

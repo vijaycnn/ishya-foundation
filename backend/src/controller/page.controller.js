@@ -89,6 +89,17 @@ let PageController = {
                             })
                         );
                     }
+                    if(row.PageFeatures && row.PageFeatures.length > 0){
+                        row.PageFeatures = await Promise.all(
+                            row.PageFeatures.map(async (item) => {
+
+                                if (item.fileUrl) {
+                                    item.fileViewUrl = await PageController.generateSignedUrl(item.fileUrl);
+                                }
+                                return item;
+                            })
+                        );
+                    }
 
                     const [
                         bannerUrl,
@@ -300,6 +311,18 @@ let PageController = {
                                     zigZag.fileViewUrl = await PageController.generateSignedUrl(zigZag.fileUrl);
                                 }
                                 return zigZag;
+                            })
+                        );                    
+                    }
+                    if(row.PageFeatures && row.PageFeatures.length > 0){
+                        //fetch here signed url for each row
+                        row.PageFeatures = await Promise.all(
+                            row.PageFeatures.map(async (item) => {
+
+                                if (item.fileUrl) {
+                                    item.fileViewUrl = await PageController.generateSignedUrl(item.fileUrl);
+                                }
+                                return item;
                             })
                         );                    
                     }
@@ -717,6 +740,22 @@ let PageController = {
 
         } catch (error) {
             console.error("saveZigZag controller error:",error);
+
+            return next(error);
+        }
+    },
+    saveFeature: async (request, response, next) => {
+        try {
+            const result = await pageService.saveFeature(request.body,request);
+
+            return response.status(200).json({
+                status: "success",
+                data: result,
+                message:"Feature Program details saved successfully.",
+            });
+
+        } catch (error) {
+            console.error("saveFeature controller error:",error);
 
             return next(error);
         }
