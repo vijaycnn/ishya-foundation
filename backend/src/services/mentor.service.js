@@ -3,6 +3,25 @@ var fs = require('fs'),  csv = require('csv');
 
 let MentorDataProvider = {
 
+  getHomePageTestimonialList: async () => {
+    return new Promise(async function (resolve, reject) {
+      let filter = { status:1, isdeleted: 0 };
+      let columns = ["id", "name", "title", "fileUrl", "remark1"];
+    
+      await conn.Mentors.findAll({
+        attributes:columns,
+        where: filter,
+        order: [['orderNumber', 'ASC'], ['id', 'ASC']],
+        raw: true,
+        // logging:console.log
+      })
+        .then(async data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
   getMentorList: async (all = false) => {
     return new Promise(async function (resolve, reject) {
       // console.log('search', search);

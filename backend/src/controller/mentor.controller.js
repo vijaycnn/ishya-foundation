@@ -15,7 +15,7 @@ let MentorController = {
             const rows = data.rows.map((r) => r.get({ plain: true }));
             const mentors = await Promise.all(
                 rows.map(async (row) => {
-                    if(row.fileUrl != ''){
+                    if(row.fileUrl && row.fileUrl != ''){
                         let filePath = row.fileUrl.trim();
                         let key = filePath.split(".amazonaws.com/")[1]
 
@@ -47,7 +47,7 @@ let MentorController = {
             const rows = data.rows.map((r) => r.get({ plain: true }));
             const mentors = await Promise.all(
                 rows.map(async (row) => {
-                    if(row.fileUrl != ''){
+                    if(row.fileUrl && row.fileUrl != ''){
                         let filePath = row.fileUrl.trim();
                         let key = filePath.split(".amazonaws.com/")[1]
 
@@ -102,7 +102,9 @@ let MentorController = {
                     name: request.body.name.trim(),
                     orderNumber: request.body.orderNumber,
                     title: request.body.title ? request.body.title.trim() : '',
-                    fileUrl: request.body.fileUrl,
+                    fileUrl: request.body.fileUrl || null,
+                    rating: request.body.rating || null,
+                    programId: request.body.programId || null,
                     remark1: request.body.remark1 ? request.body.remark1.trim() : '',
                     remark2: request.body.remark2 ? request.body.remark2.trim() : '',
                     createdBy: request.user.userId
@@ -122,7 +124,7 @@ let MentorController = {
             const dataList = await mentorService.getMentorById(mentorId);
             if(dataList){
                 // console.log('fileUrl :::', dataList.fileUrl);
-                if(dataList.fileUrl != ''){
+                if(dataList.fileUrl && dataList.fileUrl != ''){
                     let filePath = dataList.fileUrl.trim();
                     let key = filePath.split(".amazonaws.com/")[1];
                     const command = new GetObjectCommand({
@@ -156,6 +158,8 @@ let MentorController = {
                     name: request.body.name.trim(),
                     orderNumber: request.body.orderNumber,
                     title: request.body.title ? request.body.title.trim() : '',
+                    rating: request.body.rating || null,
+                    programId: request.body.programId || null,
                     fileUrl: request.body.fileUrl,
                     remark1: request.body.remark1 ? request.body.remark1.trim() : '',
                     remark2: request.body.remark2 ? request.body.remark2.trim() : '',

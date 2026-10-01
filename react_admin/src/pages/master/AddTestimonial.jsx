@@ -61,26 +61,56 @@ function AddTestimonial() {
     // console.log("handleFileChange >>");
     fileUploadEvent(e.target.files[0]);
   };
+  const [programList, setProgramList] = useState([]);
+  const getProgramList = async () => {
+    await axiosInstance.get(`/program/ddList`)
+      .then((response) => {
+        // console.log(">>> ", response.data);
+        if (response.data.status === "success") {
+          setProgramList(response?.data?.data);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        if (error.status === 403) {
+          // alert('Session Timeout');
+          handleLogout();
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (programList.length == 0) {
+      getProgramList();
+    }
+  }, []);
   const [formData, setFormData] = useState({
     name: "",
     orderNumber : 1,
     title: "",
+    rating : null,
+    programId: null,
     remark1: "",
     remark2: "",
     fileUrl: "",
   });
   const handleChange = (e) => {
-    const { name, type, value } = e.target;
+    const { name, type, value, checked } = e.target;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox"
+        ? checked
+        : name === "rating"
+          ? Number(value)
+          : value,
     }));
   };
 
   const validation = (values) => {
     setError("");
     let hasError = false;
-    if (!values.name || values.name == "" || !values.title || values.title == "" || values.orderNumber == "" || !values.orderNumber || uploadMediaFile == null) {
+    if (!values.name || values.name == "" || !values.title || values.title == "" || values.orderNumber == "" || !values.orderNumber) {  //|| uploadMediaFile == null
       setError("Mandatory fields are missing");
       hasError = true;
     }
@@ -107,7 +137,15 @@ function AddTestimonial() {
             if (response.data.status === "success") {
               //Now, process with data
               setLoading(true);
-              await formProcess();
+
+              let fileUrl = '';
+              if (uploadMediaFile != null) {
+                let uploadRes = await uploadFileOnS3();
+                if (uploadRes) {
+                  fileUrl = uploadRes;
+                }
+              }
+              await formProcess(fileUrl);
               setLoading(false);
             } else if (response.data.status === "error") {
               setError(response.data.message);
@@ -146,9 +184,9 @@ function AddTestimonial() {
     return response.json();
   };
 
-  const formProcess = async () => {
+  const uploadFileOnS3 = async () => {
     // console.log("fileObject >>", `${baseURL}/enquiry/upload-url`, uploadMediaFile);
-
+    setLoading(true);
     const { uploadUrl, fileUrl } = await getUploadUrl(uploadMediaFile);
     // console.log("s3 url >>", uploadUrl, " ::::", fileUrl);
 
@@ -158,12 +196,38 @@ function AddTestimonial() {
       body: uploadMediaFile,
     });
     // console.log("uploadRes", uploadRes);
-    // const uploadRes = { status : 200 }
     if (uploadRes.status == 200) {
+      return fileUrl;
+    } else {
+      setError("File upload failed");
+      setLoading(false);
+      return false;
+    }
+  };
+
+  const formProcess = async (fileUrl) => {
+    
+      // // console.log("fileObject >>", `${baseURL}/enquiry/upload-url`, uploadMediaFile);
+
+      // const { uploadUrl, fileUrl } = await getUploadUrl(uploadMediaFile);
+      // // console.log("s3 url >>", uploadUrl, " ::::", fileUrl);
+
+      // const uploadRes = await fetch(uploadUrl, {
+      //   method: "PUT",
+      //   headers: { "Content-Type": uploadMediaFile.type },
+      //   body: uploadMediaFile,
+      // });
+      // // console.log("uploadRes", uploadRes);
+      // // const uploadRes = { status : 200 }
+    
+    // if (uploadRes.status == 200) 
+      {
       let body = {
         name: formData.name,
         title: formData.title,
         orderNumber: formData.orderNumber,
+        rating: formData.rating || null,
+        programId: formData.programId || null,
         remark1: formData.remark1,
         fileUrl: fileUrl,
       };
@@ -177,6 +241,8 @@ function AddTestimonial() {
               name: "",
               orderNumber: 1,
               title: "",
+              rating: null,
+              programId: null,
               remark1: "",
               fileUrl: "",
             });
@@ -263,7 +329,7 @@ function AddTestimonial() {
               <Form.Group className="mb-4">
                 <Form.Label className="fw-medium">
                   Image <small>(Max. FileSize 100 mb)</small>
-                  <span className="text-danger">*</span>
+                  {/* <span className="text-danger">*</span> */}
                 </Form.Label>
                 {fileError && (
                   <p className="mt-2 text-sm text-red-600">⚠️ {fileError}</p>
@@ -299,6 +365,67 @@ function AddTestimonial() {
                   maxLength={2}
                   onKeyPress={avoidAlphabets}
                 />
+              </Form.Group>
+            </Col>
+
+            <Col md={6}>
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-medium">
+                  Program
+                </Form.Label>
+                <Form.Select
+                  name="programId"
+                  onChange={handleChange}
+                  value={formData.programId}
+                >
+                  <option value="">Select Program</option>
+                  {programList.map((data) => {
+                    return (
+                      <option value={data.id} key={data.id}>
+                        {data.name}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-medium">
+                  Rating
+                </Form.Label>
+
+                <div className="d-flex gap-3 align-items-center">
+                  {[1, 2, 3, 4, 5].map((rating) => (
+                    <Form.Check
+                      key={rating}
+                      type="radio"
+                      id={`rating-${rating}`}
+                      name="rating"
+                      label={`${rating} ★`}
+                      value={rating}
+                      checked={Number(formData.rating) === rating}
+                      onChange={handleChange}
+                    />
+                  ))}
+
+                  {formData.rating && (
+                    <Button
+                      type="button"
+                      variant="link"
+                      size="sm"
+                      className="p-0 text-muted"
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          rating: null,
+                        }))
+                      }
+                    >
+                      Clear
+                    </Button>
+                  )}
+                </div>
               </Form.Group>
             </Col>
             <Col md={12}>

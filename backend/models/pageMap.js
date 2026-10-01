@@ -1,13 +1,13 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class PageMap extends Model {
+  class PageMaps extends Model {
     static associate(models) {
       // define association here
-      PageMap.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
+      PageMaps.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
     }
   }
-  PageMap.init({
+  PageMaps.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'PageMap',
+    modelName: 'PageMaps',
   });
-  return PageMap;
+  return PageMaps;
 };

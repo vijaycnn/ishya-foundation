@@ -4,7 +4,12 @@ module.exports = (sequelize, DataTypes) => {
   class PageMasters extends Model {
     static associate(models) {
       // define association here
-    //   PageMasters.hasMany(models.CityMaster, {foreignKey: 'pageId'});
+      PageMasters.hasMany(models.PageBanners, {foreignKey: 'pageId'});
+      PageMasters.hasMany(models.PageAbouts, {foreignKey: 'pageId'});
+      PageMasters.hasMany(models.PageMaps, {foreignKey: 'pageId'});
+      PageMasters.hasMany(models.PageVideos, {foreignKey: 'pageId'});
+      PageMasters.hasMany(models.PageZigZags, {foreignKey: 'pageId'});
+      PageMasters.hasMany(models.PageFeatures, {foreignKey: 'pageId'});
     }
   }
   PageMasters.init({
@@ -15,23 +20,47 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     name: DataTypes.STRING,
+    contactNumber: {
+      allowNull: true,
+      type: DataTypes.STRING
+    }, 
     status:{
       type:DataTypes.INTEGER,
       defaultValue:1
-    },
-    videofileUrl: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },  
-    videofileStatus:{
-      type:DataTypes.INTEGER,
-      defaultValue:0
     },
     partnerPageTitle: {
       allowNull: true,
       type: DataTypes.STRING
     },  
+    partnerPageHeading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },  
+    partnerPageSubHeading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },  
     partnerPageStatus:{
+      type:DataTypes.INTEGER,
+      defaultValue:0
+    },
+    testimonialTitle: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },  
+    testimonialHeading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    }, 
+    testimonialStatus:{
+      type:DataTypes.INTEGER,
+      defaultValue:0
+    },
+    zigzagTitle: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },  
+    zigzagStatus:{
       type:DataTypes.INTEGER,
       defaultValue:0
     },

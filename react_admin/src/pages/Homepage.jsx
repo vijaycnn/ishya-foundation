@@ -8,70 +8,81 @@ const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 
 import BannerSection from "../components/BannerSection";
 import AboutSection from "../components/AboutSection";
-// import FootprintSection from "../components/FootprintSection";
-// import ProjectSection from "./components/ProjectSection";
-// import TestimonialSection from "./components/TestimonialSection";
-// import VideoSection from "./components/VideoSection";
-// import ZigZagSection from "./components/ZigZagSection";
-// import PartnershipSection from "./components/PartnershipSection";
-// import OtherSection from "./components/OtherSection";
+import FootprintSection from "../components/FootprintSection";
+import ProjectSection from "../components/ProjectSection";
+import TestimonialSection from "../components/TestimonialSection";
+import VideoSection from "../components/VideoSection";
+import ZigZagSection from "../components/ZigZagSection";
+import FeatureSection from "../components/FeatureSection";
 
-const initialFormData = {
-  banner:[ {
-    title: "",
-    subtitle: "",
-    description: "",
-    image: "",
-    buttonText: "",
-    buttonUrl: "",
-  }],
-
-  about: {
-    title: "",
-    subtitle: "",
-    image1: "",
-    image2: "",
-    mission: {
-      title: "Our Mission",
-      description: "",
-    },
-    vision: {
-      title: "Our Vision",
-      description: "",
-    },
-  },
-
-  footprints: {
-    title: "",
-    description: "",
-    mapImage: "",
-  },
-
-  projects: {
-    projectIds: [],
-  },
-
-  testimonials: {
-      mode: "latest",
-      limit: 3,
-      testimonialIds: []
-  },
-
-  video: {
-    videoUrl: "",
-  },
-
-  zigZag: [],
-
-  partnerships: [],
-
-  other: [],
-};
 
 const HomePage = () => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [pageId, setPageId] = useState(0);
+
+  const [pageBanner, setPageBanner] = useState(
+    [ {
+      id: 0,
+      pageId,
+      type: "",
+      fileUrl: "",
+    }]
+  );
+  const [pageAbout, setPageAbout] = useState(
+    {
+      title: "",
+      title2: "",
+      title3: "",
+      remarks: "",
+      fileUrl1: "", fileUrlTxt1: "",
+      fileUrl2: "", fileUrlTxt2: "",
+      tagTitle1: "", tagDescription1: "",
+      tagTitle2:"",  tagDescription2: "",
+    }
+  );
+  const [pageMap, setPageMap] = useState(
+    {
+      title: "",
+      subTitle: "",
+      remarks: "",
+      fileUrl: "", 
+    }
+  );
+  const [pageVideo, setPageVideo] = useState(
+    [ {
+      id: 0,
+      pageId,
+      type: "",
+      fileUrl: "",
+    }]
+  );
+
+  const initialFormData = {
+    pageData: {},
+    banner:pageBanner,
+    about: pageAbout,
+    footprints: pageMap,
+    video: pageVideo,
+
+    projects: {
+      projectIds: [],
+    },
+
+    testimonials: {
+        testimonialIds: []
+    },
+
+    zigZag: {
+      title: "",
+      items: []
+    },
+
+    feature: {
+      items: []
+    },
+  };
   const [formData, setFormData] = useState(initialFormData);
 
   const [loading, setLoading] = useState(false);
@@ -97,10 +108,31 @@ const HomePage = () => {
 
     await axiosInstance.get(`/page/home`)
 			.then((response) => {
-        console.log('>>> ', response.data);
-				setIsLoading(false)
-				if (response.data.status === "success") {
-					setItems(response.data?.data)	
+        setIsLoading(false)
+				if (response.data.status == "success") {
+          const pageData = response.data?.data?.[0];
+          console.log('pageData>>> ', pageData, response.data); 
+          
+          const id = pageData?.id || 0;
+          console.log('id >>', id);
+          setPageId(id);
+
+          setFormData({
+            pageData: pageData,
+            banner: pageData?.PageBanners || [],
+            about: pageData?.PageAbouts || pageAbout,
+            footprints: pageData?.PageMaps || pageMap,
+            video: pageData?.PageVideos || pageVideo,
+            zigZag: {
+              title: pageData?.zigzagTitle || "",
+              items: pageData?.PageZigZags || [],
+            },
+            feature: {
+              items: pageData?.PageFeatures || []
+            }
+          });
+					// setItems(response.data?.data);
+          // setPageBanner(response.data?.data?.pageBanner);
 				}
 			}).catch((error) => {
         // console.log('>>> ', error.status, error);
@@ -160,13 +192,13 @@ const HomePage = () => {
           </p>
         </div>
 
-        <Button
+        {/* <Button
           variant="primary"
           onClick={handleSubmit}
           disabled={saving}
         >
           {saving ? "Saving..." : "Save Home Page"}
-        </Button>
+        </Button> */}
       </div>
 
       <Accordion defaultActiveKey="0">
@@ -179,6 +211,7 @@ const HomePage = () => {
           <Accordion.Body>
             <BannerSection
               data={formData.banner}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("banner", value)
               }
@@ -188,12 +221,13 @@ const HomePage = () => {
 
         <Accordion.Item eventKey="1">
           <Accordion.Header>
-            Section 2 - About Us
+            Section 2 - About
           </Accordion.Header>
 
           <Accordion.Body>
             <AboutSection
               data={formData.about}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("about", value)
               }
@@ -201,7 +235,7 @@ const HomePage = () => {
           </Accordion.Body>
         </Accordion.Item>
 
-        {/* <Accordion.Item eventKey="2">
+        <Accordion.Item eventKey="2">
           <Accordion.Header>
             Section 3 - Our Footprints
           </Accordion.Header>
@@ -209,6 +243,7 @@ const HomePage = () => {
           <Accordion.Body>
             <FootprintSection
               data={formData.footprints}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("footprints", value)
               }
@@ -223,7 +258,8 @@ const HomePage = () => {
 
           <Accordion.Body>
             <ProjectSection
-              data={formData.projects}
+              data={formData.pageData}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("projects", value)
               }
@@ -233,12 +269,13 @@ const HomePage = () => {
 
         <Accordion.Item eventKey="4">
           <Accordion.Header>
-            Section 5 - Testimonials
+            Section 5 - Testimonial
           </Accordion.Header>
 
           <Accordion.Body>
             <TestimonialSection
-              data={formData.testimonials}
+              data={formData.pageData}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("testimonials", value)
               }
@@ -248,19 +285,19 @@ const HomePage = () => {
 
         <Accordion.Item eventKey="5">
           <Accordion.Header>
-            Section 6 - Video
+            Section 6 - Image / Video
           </Accordion.Header>
 
           <Accordion.Body>
             <VideoSection
               data={formData.video}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("video", value)
               }
             />
           </Accordion.Body>
         </Accordion.Item>
-
         <Accordion.Item eventKey="6">
           <Accordion.Header>
             Section 7 - Zig-Zag Sections
@@ -269,6 +306,7 @@ const HomePage = () => {
           <Accordion.Body>
             <ZigZagSection
               data={formData.zigZag}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("zigZag", value)
               }
@@ -278,44 +316,30 @@ const HomePage = () => {
 
         <Accordion.Item eventKey="7">
           <Accordion.Header>
-            Section 8 - Partnership Logos
+            Section 8 - Feature Program
           </Accordion.Header>
 
           <Accordion.Body>
-            <PartnershipSection
-              data={formData.partnerships}
+            <FeatureSection
+              data={formData.feature}
+              pageId={pageId}
               onChange={(value) =>
-                handleSectionChange("partnerships", value)
+                handleSectionChange("feature", value)
               }
             />
           </Accordion.Body>
         </Accordion.Item>
 
-        <Accordion.Item eventKey="8">
-          <Accordion.Header>
-            Section 9 - Other Section
-          </Accordion.Header>
-
-          <Accordion.Body>
-            <OtherSection
-              data={formData.other}
-              onChange={(value) =>
-                handleSectionChange("other", value)
-              }
-            />
-          </Accordion.Body>
-        </Accordion.Item>
-*/}
       </Accordion> 
 
       <div className="text-end mt-4">
-        <Button
+        {/* <Button
           variant="primary"
           onClick={handleSubmit}
           disabled={saving}
         >
           {saving ? "Saving..." : "Save Home Page"}
-        </Button>
+        </Button> */}
       </div>
 
     </div>
