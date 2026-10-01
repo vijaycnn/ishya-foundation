@@ -1,5 +1,8 @@
 import "./globals.css";
 import Providers from "@/Components/Providers";
+import Navbar from "@/Components/Navbar";
+import Footer from '@/Components/Footer';
+import { getMenu } from "@/lib/api";
 
 export const metadata = {
   title: "Ishya Foundation",
@@ -11,7 +14,10 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const menu = await getMenu();
+  const header = { contactNumber : '+919871005650' }
+
   return (
     <html lang="en">
       <head>
@@ -24,7 +30,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        <Navbar homeData={header} menu={menu?.data} />
+
         <Providers>{children}</Providers>
+           
+        <Footer/>
       </body>
     </html>
   );

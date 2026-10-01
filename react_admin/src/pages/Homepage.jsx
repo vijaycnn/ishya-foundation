@@ -188,17 +188,17 @@ const HomePage = () => {
         <div>
           <h4>Home Page CMS</h4>
           <p className="text-muted mb-0">
-            Manage homepage content and sections {pageId}
+            Manage homepage content and sections
           </p>
         </div>
 
-        <Button
+        {/* <Button
           variant="primary"
           onClick={handleSubmit}
           disabled={saving}
         >
           {saving ? "Saving..." : "Save Home Page"}
-        </Button>
+        </Button> */}
       </div>
 
       <Accordion defaultActiveKey="0">
@@ -333,13 +333,13 @@ const HomePage = () => {
       </Accordion> 
 
       <div className="text-end mt-4">
-        <Button
+        {/* <Button
           variant="primary"
           onClick={handleSubmit}
           disabled={saving}
         >
           {saving ? "Saving..." : "Save Home Page"}
-        </Button>
+        </Button> */}
       </div>
 
     </div>

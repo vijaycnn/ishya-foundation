@@ -7,7 +7,12 @@ import Logo from "../Images/IshyaLogo.png";
 import { FaSearch, FaHandsHelping, FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 
-const Navbar = ({homeData}) => {
+const Navbar = ({homeData, menu}) => {
+
+  // console.log('menu >>>', menu);
+  const programList = menu.map(item => item.name);
+
+
   const [openMenus, setOpenMenus] = useState({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -33,15 +38,16 @@ const Navbar = ({homeData}) => {
     {
       label: "Our Programs",
       link: "/ourprograms",
-      menu: [
-        "All",
-        "Education",
-        "Health & Wellbeing",
-        "Community Development",
-        "Women Empowerment",
-        "Environment",
-        "Art & Culture",
-      ],
+      menu: programList,
+      // [
+      //   "All",
+      //   "Education",
+      //   "Health & Wellbeing",
+      //   "Community Development",
+      //   "Women Empowerment",
+      //   "Environment",
+      //   "Art & Culture",
+      // ],
     },
     {
       label: "Media & Coverage",

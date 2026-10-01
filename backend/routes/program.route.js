@@ -9,6 +9,16 @@ router.get('/getList', function (request, response, next) {
     // console.log('list route reached', request.body);
     programController.getList(request, response, next);
 });
+
+
+router.get('/menuList',  function (request, response, next) {
+    programController.getTypeList(request, response, next);
+});
+
+
+
+/////////////////  End Frontend
+
 router.get('/typeList',  [auth.login], function (request, response, next) {
     programController.getTypeList(request, response, next);
 });

@@ -13,7 +13,7 @@ let DataProvider = {
         filter = {...filter, status:1}
         orderBy = [['name', 'ASC']]
       }
-      await conn.ProgramTypes.findAndCountAll({
+      await conn.ProgramTypes.findAll({
         attributes:columns,
         where: filter,
         order: orderBy,

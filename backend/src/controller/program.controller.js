@@ -107,7 +107,7 @@ let ProgramController = {
     
     getProgramddList: async (request, response, next) => {
         try {
-            let data = await programService.getProgramddList(true);
+            let data = await programService.getProgramddList();
             const rows = data.rows.map((r) => r.get({ plain: true }));
                            
             console.log('lit >>>>>>>:::', rows);

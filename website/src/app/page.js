@@ -1,8 +1,7 @@
 
 import media from "@/lib/media";
-import { getHomePage } from "@/lib/api/home";
+import { getHomePage } from "@/lib/api";
 
-import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import Banner from "@/Components/home/Banner";
 import About from "@/Components/home/About";
@@ -30,7 +29,6 @@ export default async function HomePage() {
   return (
     <main>
       <div>
-      <Navbar homeData={homeData} />
       <Banner data={homeData.PageBanners?.[0]} />
 
       <About data={homeData.PageAbouts?.[0]} />
@@ -70,10 +68,8 @@ export default async function HomePage() {
       <ZigZagSection  homeData={homeData} data={homeData.PageZigZags}/>
 
       <FeatureSection data={homeData.PageFeatures}/>
-
       
-      </div>      
-      <Footer/>
+      </div>   
     </main>
     
   );
