@@ -18,6 +18,31 @@ let DataProvider = {
         });
     });
   },
+  getHomePageProgramList: async () => {
+    return new Promise(async function (resolve, reject) {
+      let columns = ["id", "name", "title", "shortDesc", "fileUrl"];        
+      await conn.Programs.findAll({
+        attributes:columns,
+        where: { status: 1, showRecord : 1 },
+        include: [
+            {
+                model: conn.ProgramTypes,
+                attributes: ["id", "name"],
+                required: true,
+            }
+        ],
+        order: [ ['id', 'DESC']],
+        raw: true,
+        // logging:console.log
+      })
+        .then(async data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  
   getProgramList: async (all = false) => {
     return new Promise(async function (resolve, reject) {
       // console.log('search', search);

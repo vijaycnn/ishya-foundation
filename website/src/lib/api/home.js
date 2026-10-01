@@ -1,4 +1,4 @@
-import { completeSoftNavigation } from "next/dist/client/components/segment-cache/navigation";
+// import { completeSoftNavigation } from "next/dist/client/components/segment-cache/navigation";
 
 const API_BASE_URL = process.env.API_BASE_URL;
 
@@ -12,7 +12,6 @@ export async function getHomePage() {
   const response = await fetch(url, {
     next: {
       revalidate: 300,
-      // tags: ["home-page"],
     },
   });
 
@@ -31,5 +30,8 @@ export async function getHomePage() {
     );
   }
 
+  console.log("HOME API RESULT >>>", result);
+  console.log("HOME PAGE LIST >>>", result?.data[0]);
+  console.log("partners >>>", result?.data[0]?.partners);
   return result?.data?.[0] || null;
 }

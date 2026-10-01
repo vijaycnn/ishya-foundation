@@ -7,10 +7,11 @@ import Logo from "../Images/IshyaLogo.png";
 import { FaSearch, FaHandsHelping, FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 
-const Navbar = () => {
+const Navbar = ({homeData}) => {
   const [openMenus, setOpenMenus] = useState({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // console.log('homeData nav >>>>>>>', homeData);
   const handleMouseEnter = (menuName) => {
     setOpenMenus({ ...openMenus, [menuName]: true });
   };
@@ -60,7 +61,7 @@ const Navbar = () => {
           <ul className="navbar-left">
             <li>
               <a href="tel:9871005650">
-                <span>+919871005650</span>
+                <span>{homeData.contactNumber}</span>
               </a>
             </li>
           </ul>

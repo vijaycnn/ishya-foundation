@@ -1,6 +1,9 @@
 var momentz = require('moment-timezone');
 const responder = require('../utils/responder');
 const pageService = require('../services/page.service');
+const programService = require('../services/program.service');
+const testimonialService = require('../services/mentor.service');
+const partnerService = require('../services/partner.service');
 const moment = require('moment');
 
 const { S3Client,  GetObjectCommand } = require("@aws-sdk/client-s3");
@@ -20,8 +23,52 @@ let PageController = {
             console.log("Page type >>>", type);
 
             const data = await pageService.getPageData(type, true);
-
             const rows = data.rows?.map((row) => row.get({ plain: true }) ) || [];
+
+            const programData = await programService.getHomePageProgramList();
+
+            const testimonialData = await testimonialService.getHomePageTestimonialList();
+
+            const partnerData = await partnerService.getHomePagePartnerList();
+            
+
+
+            // console.log("programData >>>", programData);
+
+            const programDataWithSignedUrls = await Promise.all(
+                (programData || []).map(async (program) => {
+                    // Convert Sequelize instance to plain object
+                    const programObj = program.get ? program.get({ plain: true }) : program;
+
+                    // console.log("program row >>>", programObj);
+                    const fileViewUrl = programObj.fileUrl ? await PageController.generateSignedUrl(programObj.fileUrl) : null;
+                    return {...programObj, fileViewUrl, };
+                })
+            );
+            // console.log('programs .....', programDataWithSignedUrls);
+
+            const testimomialDataWithSignedUrls = await Promise.all(
+                (testimonialData || []).map(async (program) => {
+                    // Convert Sequelize instance to plain object
+                    const programObj = program.get ? program.get({ plain: true }) : program;
+
+                    // console.log("test row >>>", programObj);
+                    const fileViewUrl = programObj.fileUrl ? await PageController.generateSignedUrl(programObj.fileUrl) : null;
+                    return {...programObj, fileViewUrl, };
+                })
+            );
+
+            const partnerDataWithSignedUrls = await Promise.all(
+                (partnerData || []).map(async (program) => {
+                    // Convert Sequelize instance to plain object
+                    const programObj = program.get ? program.get({ plain: true }) : program;
+
+                    // console.log("test row >>>", programObj);
+                    const fileViewUrl = programObj.fileUrl ? await PageController.generateSignedUrl(programObj.fileUrl) : null;
+                    return {...programObj, fileViewUrl, };
+                })
+            );
+
 
             const filterRow = await Promise.all(
                 rows.map(async (row) => {
@@ -86,6 +133,10 @@ let PageController = {
                         about.fileViewUrl1 = aboutUrl1;
                         about.fileViewUrl2 = aboutUrl2;
                     }
+
+                    row.projects = programDataWithSignedUrls;
+                    row.testimonials = testimomialDataWithSignedUrls;
+                    row.partners = partnerDataWithSignedUrls;
 
                     return row;
                 })

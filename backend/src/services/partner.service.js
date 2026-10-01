@@ -2,6 +2,22 @@ const { QueryTypes } = require('sequelize');
 
 let DataProvider = {
 
+  getHomePagePartnerList: async () => {
+    return new Promise(async function (resolve, reject) {       
+      await conn.Partners.findAll({
+        attributes: ["id", "fileUrl"],
+        where: { status: 1, },
+        order: [ ['id', 'DESC']],
+        raw: true,
+        // logging:console.log
+      })
+        .then(async data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
   createPartner: async (body) => {
     return new Promise(function (resolve, reject) {
       conn.Partners.create(body)
