@@ -122,7 +122,7 @@ function EditProgram() {
         // console.log(">>> ", response.data);
         setLoading(false);
         if (response.data.status === "success") {
-          setTypeList(response?.data?.data?.rows);
+          setTypeList(response?.data?.data);
         }
       })
       .catch((error) => {

@@ -1,4 +1,4 @@
-// import { completeSoftNavigation } from "next/dist/client/components/segment-cache/navigation";
+import { completeSoftNavigation } from "next/dist/client/components/segment-cache/navigation";
 
 const API_BASE_URL = process.env.API_BASE_URL;
 
@@ -11,7 +11,8 @@ export async function getHomePage() {
 
   const response = await fetch(url, {
     next: {
-      revalidate: 300,
+      revalidate: 30,     //300
+      // tags: ["home-page"],
     },
   });
 

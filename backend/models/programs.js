@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Programs.belongsTo(models.ProgramTypes, {foreignKey: 'programTypeId'});
       Programs.hasMany(models.ProgramNeeds, {foreignKey: "programId"});
+      Programs.hasMany(models.Mentors, {foreignKey: "programId"});
     //   Programs.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
     }
   }

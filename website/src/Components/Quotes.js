@@ -9,7 +9,7 @@ import QDR from '../Images/QuoteDesignRight.png';
 // The Quote component now accepts the text and renders static images.
 const Quotes = ({ quote }) => {
   // Split the quote by newlines
-  const quoteLines = quote.split("\n");
+  // const quoteLines = quote.split("\n");
 
   return (
     <div className="quotes-container">
@@ -20,9 +20,15 @@ const Quotes = ({ quote }) => {
         loading="lazy"
       />
       <div className="quote-text">
-        {quoteLines.map((line, index) => (
+        {              
+          (quote) ?
+          <>
+          <div dangerouslySetInnerHTML={{ __html: quote || "" }} />
+          </>: ''
+        }        
+        {/* {quoteLines.map((line, index) => (
           <p key={index}>{line}</p> // Render each line in a separate <p> element
-        ))}
+        ))} */}
       </div>
       <img
         src={media(QDR)} // Static bottom-right image

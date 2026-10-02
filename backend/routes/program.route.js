@@ -6,10 +6,11 @@ const auth = require('../middleware/auth');
 // const uservalidate = require('../middleware/validate.middelware');
 
 router.get('/getList', function (request, response, next) {
-    // console.log('list route reached', request.body);
     programController.getList(request, response, next);
 });
-
+router.get('/detail/:programId', function (request, response, next) {
+    programController.getProgramDetailsById(request, response, next);
+});
 
 router.get('/menuList',  function (request, response, next) {
     programController.getTypeList(request, response, next);

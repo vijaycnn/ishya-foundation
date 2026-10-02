@@ -92,8 +92,9 @@ function AddProgram() {
     await axiosInstance.get(`/program/typeList`)
       .then((response) => {
         setLoading(false);
+        // console.log('type response ', response?.data)
         if (response.data.status === "success") {
-          setTypeList(response?.data?.data?.rows);
+          setTypeList(response?.data?.data);
         }
       })
       .catch((error) => {

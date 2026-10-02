@@ -55,3 +55,23 @@ export async function getLearningPage() {
   console.log("API RESULT >>>", result);
   return result?.data || null;
 }
+
+export async function getAllProgram() { 
+  
+  const result = await callAPI(`/program/getList`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  console.log("API RESULT >>>", result);
+  return result?.data || null;
+}
+
+export async function getProgramPage(programId) { 
+  
+  const result = await callAPI(`/program/detail/${programId}`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  console.log("API RESULT >>>", result);
+  return result?.data || null;
+}

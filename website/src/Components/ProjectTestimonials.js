@@ -6,9 +6,10 @@ import { useParams } from "next/navigation";
 import '../Styles/ProjectTestimonials.css'; // You can place the CSS in a separate file
 import projects from '../views/ProjectsData';
 
-const ProjectTestimonials = () => {
-  const { id } = useParams();
-  const project = projects.find((proj) => proj.id === parseInt(id));
+const ProjectTestimonials = ( {testimonials} ) => {
+  
+  // const { id } = useParams();
+  // const project = projects.find((proj) => proj.id === parseInt(id));
 
   const [showMore, setShowMore] = useState(false);
 
@@ -18,27 +19,34 @@ const ProjectTestimonials = () => {
   };
 
   // If project data is not found
-  if (!project) {
-    return <h2>Project not found!</h2>;
+  if (!testimonials) {
+    return <h2>Testimonial not found!</h2>;
   }
 
   return (
     <div className="testimonials-container">
       <div className="testimonials-header">
-        <h2>{project.testimonials.heading}</h2>
-        <p>{project.testimonials.subheading}</p>
+        <h2>{testimonials.name}</h2>
+        <p>{testimonials.title}</p>
       </div>
 
       <div className="testimonials-tiles">
-        {project.testimonials.data.slice(0, showMore ? project.testimonials.data.length : 3).map((testimonial, index) => (
+        {testimonials.slice(0, showMore ? testimonials.length : 3).map((testimonial, index) => (
           <div key={index} className="testimonials-tile">
             <div className="testimonials-header">
-              <img src={media(testimonial.image)} alt={testimonial.name} className="testimonials-image"loading="lazy" />
+              {
+                (testimonial.fileUrl) ?
+                <>
+                <img src={media(testimonial?.fileViewUrl)} alt={testimonial.name} className="testimonials-image"loading="lazy" />
+                </>:
+                <>
+                </>
+              }
               <div className="testimonials-info">
                 <h3 className="testimonials-name">{testimonial.name}</h3>
-                <p className="testimonials-occupation">{testimonial.occupation}</p>
+                <p className="testimonials-occupation">{testimonial.title}</p>
                 <div className="testimonials-stars">
-                  {Array.from({ length: testimonial.stars }, (_, starIndex) => (
+                  {Array.from({ length: testimonial.rating }, (_, starIndex) => (
                     <span key={starIndex} className="star">★</span>
                   ))}
                 </div>
@@ -49,8 +57,13 @@ const ProjectTestimonials = () => {
               <span className="quote-symbol">“</span>
               <div className="quote-line"></div>
             </div>
-
-            <p className="testimonials-paragraph">{testimonial.paragraph}</p>
+            {              
+              (testimonial.remark1) ?
+              <>
+              <div dangerouslySetInnerHTML={{ __html: testimonial.remark1 || "" }} />
+              </>: ''
+            }
+            {/* <p className="testimonials-paragraph">{testimonial.paragraph}</p> */}
           </div>
         ))}
       </div>
