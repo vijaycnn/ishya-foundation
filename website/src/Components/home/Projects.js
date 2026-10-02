@@ -43,7 +43,7 @@ const LatestProjects = ( {homeData, data } ) => {
               <p className="projectS-category">{project['ProgramType.name']}</p>
               <h3 className="projectS-title">{project.name}</h3>
               <p className="projectS-description">{project.shortDesc}</p>
-              <Link href="#" className="read-more-btn-projects">Read more</Link>
+              <Link href={`project/${project.id}`} className="read-more-btn-projects">Read more</Link>
             </div>
           </div>
         ))}
