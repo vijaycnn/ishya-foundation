@@ -2,10 +2,9 @@
 
 import media from "@/lib/media";
 import React from "react";
-import "../../Styles/ZigZagSection.css"; 
+import "../../Styles/ZigZagSection.css";
 
-const ZigZagSection = ({homeData, data}) => {
-
+const ZigZagSection = ({ homeData, data }) => {
   const zigzags = data;
   // console.log("zigzag DATA >>>",  homeData, zigzags.length, zigzags);
 
@@ -16,25 +15,23 @@ const ZigZagSection = ({homeData, data}) => {
     <div className="zigzag-container">
       {/* First Section - Image Right, Text Left */}
 
-      
-          <h2 className="zigzag-heading">{homeData?.zigzagTitle }</h2>
+      {/* <h2 className="zigzag-heading">{homeData?.zigzagTitle}</h2> */}
 
       {zigzags.map((zigzag, index) => (
-          <div key={zigzag.id} >
-            <div className="zigzag-image rightt">
-              <img
-              src={media(zigzag.fileViewUrl)}
-              alt="image"
-              loading="lazy"
-            />
-            </div>
-          <div className="projectS-content">
-            {              
-              (zigzag.remarks) ?
+        <div key={zigzag.id} className="zigzag-section">
+          <div className="zigzag-image rightt">
+            <img src={media(zigzag.fileViewUrl)} alt="image" loading="lazy" />
+          </div>
+          <div className="zigzag-text">
+            {zigzag.remarks ? (
               <>
-              <div dangerouslySetInnerHTML={{ __html: zigzag.remarks || "" }} />
-              </>: ''
-            }
+                <div
+                  dangerouslySetInnerHTML={{ __html: zigzag.remarks || "" }}
+                />
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       ))}
@@ -76,8 +73,6 @@ const ZigZagSection = ({homeData, data}) => {
           <img src={media(Image3)} alt="Childen celebrating holi" loading="lazy" />
         </div>
       </div> */}
-
-
     </div>
   );
 };

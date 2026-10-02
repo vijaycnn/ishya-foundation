@@ -1,16 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap");
+:root {
+  overflow-wrap: anywhere;
+}
 body {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 20;
+  font-family: "Montserrat", sans-serif;
+  /* font-size: 20; */
 }
 
 .App {
   text-align: left;
 }
 /* Apply Playfair Display globally */
-h1,h2,h3,h4,h5,h6 {
-  font-family: 'Playfair Display', serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Playfair Display", serif;
 }
 
 .App-logo {
@@ -21,7 +28,7 @@ h1,h2,h3,h4,h5,h6 {
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
-  } 
+  }
 }
 
 .App-header {
