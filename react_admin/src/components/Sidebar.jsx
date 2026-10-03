@@ -76,6 +76,13 @@ const Sidebar = () => {
                 <span className="nav-link-text">Home Page</span>
                 </Link>
 
+              <Link to={`${adminAlias}/aboutpage`} className={`nav-link ${ isActive([`${adminAlias}/aboutpage`]) ? "active" : "" }`} >
+                <span className="nav-link-icon">
+                  <BiImages />
+                </span>
+                <span className="nav-link-text">About Page</span>
+                </Link>  
+
 
                 <Link
                   to={`${adminAlias}/programs`}

@@ -9,14 +9,15 @@ router.get('/detail/:type',  function (request, response, next) {
     pageController.getHomePage(request, response, next);
 });
 
+router.get('/getList:type', function (request, response, next) {
+    // console.log('list route reached', request.body);
+    pageController.getFrontList(request, response, next);
+});
+
 ///////////////////////////// pageData /////////////////////
 router.get('/:type',  [auth.login], function (request, response, next) {
     console.log('pageData route reached', request.body);
     pageController.getPageData(request, response, next);
-});
-router.get('/getList:type', function (request, response, next) {
-    // console.log('list route reached', request.body);
-    pageController.getFrontList(request, response, next);
 });
 router.post("/valid", [auth.login], function (request, response, next) {
     pageController.checkValid(request, response, next)
@@ -70,6 +71,19 @@ router.post("/zigzag/save", [auth.login], function (request, response, next) {
 /////////////pageFeature /////////////
 router.post("/feature/save", [auth.login], function (request, response, next) {
     pageController.saveFeature(request, response, next)
+});
+
+/////////////pageFounder /////////////
+router.post("/addPagefounder", [auth.login], function (request, response, next) {
+    pageController.addPagefounder(request, response, next)
+});
+router.post("/updatePagefounder", [auth.login], function (request, response, next) {
+    pageController.updatePagefounder(request, response, next)
+});
+
+/////////////pageTeam /////////////
+router.post("/team/save", [auth.login], function (request, response, next) {
+    pageController.saveTeam(request, response, next)
 });
 
 router.get("/getById/:pageType/:mentorId", [auth.login], function (request, response, next) {

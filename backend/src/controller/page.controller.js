@@ -330,6 +330,29 @@ let PageController = {
                             })
                         );                    
                     }
+                    if (row.PageFounders && row.PageFounders.length > 0) {
+
+                        const founder = row.PageFounders[0];
+                        if (founder.fileUrl1) {
+                            founder.fileViewUrl1 = await PageController.generateSignedUrl(founder.fileUrl1);
+                        }
+                        if (founder.fileUrl2) {
+                            founder.fileViewUrl2 = await PageController.generateSignedUrl(founder.fileUrl2);
+                        }
+                    }                    
+                    if(row.PageTeams && row.PageTeams.length > 0){
+                        //fetch here signed url for each row
+                        row.PageTeams = await Promise.all(
+                            row.PageTeams.map(async (item) => {
+
+                                if (item.fileUrl) {
+                                    item.fileViewUrl = await PageController.generateSignedUrl(item.fileUrl);
+                                }
+                                return item;
+                            })
+                        );                    
+                    }
+
                     return row;
                 })
             );                
@@ -565,8 +588,6 @@ let PageController = {
                         title, title2, title3, remarks,
                         fileUrlTxt1,
                         fileUrlTxt2,
-                        fileUrl1: fileUrl1,
-                        fileUrl2: fileUrl2,
                         tagTitle1,
                         tagDescription1,
                         tagTitle2,
@@ -649,8 +670,6 @@ let PageController = {
                         title, title2, title3, remarks,
                         fileUrlTxt1,
                         fileUrlTxt2,
-                        fileUrl1: fileUrl1,
-                        fileUrl2: fileUrl2,
                         tagTitle1,
                         tagDescription1,
                         tagTitle2,
@@ -731,7 +750,8 @@ let PageController = {
         } catch (error) {
             return next(error);
         }
-    }, 
+    },
+    ////////////////////PageZigZag////////////////     
     saveZigZag: async (request, response, next) => {
         try {
             const result = await pageService.saveZigZag(request.body,request);
@@ -748,6 +768,7 @@ let PageController = {
             return next(error);
         }
     },
+    ////////////////////PageFeature////////////////    
     saveFeature: async (request, response, next) => {
         try {
             const result = await pageService.saveFeature(request.body,request);
@@ -765,6 +786,135 @@ let PageController = {
         }
     },
 
+    ///////////////PageFounder ////////////////////
+    addPagefounder: async (request, response, next) => {
+        try {
+            // console.log('create controller reached', request.body, request.user);
+            if(!request.body.pageId || request.body.pageId == null ){
+                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
+            }
+
+            if( (!request.body.name1 || request.body.name1.trim() == '') && ( !request.body.designation1 || request.body.designation1.trim() == '') && (!request.body.title || request.body.title.trim() == '') ){
+                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
+            }
+
+            if( request.body.fileUrl1.trim() == ''){
+                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
+            }
+            //saved here
+            {
+                const title = (request.body.title || "").trim();
+                const name1 = (request.body.name1 || "").trim();
+                const designation1 = (request.body.designation1 || "").trim();
+                const name2 = (request.body.name2 || "").trim();
+                const designation2 = (request.body.designation2 || "").trim();
+                const remarks = (request.body.remarks || "").trim();
+
+                const fileUrl1 = (request.body.fileUrl1 || "").trim();
+                const fileUrl2 = (request.body.fileUrl2 || "").trim();
+
+                const data = {
+                    pageId: request.body.pageId,
+                    title, name1, designation1,
+                    name2, designation2, remarks,
+                    fileUrl1: fileUrl1,
+                    fileUrl2: fileUrl2,
+                    createdBy: request.user.userId
+                };
+                let added = await pageService.addPagefounder(data);
+                if (added){
+                    added = {
+                        id : added?.id,
+                        pageId: request.body.pageId,
+                        title, name1, designation1,
+                        name2, designation2, remarks,
+                        fileUrl1: fileUrl1,
+                        fileViewUrl1: (fileUrl1 != '') ? await PageController.generateSignedUrl (fileUrl1) : '',
+                        fileUrl2: fileUrl2,
+                        fileViewUrl2: (fileUrl2 != '') ? await PageController.generateSignedUrl (fileUrl2) : '',
+                    }
+                    // console.log('>>>>>', added);
+                    return responder.sendResponse(response, 200, "success", added, "Founder content saved successfully.");
+                }
+                return responder.sendResponse(response, 200, "error", '', "Founder content save failed!");                
+            }
+        } catch (error) {
+            return next(error);
+        }
+    },
+    updatePagefounder: async (request, response, next) => {
+        try {
+            // console.log('create controller reached', request.body, request.user);
+            if(!request.body.pageId || request.body.pageId == null || !request.body.founderId || request.body.founderId == null){
+                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
+            }
+
+            if( (!request.body.name1 || request.body.name1.trim() == '') && ( !request.body.designation1 || request.body.designation1.trim() == '') && (!request.body.title || request.body.title.trim() == '') ){
+                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
+            }
+
+            if( request.body.fileUrl1.trim() == ''){
+                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
+            }
+            
+            {
+                const title = (request.body.title || "").trim();
+                const name1 = (request.body.name1 || "").trim();
+                const designation1 = (request.body.designation1 || "").trim();
+                const name2 = (request.body.name2 || "").trim();
+                const designation2 = (request.body.designation2 || "").trim();
+                const remarks = (request.body.remarks || "").trim();
+
+                const fileUrl1 = (request.body.fileUrl1 || "").trim();
+                const fileUrl2 = (request.body.fileUrl2 || "").trim();
+
+                const data = {
+                    title, name1, designation1,
+                    name2, designation2, remarks,
+                    fileUrl1: fileUrl1,
+                    fileUrl2: fileUrl2,
+                    updatedBy: request.user.userId
+                };
+
+                let updated = await pageService.editPagefounder(request.body.founderId, data);
+                if (updated){
+                    updated = {
+                        id :request.body.founderId,
+                        pageId: request.body.pageId,
+                        title, name1, designation1,
+                        name2, designation2, remarks,
+                        fileUrl1: fileUrl1,
+                        fileViewUrl1: (fileUrl1 != '') ? await PageController.generateSignedUrl (fileUrl1) : '',
+                        fileUrl2: fileUrl2,
+                        fileViewUrl2: (fileUrl2 != '') ? await PageController.generateSignedUrl (fileUrl2) : '',                       
+                    }
+                    // console.log('>>>>>', updated);
+                    return responder.sendResponse(response, 200, "success", updated, "Founder content updated successfully.");
+                }
+                return responder.sendResponse(response, 200, "error", '', "Founder content updation failed!");
+            }
+        } catch (error) {
+            return next(error);
+        }
+    },
+
+    ////////////////////PageTeam////////////////    
+    saveTeam: async (request, response, next) => {
+        try {
+            const result = await pageService.saveTeam(request.body,request);
+
+            return response.status(200).json({
+                status: "success",
+                data: result,
+                message:"Team details saved successfully.",
+            });
+
+        } catch (error) {
+            console.error("saveTeam controller error:",error);
+
+            return next(error);
+        }
+    },
 
     ///////////////PageVideo ////////////////////    
     addPagevideo: async (request, response, next) => {

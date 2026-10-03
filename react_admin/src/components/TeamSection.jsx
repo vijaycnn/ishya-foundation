@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Card, Form, Button, Row, Col, Alert } from "react-bootstrap";
-
 import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
 
 import axiosInstance from "../helper/constants/axiosInstance";
-import { isQuillEmpty } from "../helper/validation";
-
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 
-const MAX_ITEMS = 4;
 
 const emptyItem = {
   id: 0,
   fileUrl: "",
   fileViewUrl: "",
   file: null,
-  remarks: "",
   orderNumber: 1,
 };
 
 const initialData = {
-  title: "",
   items: [],
 };
 
@@ -38,12 +30,14 @@ const allowedTypes = [
   "image/tiff",
 ];
 
-const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
-const MAX_IMAGE_SIZE_LBL = "10 MB";
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_IMAGE_SIZE_LBL = "5 MB";
 
-const ZigZagSection = ({ data, pageId, onChange }) => {
+const TeamSection = ({ data, pageId, onChange }) => {
   const navigate = useNavigate();
-  console.log('zigzag data ', pageId, data);
+
+
+  const MAX_ITEMS = 15;
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -51,15 +45,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
   const [previewUrls, setPreviewUrls] = useState({});
 
-  /*
-   * Existing DB records removed by the user.
-   * They will be soft-deleted when Save is clicked.
-   */
   const [deletedIds, setDeletedIds] = useState([]);
-
-  // --------------------------------------------------
-  // Logout
-  // --------------------------------------------------
 
   const handleLogout = () => {
     sessionStorage.removeItem("isAuthenticated");
@@ -69,24 +55,16 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
     navigate(adminAlias);
   };
 
+  const sectionData = {
+    ...initialData,
+    ...(data || {}),
+    items: Array.isArray(data?.items) ? data.items : [],
+  };
+
   // --------------------------------------------------
-  // Section data
+  // Stable key for each item
   // --------------------------------------------------
 
-  // const sectionData = {
-  //   ...initialData,
-  //   ...(data || {}),
-  //   items: Array.isArray(data?.items) ? data.items : [],
-  // };
-
-  const [sectionData, setSectionData] = useState(initialData);
-  useEffect(() => {
-    setSectionData({
-      title: data?.title ?? "",
-      items: Array.isArray(data?.items) ? data.items : [],
-    });
-  }, [data]);
-  
   const getItemKey = (item, index) => {
     if (item?.id && Number(item.id) > 0) {
       return `id-${item.id}`;
@@ -100,54 +78,28 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
   };
 
   // --------------------------------------------------
-  // Title
+  // Update parent state
   // --------------------------------------------------
 
-  // const handleTitleChange = (value) => {
-  //   updateSection({
-  //     ...sectionData,
-  //     title: value,
-  //   });
-  // };
-
-  const handleTitleChange = (value) => {
-    setSectionData((prev) => ({
-      ...prev,
-      title: value,
-    }));
+  const updateSection = (updatedData) => {
+    onChange(updatedData);
   };
 
   // --------------------------------------------------
   // Item change
   // --------------------------------------------------
 
-  // const handleItemChange = (index, field, value) => {
-  //   const items = [...sectionData.items];
-
-  //   items[index] = {
-  //     ...items[index],
-  //     [field]: value,
-  //   };
-
-  //   updateSection({
-  //     ...sectionData,
-  //     items,
-  //   });
-  // };
-
   const handleItemChange = (index, field, value) => {
-    setSectionData((prev) => {
-      const items = [...prev.items];
+    const items = [...sectionData.items];
 
-      items[index] = {
-        ...items[index],
-        [field]: value,
-      };
+    items[index] = {
+      ...items[index],
+      [field]: value,
+    };
 
-      return {
-        ...prev,
-        items,
-      };
+    updateSection({
+      ...sectionData,
+      items,
     });
   };
 
@@ -175,14 +127,10 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
       orderNumber: sectionData.items.length + 1,
     };
 
-    // updateSection({
-    //   ...sectionData,
-    //   items: [...sectionData.items, newItem],
-    // });
-    setSectionData((prev) => ({
-      ...prev,
-      items: [...prev.items, newItem],
-    }));
+    updateSection({
+      ...sectionData,
+      items: [...sectionData.items, newItem],
+    });
   };
 
   // --------------------------------------------------
@@ -230,14 +178,10 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
         orderNumber: itemIndex + 1,
       }));
 
-    // updateSection({
-    //   ...sectionData,
-    //   items,
-    // });
-    setSectionData((prev) => ({
-      ...prev,
+    updateSection({
+      ...sectionData,
       items,
-    }));
+    });
   };
 
   // --------------------------------------------------
@@ -260,14 +204,10 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
       orderNumber: itemIndex + 1,
     }));
 
-    // updateSection({
-    //   ...sectionData,
-    //   items: reorderedItems,
-    // });
-    setSectionData((prev) => ({
-      ...prev,
-      items: reorderedItems
-    }));
+    updateSection({
+      ...sectionData,
+      items: reorderedItems,
+    });
   };
 
   // --------------------------------------------------
@@ -317,6 +257,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
         [itemKey]: previewUrl,
       };
     });
+
     handleItemChange(index, "file", file);
 
     // Allow selecting same file again
@@ -387,16 +328,11 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
       setSaving(true);
 
       if (!pageId) {
-        throw new Error("Home Page ID is not available.");
-      }
-
-      const title = sectionData.title?.trim();
-      if (!title) {
-        throw new Error("Please enter Zig-Zag section title.");
+        throw new Error("Page ID is not available.");
       }
 
       if (sectionData.items.length === 0) {
-        throw new Error("Please add at least one Zig-Zag subsection.");
+        throw new Error("Please add at least one team image.");
       }
 
       // ------------------------------------------
@@ -404,12 +340,9 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
       // ------------------------------------------
 
       sectionData.items.forEach((item, index) => {
+        
         if (!item.fileUrl && !item.file) {
-          throw new Error(`Please upload image for Sub Section ${index + 1}.`);
-        }
-
-        if (isQuillEmpty(item.remarks)) {
-          throw new Error(`Please enter remarks for Sub Section ${index + 1}.`);
+          throw new Error(`Please upload image for Section ${index + 1}.`);
         }
       });
 
@@ -418,7 +351,6 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
       // ------------------------------------------
 
       const items = [];
-
       for (const item of sectionData.items) {
         let fileUrl = item.fileUrl || "";
 
@@ -427,14 +359,9 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
           fileUrl = uploaded.fileUrl;
         }
-
         items.push({
           id: item.id || 0,
-
           fileUrl,
-
-          remarks: isQuillEmpty(item.remarks) ? "" : item.remarks,
-
           orderNumber: item.orderNumber,
         });
       }
@@ -445,21 +372,20 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
       const payload = {
         pageId,
-
-        zigzagTitle: title,
-
         items,
-
         deletedIds,
       };
 
-      const response = await axiosInstance.post("/page/zigzag/save", payload);
+      const response = await axiosInstance.post("/page/team/save", payload);
 
       if (response.data?.status !== "success") {
         throw new Error(
-          response.data?.message || "Unable to save Zig-Zag section.",
+          response.data?.message || "Unable to save Team section.",
         );
       }
+      ////////////////////////////////////////////////////////////////////
+
+      /////////////////////////////////////
       // ------------------------------------------
       // Update frontend state after Save
       // ------------------------------------------
@@ -522,28 +448,16 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
       });
 
       // Update parent
-      // updateSection({
-      //   title: response.data?.data?.zigzagTitle || title,
-
-      //   items: finalItems,
-      // });
-
-      const finalSectionData = {
-        title: response.data?.data?.zigzagTitle || title,
+      updateSection({
         items: finalItems,
-      };
-
-      setSectionData(finalSectionData);
-
-      // Tell parent only after successful save
-      onChange(finalSectionData);
+      });
       ///////////////////////////////////////
 
       setDeletedIds([]);
 
-      setSuccess("Zig-Zag section saved successfully.");
+      setSuccess("Team section saved successfully.");
     } catch (err) {
-      console.error("Save Zig-Zag error:", err);
+      console.error("Save Team error:", err);
 
       if (err?.response?.status === 403) {
         handleLogout();
@@ -553,7 +467,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
       setError(
         err?.response?.data?.message ||
           err?.message ||
-          "Unable to save Zig-Zag section.",
+          "Unable to save Team section.",
       );
     } finally {
       setSaving(false);
@@ -579,7 +493,6 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
   return (
     <Card>
       <Card.Body>
-
         {/* Error */}
 
         {error && (
@@ -596,25 +509,10 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
           </Alert>
         )}
 
-        {/* Section Title */}
-
-        <Form.Group className="mb-4">
-          <Form.Label>
-            Title<span className="text-danger">*</span>
-          </Form.Label>
-
-          <Form.Control
-            type="text"
-            value={sectionData.title}
-            onChange={(e) => handleTitleChange(e.target.value)}
-            placeholder="Enter section title"
-          />
-        </Form.Group>
-
         {/* Sub Sections Header */}
 
         <div className="d-flex justify-content-between align-items-center mb-3">
-          <h6 className="mb-0">Sub Sections</h6>
+          <h6 className="mb-0"></h6>
 
           <Button
             variant="primary"
@@ -622,14 +520,14 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
             onClick={addItem}
             disabled={sectionData.items.length >= MAX_ITEMS}
           >
-            <span className="nav-link-text">+ Add Sub Section</span>
+            <span className="nav-link-text">+ Add Section</span>
           </Button>
         </div>
 
         {/* Empty */}
 
         {sectionData.items.length === 0 && (
-          <Alert variant="info">No zig-zag subsection added yet.</Alert>
+          <Alert variant="info">No section added yet.</Alert>
         )}
 
         {/* Items */}
@@ -649,7 +547,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
             <Card key={itemKey} className="mb-3">
               <Card.Header>
                 <div className="d-flex justify-content-between align-items-center">
-                  <strong>Sub Section {index + 1}</strong>
+                  <strong>Section {index + 1}</strong>
 
                   <div className="d-flex gap-1">
                     {/* Move Up */}
@@ -689,11 +587,14 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
               <Card.Body>
                 <Row>
+                    
                   {/* Image */}
 
                   <Col md={4}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Image</Form.Label>
+                      <Form.Label>
+                        Image<span className="text-danger">*</span>
+                      </Form.Label>
 
                       <Form.Control
                         type="file"
@@ -720,22 +621,6 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
                       )}
                     </Form.Group>
                   </Col>
-
-                  {/* Remarks */}
-
-                  <Col md={8}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Remarks</Form.Label>
-
-                      <ReactQuill
-                        theme="snow"
-                        value={item.remarks || ""}
-                        onChange={(content) =>
-                          handleItemChange(index, "remarks", content)
-                        }
-                      />
-                    </Form.Group>
-                  </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -746,7 +631,7 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
 
         {sectionData.items.length > 0 && (
           <div className="text-muted mt-2">
-            {sectionData.items.length} / {MAX_ITEMS} subsections added
+            {sectionData.items.length} / {MAX_ITEMS} sections added
           </div>
         )}
 
@@ -766,4 +651,4 @@ const ZigZagSection = ({ data, pageId, onChange }) => {
   );
 };
 
-export default ZigZagSection;
+export default TeamSection;

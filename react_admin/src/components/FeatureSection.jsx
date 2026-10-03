@@ -44,6 +44,8 @@ const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
 const MAX_IMAGE_SIZE_LBL = "10 MB";
 
 const FeatureSection = ({ data, pageId, onChange }) => {
+
+  console.log('feature data ', pageId, data);
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
@@ -91,17 +93,6 @@ const FeatureSection = ({ data, pageId, onChange }) => {
   const updateSection = (updatedData) => {
     onChange(updatedData);
   };
-
-  // --------------------------------------------------
-  // Title
-  // --------------------------------------------------
-
-  // const handleTitleChange = (value) => {
-  //     updateSection({
-  //         ...sectionData,
-  //         title: value,
-  //     });
-  // };
 
   // --------------------------------------------------
   // Item change
@@ -346,7 +337,7 @@ const FeatureSection = ({ data, pageId, onChange }) => {
       setSaving(true);
 
       if (!pageId) {
-        throw new Error("Home Page ID is not available.");
+        throw new Error("Page ID is not available.");
       }
 
       if (sectionData.items.length === 0) {
@@ -648,7 +639,7 @@ const FeatureSection = ({ data, pageId, onChange }) => {
                       </Form.Label>
                       <Form.Control
                         type="text"
-                        value={sectionData.title}
+                        value={item.title || ""}
                         onChange={(e) =>
                           handleItemChange(index, "title", e.target.value)
                         }
@@ -662,7 +653,7 @@ const FeatureSection = ({ data, pageId, onChange }) => {
                       <Form.Label>Button Text</Form.Label>
                       <Form.Control
                         type="text"
-                        value={sectionData.btnText}
+                        value={item.btnText || ""}
                         onChange={(e) =>
                           handleItemChange(index, "btnText", e.target.value)
                         }
@@ -676,7 +667,7 @@ const FeatureSection = ({ data, pageId, onChange }) => {
                       <Form.Label>Button Link</Form.Label>
                       <Form.Control
                         type="text"
-                        value={sectionData.btnLink}
+                        value={item.btnLink || ""}
                         onChange={(e) =>
                           handleItemChange(index, "btnLink", e.target.value)
                         }
@@ -705,7 +696,7 @@ const FeatureSection = ({ data, pageId, onChange }) => {
                         <div className="mt-2">
                           <img
                             src={previewUrl}
-                            alt={`Zig-zag ${index + 1}`}
+                            alt={`Feature ${index + 1}`}
                             style={{
                               width: "100%",
                               maxHeight: "180px",

@@ -39,6 +39,16 @@ let DataProvider = {
             where: { status: 1},
             required: false
           },
+          {
+            model: conn.PageFounders,
+            where: { status: 1},
+            required: false
+          },
+          {
+            model: conn.PageTeams,
+            where: { status: 1},
+            required: false
+          },
         ],
         // raw: true,
         logging:console.log
@@ -412,9 +422,149 @@ let DataProvider = {
         throw error;
       }
   },
-  
   ///////End Page Feature //////////////
   
+  ///////Page Founder service //////////////
+  addPagefounder: async (body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageFounders.create(body)
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  editPagefounder: async (id, body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageFounders.update(body, {
+        where: { id: id },
+      })
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  ///////End Page Founder  ////////////////
+
+  ///////Page Team service //////////////
+  saveTeam: async (body, request) => {
+      const transaction = await conn.sequelize.transaction();
+
+      try {
+        const {
+          pageId,
+          items = [],
+          deletedIds = [],
+        } = body;
+
+        const userId = request.user?.userId || null;
+
+        // --------------------------------------
+        // Validate page
+        // --------------------------------------
+
+        const page = await conn.PageMasters.findOne({
+          where: {
+            id: pageId,
+            status: 1,
+          },
+          transaction,
+        });
+
+        if (!page) {
+          throw new Error("page record not found.");
+        }
+
+        // --------------------------------------
+        // Delete removed rows
+        // --------------------------------------
+
+        if (Array.isArray(deletedIds) && deletedIds.length > 0) {
+          await conn.PageTeams.update(
+            {
+              status: 0,
+              updatedBy: userId,
+            },
+            {
+              where: {
+                id: {
+                  [conn.Sequelize.Op.in]:
+                    deletedIds,
+                },
+                pageId,
+              },
+              transaction,
+            }
+          );
+        }
+
+        // --------------------------------------
+        // Create / Update
+        // --------------------------------------
+
+        const savedItems = [];
+
+        for (const item of items) {
+
+          const itemData = {
+            pageId,
+            fileUrl: item.fileUrl,
+            orderNumber: item.orderNumber,
+            status: 1,
+            updatedBy: userId,
+          };
+
+          if (item.id && Number(item.id) > 0) {
+
+            const [updatedCount] = await conn.PageTeams.update(
+                itemData,
+                {
+                  where: {
+                    id: item.id,
+                    pageId,
+                  },
+                  transaction,
+                }
+              );
+
+            if (updatedCount === 0) {
+              throw new Error( `Team item ${item.id} not found.`);
+            }
+
+            savedItems.push({id: item.id,...itemData,});
+
+          } else {
+
+            const created = await conn.PageTeams.create(
+                {...itemData, createdBy: userId, }, {transaction,}
+              );
+
+            savedItems.push(created);
+          }
+        }
+
+        // --------------------------------------
+        // Commit
+        // --------------------------------------
+
+        await transaction.commit();
+
+        return { items: savedItems,};
+
+      } catch (error) {
+
+        await transaction.rollback();
+
+        console.error("saveTeam service error:",error);
+
+        throw error;
+      }
+  },
+  ///////End Page Team //////////////
+
 
 
   getList: async (type, all = false) => {

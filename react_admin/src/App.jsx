@@ -31,6 +31,7 @@ import EditNews from "./pages/master/EditNews";
 import Gallery from "./pages/master/Gallery";
 import PartnerLogo from "./pages/master/PartnerLogo";
 import Homepage from "./pages/Homepage";
+import Aboutpage from "./pages/Aboutpage";
 
 ////////////////
 import Participate from "./pages/Participate";
@@ -110,6 +111,16 @@ function App() {
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <Layout setIsAuthenticated={setIsAuthenticated}>
                   <Homepage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/aboutpage`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Aboutpage />
                 </Layout>
               </ProtectedRoute>
             }

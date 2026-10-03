@@ -91,10 +91,10 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
         "3gp",
         "3g2",
     ];
-    const MAX_IMAGE_SIZE = 200 * 1024 * 1024; // 200 MB
-    const MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500 MB
-    const MAX_IMAGE_SIZE_LBL = "200 MB";
-    const MAX_VIDEO_SIZE_LBL = "500 MB";
+    const MAX_IMAGE_SIZE = 100 * 1024 * 1024; // 100 MB
+    const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100 MB
+    const MAX_IMAGE_SIZE_LBL = "100 MB";
+    const MAX_VIDEO_SIZE_LBL = "100 MB";
 
     const fileUploadEvent = (file) => {
       const selected = file; //e.target.files[0];
@@ -105,18 +105,18 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
         setBannerFormData((prev)=> ({
             ...prev, type: selected.type
         }));
-      //   if (!allowedVideoTypes.includes(selected.type)) {
-      //       setFileError(
-      //       "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
-      //       );
-      //       setUploadMediaFile(null);
-      //       return;
-      //   }
-      //   if (selected.size > MAX_VIDEO_SIZE) {
-      //     setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
-      //     setUploadMediaFile(null);
-      //     return;
-      //   }
+        if (!allowedVideoTypes.includes(selected.type)) {
+            setFileError(
+            "Only WEBM, MP4, MP3, AVI, VOB, MKV, MOV, FLV, AMV, MPG, WMV, 3GP, 3G2, SVI files are allowed."
+            );
+            setUploadMediaFile(null);
+            return;
+        }
+        if (selected.size > MAX_VIDEO_SIZE) {
+          setFileError(`File size must be less than ${MAX_VIDEO_SIZE_LBL}.`);
+          setUploadMediaFile(null);
+          return;
+        }
       }else if(selected.type.includes('image')){
         setBannerFormData((prev)=> ({
             ...prev, type: selected.type
@@ -447,9 +447,24 @@ const BannerSection = ({ data = [], pageId, onChange }) => {
                         </>
                     }
                     {
-                        (!uploadMediaFile && bannerFormData.fileViewUrl) &&
+                        (!uploadMediaFile && bannerFormData.fileViewUrl && bannerFormData.type.includes('image')) &&
                         <>
                             <img src={bannerFormData.fileViewUrl} height={100} width={100} alt="img" />
+                        </>
+
+                    }
+                    {
+                        (!uploadMediaFile && bannerFormData.fileViewUrl && bannerFormData.type.includes('video')) &&
+                        <>
+                            <video
+                                src={bannerFormData.fileViewUrl}
+                                controls
+                                style={{
+                                    maxHeight: "200px",
+                                    maxWidth: "100%",
+                                    borderRadius: "8px"
+                                }}
+                            />                           
                         </>
 
                     }
