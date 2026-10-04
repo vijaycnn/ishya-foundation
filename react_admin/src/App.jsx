@@ -33,6 +33,7 @@ import PartnerLogo from "./pages/master/PartnerLogo";
 import Homepage from "./pages/Homepage";
 import Aboutpage from "./pages/Aboutpage";
 import Contactpage from "./pages/Contactpage";
+import Donatepage from "./pages/Donatepage";
 
 ////////////////
 import Participate from "./pages/Participate";
@@ -132,6 +133,16 @@ function App() {
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <Layout setIsAuthenticated={setIsAuthenticated}>
                   <Contactpage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/donatepage`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Donatepage />
                 </Layout>
               </ProtectedRoute>
             }

@@ -81,16 +81,14 @@ const Sidebar = () => {
                   <BiImages />
                 </span>
                 <span className="nav-link-text">About Page</span>
-                </Link>  
-                
-              <Link to={`${adminAlias}/contactpage`} className={`nav-link ${ isActive([`${adminAlias}/contactpage`]) ? "active" : "" }`} >
+                </Link>
+
+              <Link to={`${adminAlias}/donatepage`} className={`nav-link ${ isActive([`${adminAlias}/donatepage`]) ? "active" : "" }`} >
                 <span className="nav-link-icon">
                   <BiImages />
                 </span>
-                <span className="nav-link-text">ContactUs Page</span>
-              </Link>  
-                
-
+                <span className="nav-link-text">Donate Page</span>
+              </Link>
 
                 <Link
                   to={`${adminAlias}/programs`}
@@ -151,6 +149,13 @@ const Sidebar = () => {
                   </span>
                   <span className="nav-link-text">News</span>
                 </Link>
+
+                <Link to={`${adminAlias}/contactpage`} className={`nav-link ${ isActive([`${adminAlias}/contactpage`]) ? "active" : "" }`} >
+                  <span className="nav-link-icon">
+                    <BiImages />
+                  </span>
+                  <span className="nav-link-text">ContactUs Page</span>
+                </Link> 
 
                 <Link to={`${adminAlias}/faqs`} className={`nav-link ${ isActive([`${adminAlias}/faqs`, `${adminAlias}/addFaq`, `${adminAlias}/editFaq`]) ? "active" : ""}`} >
                   <span className="nav-link-icon">
