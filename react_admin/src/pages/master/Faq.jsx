@@ -148,7 +148,7 @@ function Faq() {
           <thead>
             <tr>
               <th style={{ width: "80px" }}>Sr. No.</th>
-              <th>Category</th>
+              {/* <th>Category</th> */}
               <th className="text-center">Order No.</th>
               <th>Quest</th>
               {/* <th>Answer</th> */}
@@ -164,7 +164,7 @@ function Faq() {
                 <>
                   <tr key={item.id}>
                     <td>{$index+ offset + 1}</td>
-                    <td>{item.FaqCategory.category}</td>
+                    {/* <td>{item.FaqCategory.category}</td> */}
                     <td className="text-center">{item.orderNumber}</td>
                     <td>{item.quest}</td>
                     {/* <td>{item.answer}</td> */}

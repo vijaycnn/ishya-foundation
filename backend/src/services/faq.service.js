@@ -19,13 +19,13 @@ let FaqDataProvider = {
       await conn.Faqs.findAndCountAll({
         attributes:columns,
         where: filter,
-        include:[
-            {
-                model: conn.FaqCategories,
-                attributes: [['name', 'category'] ],
-                required: true
-            },            
-        ],
+        // include:[
+        //     {
+        //         model: conn.FaqCategories,
+        //         attributes: [['name', 'category'] ],
+        //         required: false
+        //     },            
+        // ],
         limit: limit,
         offset: offset,
         order: [['categoryId', 'ASC'], ['orderNumber', 'ASC']],
@@ -53,7 +53,7 @@ let FaqDataProvider = {
     return new Promise(function (resolve, reject) {
       conn.Faqs.findOne({
         where: { 
-          categoryId : categoryId,  
+          // categoryId : categoryId,  
           quest: quest.trim(),          
           id: { [Op.not]: id }       
         },
@@ -74,13 +74,13 @@ let FaqDataProvider = {
   getFaqById: async (faqId) => {
     return new Promise(function (resolve, reject) {
       conn.Faqs.findOne({
-        include:[
-            {
-                model: conn.FaqCategories,
-                attributes: [['name', 'category'] ],
-                required: true
-            },            
-        ],
+        // include:[
+        //     {
+        //         model: conn.FaqCategories,
+        //         attributes: [['name', 'category'] ],
+        //         required: false
+        //     },            
+        // ],
         where: { id: faqId },
       })
         .then(data => {
