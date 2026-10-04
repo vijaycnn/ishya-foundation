@@ -325,7 +325,7 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
     };
     let urlEndPoint = `/page/addPageabout`;
     if(aboutFormData?.id > 0){
-        urlEndPoint = `page/updatePageabout`;
+        urlEndPoint = `/page/updatePageabout`;
     }
     console.log("postData >>", urlEndPoint, body);
 

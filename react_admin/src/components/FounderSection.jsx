@@ -303,7 +303,7 @@ const FounderSection = ({ data = [], pageId, onChange }) => {
     };
     let urlEndPoint = `/page/addPagefounder`;
     if(founderFormData?.id > 0){
-        urlEndPoint = `page/updatePagefounder`;
+        urlEndPoint = `/page/updatePagefounder`;
     }
     console.log("postData >>", urlEndPoint, body);
 
