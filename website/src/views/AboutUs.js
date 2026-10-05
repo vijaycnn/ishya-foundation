@@ -17,7 +17,7 @@ const AboutUs = ({ aboutData }) => {
 
   const banner = aboutData.PageBanners?.[0];
   const aboutInfo = aboutData.PageAbouts?.[0];
-  const features = aboutData?.PageFeatures || null;
+  const features = aboutData?.PageValues || null;
   const founderInfo = aboutData.PageFounders?.[0];
   const teams = aboutData?.PageTeams || null;
 

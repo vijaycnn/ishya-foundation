@@ -43,21 +43,7 @@ const OurValues = ({ features }) => {
               backgroundColor: value.bgColor,
             }}
           >
-            {value?.fileViewUrl && (
-              // <div className="icon text-3xl mb-2">{value.fileViewUrl}</div>
-              <>
-                {/* <div className="icon text-3xl mb-2">
-            <img
-                src={media(value.fileViewUrl)}
-                alt="Main"
-                className="main-image" height={10} width={10}
-                loading="lazy"
-              />
-              </div> */}
-              </>
-            )}
-            {/* <h3 className="title text-xl font-semibold mb-2">{value.title}</h3> */}
-            {/* <p className="description-ourvalues text-sm">{value.description}</p> */}
+            
             {value?.remarks ? (
               <>
                 <div
