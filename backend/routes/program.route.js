@@ -13,7 +13,7 @@ router.get('/detail/:programId', function (request, response, next) {
 });
 
 router.get('/menuList',  function (request, response, next) {
-    programController.getTypeList(request, response, next);
+    programController.getMenuAndContactList(request, response, next);
 });
 
 

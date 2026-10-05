@@ -1,6 +1,8 @@
 var momentz = require('moment-timezone');
 const responder = require('../utils/responder');
 const programTypeService = require('../services/programType.service');
+const contactService = require('../services/contactus.service');
+const slideContextService = require('../services/slideContext.service');
 const programService = require('../services/program.service');
 const moment = require('moment');
 
@@ -78,6 +80,26 @@ let ProgramController = {
             );              
             // console.log('lit >>>>>>>:::', mentors);
             return responder.sendResponse(response, 200, "success", programDataWithSignedUrls, "Programs retrieved successfully.");
+        } catch (error) {
+            return next(error);
+        }
+    },
+    getMenuAndContactList: async (request, response, next) => {
+        try {
+            let categoryList = await programTypeService.getTypeList();
+            let data = await contactService.getContactWithAddress();
+
+            let slide = await slideContextService.getSlideContextBySlide('Footer-Context');
+            
+            // console.log('contact log >>>', data);
+            const result = {
+                menu: categoryList,
+                contact: data,
+                footerContext: slide
+            }
+            // console.log('menu log >>>', result);
+
+            return responder.sendResponse(response, 200, "success", result, "Menu List retrieved successfully.");
         } catch (error) {
             return next(error);
         }

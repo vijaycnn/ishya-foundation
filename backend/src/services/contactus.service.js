@@ -8,7 +8,22 @@ let DataProvider = {
       await conn.Contacts.findAndCountAll({
         where: filter,
         // raw: true,
-        logging:console.log
+        // logging:console.log
+      })
+        .then(async data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  getContactWithAddress: async () => {
+    return new Promise(async function (resolve, reject) {
+      
+      await conn.Contacts.findOne({
+        where: { status: 1 },
+        // raw: true,
+        // logging:console.log
       })
         .then(async data => {
           resolve(data);

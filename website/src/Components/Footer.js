@@ -6,7 +6,7 @@ import "../Styles/Footer.css";
 import Logo from "../Images/IshyaLogo.png";
 import Link from "next/link";
 
-const Footer = () => {
+const Footer = ({contactData, footer}) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
@@ -56,13 +56,21 @@ const Footer = () => {
               <img src={media(Logo)} alt="Logo" style={{ width: "100px" }} />
             </Link>
           </div>
-          <p className="footer-text">
+          {
+            (footer?.remark) &&
+            <>
+            <div
+                dangerouslySetInnerHTML={{ __html: footer?.remark || "" }}
+              />
+            </>
+          }
+          {/* <p className="footer-text">
             Ishya Foundation empowers underprivileged children and women in
             Delhi through education. We believe education unlocks a brighter
             future, and that’s why we provide high-quality learning experiences,
             life skills training, and leadership development programs. Join us
             in building a future where every child and woman thrives.
-          </p>
+          </p> */}
         </div>
 
         {/* Column 2: Quick Links */}
@@ -106,19 +114,17 @@ const Footer = () => {
         <div className="footer-column footer-address">
           <h4>Address</h4>
           <p>
-            <strong>Registered address:-</strong> <br />
-            Ishya Foundation, 904, 9th Floor, Surya Kiran Building, K.G. Marg,
-            Connaught Place, Delhi – 110001
+            <strong>{contactData?.addressTitle1}</strong> <br />
+            {contactData?.address1}
           </p>
 
           <p>
-            <strong>ISHYA Learning Center 1:- </strong> <br />
-            2B, Chhalera, Sector - 44, Noida, 201303
+            <strong>{contactData?.addressTitle2} </strong> <br />
+            {contactData?.address2}
           </p>
           <p>
-            <strong>ISHYA Learning Center 2:- </strong> <br />
-            73B, khizarabad, Friends Colony East, Jamia Nagar, New Friends
-            Colony, Delhi – 110025
+            <strong>{contactData?.addressTitle3}</strong> <br />
+            {contactData?.address3}
           </p>
         </div>
 
