@@ -807,6 +807,23 @@ let PageController = {
             return next(error);
         }
     },
+    ////////////////////pageValue////////////////    
+    savePageValue: async (request, response, next) => {
+        try {
+            const result = await pageService.savePageValue(request.body,request);
+
+            return response.status(200).json({
+                status: "success",
+                data: result,
+                message:"Details saved successfully.",
+            });
+
+        } catch (error) {
+            console.error("savePageValue controller error:",error);
+
+            return next(error);
+        }
+    },
 
     ///////////////PageFounder ////////////////////
     addPagefounder: async (request, response, next) => {
