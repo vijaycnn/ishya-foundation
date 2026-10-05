@@ -11,8 +11,16 @@ import AboutUsIntro from "../Components/AboutUsIntro";
 import OurTeamGallery from "../Components/OurTeamGallery";
 import TeamMessage from "../Components/TeamMessage";
 
-const AboutUs = () => {
+const AboutUs = ( {aboutData} ) => {
   const [showButton, setShowButton] = useState(false);
+
+  const banner = aboutData.PageBanners?.[0];
+  const aboutInfo = aboutData.PageAbouts?.[0];
+  const features = aboutData?.PageFeatures || null;
+  const founderInfo = aboutData.PageFounders?.[0];
+  const teams = aboutData?.PageTeams || null;
+
+
 
   useEffect(() => {
     // Show the button after 15 seconds
@@ -25,43 +33,62 @@ const AboutUs = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/* Full-width video section */}
       <div className="video-container">
-        <video
-          className="intro-video"
-          autoPlay
-          muted
-          playsInline
-          loop
-          onEnded={() => setShowButton(true)} // Show button if video ends
-        >
-          <source src="/IntroVideo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        {showButton && (
-          <div className="video-button-container">
-            <a
-              href="https://www.youtube.com/watch?v=cLNDitreEiE"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="watch-full-video-btn"
+
+        {
+          (banner && banner.type?.toLowerCase().includes("video") && banner.fileViewUrl ) &&
+          <>
+            <video
+              className="intro-video"
+              autoPlay
+              muted
+              playsInline
+              loop
+              onEnded={() => setShowButton(true)} // Show button if video ends
             >
-              Watch Full Video on YouTube
-            </a>
-          </div>
-        )}
+              <source src={banner.fileViewUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            {showButton && (
+              <div className="video-button-container">
+                <a
+                  href="https://www.youtube.com/watch?v=cLNDitreEiE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="watch-full-video-btn"
+                >
+                  Watch Full Video on YouTube
+                </a>
+              </div>
+            )}
+          </>
+        }
+        {
+          (banner && banner.type?.toLowerCase().includes("image") && banner.fileViewUrl ) &&
+          <>
+            <Image
+              src={banner.fileViewUrl}
+              alt="Ishya Foundation"
+              width={1300}
+              height={900}
+              priority
+            />
+          </>
+        }
+        
       </div>
 
-      <AboutUsIntro/>
-      <OurValues/>
-      <TeamMessage/>
-      <OurTeamGallery/>
+      <AboutUsIntro aboutInfo={aboutInfo} />
+      <OurValues features={features} />
+      <TeamMessage founderInfo={founderInfo} />
+      <OurTeamGallery teams={teams} />
       <div className="footer-creative-container">
         <img src={media(FooterCreative)} alt="FooterCreative" className="footer-creative" />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

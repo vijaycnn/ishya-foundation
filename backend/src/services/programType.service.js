@@ -4,7 +4,6 @@ let DataProvider = {
   //Use this service as to get ActiveTypeList Only, using via filter options also
   getTypeList: async (all = false) => {
     return new Promise(async function (resolve, reject) {
-      // console.log('search', search);
       let filter = {  };
       let columns = ["id", "name", "status", "createdAt"];
       let orderBy = [['id', 'DESC']];

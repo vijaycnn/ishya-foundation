@@ -8,7 +8,7 @@ import axiosInstance from "../helper/constants/axiosInstance";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 
-const AboutSection = ({ data = [], pageId, onChange }) => {
+const FounderSection = ({ data = [], pageId, onChange }) => {
 
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -18,7 +18,7 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
       navigate(adminAlias);
   };
 
-  const currentAbout = data?.[0] || null;
+  const currentFounder = data?.[0] || null;
   const [isSubmit, setIsSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -33,65 +33,56 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
   const [previewUrl2, setPreviewUrl2] = useState( '');
   
 
-  const [aboutFormData, setAboutFormData] = useState({
-      id: currentAbout?.id || 0,
-      pageId: currentAbout?.pageId || pageId,
+  const [founderFormData, setFounderFormData] = useState({
+      id: currentFounder?.id || 0,
+      pageId: currentFounder?.pageId || pageId,
       
-      title: currentAbout?.title || "",
-      title2: currentAbout?.title2 || "",
-      title3: currentAbout?.title3 || "",
-      remarks: currentAbout?.remarks || "",
-      fileUrl1: currentAbout?.fileUrl1 || "", 
-      fileUrl2: currentAbout?.fileUrl2 || "", 
+      title: currentFounder?.title || "",
+      name1: currentFounder?.name1 || "",
+      designation1: currentFounder?.designation1 || "",
+      name2: currentFounder?.name2 || "",
+      designation2: currentFounder?.designation2 || "",
 
-      fileViewUrl1: currentAbout?.fileViewUrl1 || "",
-      fileViewUrl2: currentAbout?.fileViewUrl2 || "",
+      remarks: currentFounder?.remarks || "",
+      fileUrl1: currentFounder?.fileUrl1 || "", 
+      fileUrl2: currentFounder?.fileUrl2 || "", 
 
-      fileUrlTxt1: currentAbout?.fileUrlTxt1 || "",
-      fileUrlTxt2: currentAbout?.fileUrlTxt2 || "",
-      tagTitle1: currentAbout?.tagTitle1 || "", 
-      tagDescription1: currentAbout?.tagDescription1 || "",
-      tagTitle2: currentAbout?.tagTitle2 || "",  
-      tagDescription2: currentAbout?.tagDescription2 ||  "",
+      fileViewUrl1: currentFounder?.fileViewUrl1 || "",
+      fileViewUrl2: currentFounder?.fileViewUrl2 || "",
   }); 
 
   useEffect(() => {
       const about = data?.[0];
-      console.log('about data', about)
+      console.log('founder data', about)
       if (about) {
-          setAboutFormData({
+          setFounderFormData({
               id: about.id || 0,
               pageId: about.pageId || pageId,
-              title: about?.title || "",
-              title2: about?.title2 || "",
-              title3: about?.title3 || "",
+              title: currentFounder?.title || "",
+              name1: currentFounder?.name1 || "",
+              designation1: currentFounder?.designation1 || "",
+              name2: currentFounder?.name2 || "",
+              designation2: currentFounder?.designation2 || "",
               remarks: about?.remarks || "",
               fileUrl1: about?.fileUrl1 || "", 
               fileUrl2: about?.fileUrl2 || "", 
 
               fileViewUrl1: about?.fileViewUrl1 || "",
               fileViewUrl2: about?.fileViewUrl2 || "",
-
-              fileUrlTxt1: about?.fileUrlTxt1 || "",
-              fileUrlTxt2: about?.fileUrlTxt2 || "",
-              tagTitle1: about?.tagTitle1 || "", 
-              tagDescription1: about?.tagDescription1 || "",
-              tagTitle2: about?.tagTitle2 || "",  
-              tagDescription2: about?.tagDescription2 ||  "",
           });
 
       } else {
-          setAboutFormData({
+          setFounderFormData({
               id: 0,
               pageId,
               title: "",
-              title2: "",
-              title3: "",
+              name1: "",
+              designation1: "",
+              name2: "",
+              designation2: "",
               remarks: "",
-              fileUrl1: "", fileUrlTxt1: "",
-              fileUrl2: "", fileUrlTxt2: "",
-              tagTitle1: "", tagDescription1: "",
-              tagTitle2:"",  tagDescription2: "",
+              fileUrl1: "", 
+              fileUrl2: "", 
           });
 
       }
@@ -102,7 +93,7 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
 
   const handleChange = (e) => {
     const { name, type, value } = e.target;
-    setAboutFormData((prev) => ({
+    setFounderFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
@@ -119,8 +110,8 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
       "image/gif",
       "image/webp",
     ];
-    const MAX_IMAGE_SIZE = 200 * 1024 * 1024; // 200 MB
-    const MAX_IMAGE_SIZE_LBL = "200 MB";
+    const MAX_IMAGE_SIZE = 50 * 1024 * 1024; // 50 MB
+    const MAX_IMAGE_SIZE_LBL = "50 MB";
 
   const fileUploadEvent = (file, index) => {
     const selected = file; //e.target.files[0];
@@ -174,21 +165,17 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
   const validation = (values) => {
     setError("");
     let hasError = false;
-    if (!values.pageId || values.pageId == "" || ( (!values.title || values.title.trim() == "") && (!values.title2 || values.title2.trim() == "") && (!values.title3 || values.title3.trim() == "")) ) {
-      setError("Atleast One field Title, Line1 or Line2 must be filled");
+    if (!values.pageId || values.pageId == "" || ( (!values.title || values.title.trim() == "") || (!values.name1 || values.name1.trim() == "") || (!values.designation1 || values.designation1.trim() == "")) ) {
+      setError("Mandatory fields are missing aa");
       return hasError = true;
     }
     if (!values.remarks || values.remarks == "" ) {
-      setError("Mandatory fields are missing");
+      setError("Mandatory fields are missing bb");
       return hasError = true;
     }
     if(!values.id || values.id == null){        //check this for add case
-        if( (!uploadMediaFile || uploadMediaFile == null)  && (!values.fileUrlTxt1 || values.fileUrlTxt1.trim() == '') ){
-            setError("At least One field Image File1 or Image Text must be filled");
-            return hasError = true;
-        }
-        if( (!uploadMediaFile2 || uploadMediaFile2 == null)  && (!values.fileUrlTxt2 || values.fileUrlTxt2.trim() == '') ){
-            setError("At least One field Image File2 or Image Text must be filled");
+        if( (!uploadMediaFile || uploadMediaFile == null)  ){
+            setError("First Image is missing");
             return hasError = true;
         }
     }
@@ -204,6 +191,14 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
             return hasError = true;
         }
     }
+
+    if ( values.name2 || values.designation2 ){
+        if(!values.name2 || values.name2.trim() == "" || !values.designation2 || values.designation2.trim() == "" || !uploadMediaFile2 || uploadMediaFile2 == null){
+            setError("Second Founder details are missing");
+            return hasError = true;
+        }
+    } 
+
     if(uploadMediaFile2){
         if (!allowedImgTypes.includes(uploadMediaFile2.type)) {
             setFileError2("Only JPEG, PNG, JPG, TIFF, GIF, WEBP, SVG, BMP files are allowed.");
@@ -214,33 +209,21 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
             return hasError = true;
         }
     }
-    if(values.tagTitle1){
-      if(!values.tagDescription1 || values.tagDescription1.trim() == ''){
-        setError("Sub Title -Description is missing");
-        return hasError = true;
-      }
-    }
-    if(values.tagTitle2){
-      if(!values.tagDescription2 || values.tagDescription2.trim() == ''){
-        setError("Sub Title -Description is missing");
-        return hasError = true;
-      }
-    }
     return hasError;
   };
-  const handleAboutSubmit = async (e) => {
+  const handleFounderSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccessMsg("");
     setIsSubmit(true);
-    console.log("formData >>", aboutFormData);
+    console.log("formData >>", founderFormData);
     try {
-      let hasError = validation(aboutFormData);
+      let hasError = validation(founderFormData);
       if (!hasError) {
         setIsLoading(true);
 
-        let fileUrl1 = aboutFormData?.fileUrl1;
-        let fileUrl2 = aboutFormData?.fileUrl2;
+        let fileUrl1 = founderFormData?.fileUrl1;
+        let fileUrl2 = founderFormData?.fileUrl2;
         if (uploadMediaFile != null) {
             let uploadRes = await uploadFileOnS3(uploadMediaFile);
             if (uploadRes) {
@@ -306,26 +289,21 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
 
   const formProcess = async (fileUrl1, fileUrl2) => {
     const body = {
-      aboutId: aboutFormData?.id,
-      pageId: aboutFormData.pageId,
+      founderId: founderFormData?.id,
+      pageId: founderFormData.pageId,
 
-      title: aboutFormData.title,
-      title2: aboutFormData.title2,
-      title3: aboutFormData.title3,
-      remarks: aboutFormData.remarks,
-      fileUrlTxt1: aboutFormData.fileUrlTxt1,
-      fileUrlTxt2: aboutFormData.fileUrlTxt2,
-      tagTitle1: aboutFormData.tagTitle1,
-      tagTitle2: aboutFormData.tagTitle2,
-      tagDescription1: aboutFormData.tagDescription1,
-      tagDescription2: aboutFormData.tagDescription2,
-
+      title: founderFormData.title,
+      name1: founderFormData.name1,
+      designation1: founderFormData.designation1,
+      name2: founderFormData.name2,
+      designation2: founderFormData.designation2,
+      remarks: founderFormData.remarks,
       fileUrl1: fileUrl1,
       fileUrl2: fileUrl2,      
     };
-    let urlEndPoint = `/page/addPageabout`;
-    if(aboutFormData?.id > 0){
-        urlEndPoint = `/page/updatePageabout`;
+    let urlEndPoint = `/page/addPagefounder`;
+    if(founderFormData?.id > 0){
+        urlEndPoint = `/page/updatePagefounder`;
     }
     console.log("postData >>", urlEndPoint, body);
 
@@ -335,7 +313,7 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
         if (response.data.status === "success") {
             const saved = response.data.data;
 
-            setAboutFormData(saved);
+            setFounderFormData(saved);
             // setPreviewUrl(saved.fileViewUrl1);
             setUploadMediaFile(null);
             setUploadMediaFile2(null);
@@ -348,12 +326,12 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
         }
 
     } catch (error) {
-        console.log("Add Footprint error:", error);
+        console.log("Add Founder error:", error);
         if (error.status === 403) {
             handleLogout();
         }
 
-        setError(error.response?.data?.message || error.message || "Unable to save footprint" );
+        setError(error.response?.data?.message || error.message || "Unable to save founder" );
     } finally {
         setIsLoading(false);
         setIsSubmit(false);
@@ -383,7 +361,7 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
               {error && <Alert variant="danger">⚠️{error}</Alert>}
               {successMsg && <Alert variant="success">{successMsg}</Alert>}
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <Form.Group className="mb-4">
             <Form.Label className="fw-medium">
               Title <span className="text-danger">*</span>
@@ -391,55 +369,54 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
             <Form.Control
               type="text"
               name="title"
-              value={aboutFormData.title}
+              value={founderFormData.title}
               placeholder="Enter Title"
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}></Col>
-        <Col md={6}>
-          <Form.Group className="mb-4">
-            <Form.Label className="fw-medium">
-              Line 1 
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="title2"
-              value={aboutFormData.title2}
-              placeholder="Enter Here"
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group className="mb-4">
-            <Form.Label className="fw-medium">
-              Line 2
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="title3"
-              value={aboutFormData.title3}
-              placeholder="Enter Here"
               onChange={handleChange}
             />
           </Form.Group>
         </Col>
         <Col md={12}>
           <Form.Group className="mb-4">
-            <Form.Label className="fw-medium">Description<span className="text-danger">*</span></Form.Label>
+            <Form.Label className="fw-medium">Description</Form.Label>
             <ReactQuill
               theme="snow"
               name="remarks"
-              value={aboutFormData.remarks}
+              value={founderFormData.remarks}
               onChange={(content) =>
-                setAboutFormData((prev) => ({ ...prev, remarks: content }))
+                setFounderFormData((prev) => ({ ...prev, remarks: content }))
               }
             />
           </Form.Group>
         </Col>
 
+        <Col md={6}>
+          <Form.Group className="mb-4">
+            <Form.Label className="fw-medium">
+              Name<span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="name1"
+              value={founderFormData.name1}
+              placeholder="Enter Here"
+              onChange={handleChange} maxLength={155}
+            />
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group className="mb-4">
+            <Form.Label className="fw-medium">
+              Designation<span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="designation1"
+              value={founderFormData.designation1}
+              placeholder="Enter Here"
+              onChange={handleChange} maxLength={155}
+            />
+          </Form.Group>
+        </Col>
         
         <Col md={6}>
           <Form.Group className="mb-4">
@@ -463,24 +440,38 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
                 </>
             }
             {
-                (!uploadMediaFile && aboutFormData.fileViewUrl1) &&
+                (!uploadMediaFile && founderFormData.fileViewUrl1) &&
                 <>
-                    <img src={aboutFormData.fileViewUrl1} height={100} width={100} alt="img" />
+                    <img src={founderFormData.fileViewUrl1} height={100} width={100} alt="img" />
                 </>
 
             }
         </Col>
-        <Col md={12}>
+        <Col md={6}>
           <Form.Group className="mb-4">
             <Form.Label className="fw-medium">
-              Image Text
+              Name 2
             </Form.Label>
             <Form.Control
               type="text"
-              name="fileUrlTxt1"
-              value={aboutFormData.fileUrlTxt1}
+              name="name2"
+              value={founderFormData.name2}
               placeholder="Enter Here"
-              onChange={handleChange}
+              onChange={handleChange} maxLength={155}
+            />
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group className="mb-4">
+            <Form.Label className="fw-medium">
+              Designation 2
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="designation2"
+              value={founderFormData.designation2}
+              placeholder="Enter Here"
+              onChange={handleChange}  maxLength={155}
             />
           </Form.Group>
         </Col>
@@ -489,7 +480,6 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
           <Form.Group className="mb-4">
             <Form.Label className="fw-medium">
               Image 2 <small>(Max. FileSize {MAX_IMAGE_SIZE_LBL})</small>
-              <span className="text-danger">*</span>
             </Form.Label>
             {fileError2 && (
               <p className="mt-2 text-sm text-red-600">
@@ -507,95 +497,17 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
                 </>
             }
             {
-                (!uploadMediaFile2 && aboutFormData.fileViewUrl2) &&
+                (!uploadMediaFile2 && founderFormData.fileViewUrl2) &&
                 <>
-                    <img src={aboutFormData.fileViewUrl2} height={100} width={100} alt="img" />
+                    <img src={founderFormData.fileViewUrl2} height={100} width={100} alt="img" />
                 </>
 
             }
         </Col>
         <Col md={12}>
-          <Form.Group className="mb-4">
-            <Form.Label className="fw-medium">
-              Image Text
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="fileUrlTxt2"
-              value={aboutFormData.fileUrlTxt2}
-              placeholder="Enter Here"
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group className="mb-4">
-            <Form.Label className="fw-medium">
-              Sub Title 1
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="tagTitle1"
-              value={aboutFormData.tagTitle1}
-              placeholder="Enter Here"
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={12}>
-          <Form.Group className="mb-4">
-            <Form.Label className="fw-medium">Description 
-              {
-                (aboutFormData.tagTitle1) && 
-                <span className="text-danger">*</span>
-              }
-            </Form.Label>
-            <ReactQuill
-              theme="snow"
-              name="tagDescription1"
-              value={aboutFormData.tagDescription1}
-              onChange={(content) =>
-                setAboutFormData((prev) => ({ ...prev, tagDescription1: content }))
-              }
-            />
-          </Form.Group>
-        </Col>   
-        <Col md={6}>
-          <Form.Group className="mb-4">
-            <Form.Label className="fw-medium">
-              Sub Title 2
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="tagTitle2"
-              value={aboutFormData.tagTitle2}
-              placeholder="Enter Here"
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={12}>
-          <Form.Group className="mb-4">
-            <Form.Label className="fw-medium">Description
-              {
-                (aboutFormData.tagTitle2) && 
-                <span className="text-danger">*</span>
-              }
-            </Form.Label>
-            <ReactQuill
-              theme="snow"
-              name="tagDescription2"
-              value={aboutFormData.tagDescription2}
-              onChange={(content) =>
-                setAboutFormData((prev) => ({ ...prev, tagDescription2: content }))
-              }
-            />
-          </Form.Group>
-        </Col>    
-        <Col md={12}>
           <Form.Group className="text-end">
-            <Button variant="outline-primary" onClick={handleAboutSubmit} disabled={isSubmit || isLoading}>
-              <span>{ !aboutFormData?.id ? "Save" : "Update" }</span>
+            <Button variant="outline-primary" onClick={handleFounderSubmit} disabled={isSubmit || isLoading}>
+              <span>{ !founderFormData?.id ? "Save" : "Update" }</span>
             </Button>
           </Form.Group>
         </Col>
@@ -611,4 +523,4 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
     </div>
   );
 };
-export default AboutSection;
+export default FounderSection;

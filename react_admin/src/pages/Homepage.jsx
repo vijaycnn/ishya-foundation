@@ -191,14 +191,6 @@ const HomePage = () => {
             Manage homepage content and sections
           </p>
         </div>
-
-        {/* <Button
-          variant="primary"
-          onClick={handleSubmit}
-          disabled={saving}
-        >
-          {saving ? "Saving..." : "Save Home Page"}
-        </Button> */}
       </div>
 
       <Accordion defaultActiveKey="0">

@@ -1,77 +1,101 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Programs extends Model {
+  class Contacts extends Model {
     static associate(models) {
       // define association here
-      Programs.belongsTo(models.ProgramTypes, {foreignKey: 'programTypeId'});
-      Programs.hasMany(models.ProgramNeeds, {foreignKey: "programId"});
-      Programs.hasMany(models.Mentors, {foreignKey: "programId"});
-    //   Programs.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
     }
   }
-  Programs.init({
+  Contacts.init({
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    programTypeId :{
-        allowNull: false,
-        type: DataTypes.INTEGER
-    },
-    name: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    shortDesc: {
-      allowNull: true,
-      type: DataTypes.TEXT
-    },
     title: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    remarks: {
-      allowNull: true,
-      type: DataTypes.TEXT
+    mapFileUrl: {
+      allowNull: false,
+      type: DataTypes.STRING
     },
-    fileUrl: {
+    contactNumber: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    watsappFileUrl: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    addressTitle1: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    address1: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    location1: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    impactHeading: {
+    addressTitle2: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    impactTitle: {
+    address2: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    impactFileUrl: {
+    location2: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    impactDescription: {
-      allowNull: true,
-      type: DataTypes.TEXT
-    },
-    joinTitle: {
+    addressTitle3: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    joinFileUrl: {
+    address3: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    joinDescription: {
+    location3: {
       allowNull: true,
-      type: DataTypes.TEXT
+      type: DataTypes.STRING
     },
-    showRecord: {
+    formTitle: {
       allowNull: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
+    },
+    formHeading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    formFileUrl: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    heading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    faqTitle: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    faqHeading: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    faqFileUrl: {
+      allowNull: false,
+      type: DataTypes.STRING
     },
     status:{
       type:DataTypes.INTEGER,
@@ -95,7 +119,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'Programs',
+    modelName: 'Contacts',
   });
-  return Programs;
+  return Contacts;
 };

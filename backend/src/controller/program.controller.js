@@ -65,31 +65,19 @@ let ProgramController = {
     //use this for frontend list
     getList: async (request, response, next) => {
         try {
-            let data = await programService.getProgramList();
-            const rows = data.rows.map((r) => r.get({ plain: true }));
-            const mentors = await Promise.all(
-                rows.map(async (row) => {
-                    if(row.fileUrl != ''){
-                        let filePath = row.fileUrl.trim();
-                        let key = filePath.split(".amazonaws.com/")[1]
+            let programData = await programService.getHomePageProgramList(false);
+            const programDataWithSignedUrls = await Promise.all(
+                (programData || []).map(async (program) => {
+                    // Convert Sequelize instance to plain object
+                    const programObj = program.get ? program.get({ plain: true }) : program;
 
-                        const command = new GetObjectCommand({
-                        Bucket: process.env.S3_BUCKET,
-                        Key: key,
-                        });
-                        let signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
-
-                        // console.log('>>>', signedUrl);
-                        row.image = signedUrl;
-                    }else{
-                        row.image = '';
-                    }
-                    return row;
+                    // console.log("program row >>>", programObj);
+                    const fileViewUrl = programObj.fileUrl ? await ProgramController.generateSignedUrl(programObj.fileUrl) : null;
+                    return {...programObj, fileViewUrl, };
                 })
-            );                
+            );              
             // console.log('lit >>>>>>>:::', mentors);
-            let dataList =  { 'totalRecord': data.count, 'list': mentors };
-            return responder.sendFilterResponse(response, 200, "success", dataList, "Programs retrieved successfully.");
+            return responder.sendResponse(response, 200, "success", programDataWithSignedUrls, "Programs retrieved successfully.");
         } catch (error) {
             return next(error);
         }
@@ -103,6 +91,55 @@ let ProgramController = {
             return next(error);
         }
     },
+
+    getProgramDetailsById: async (request, response, next) => {
+        try {
+            const programId = parseInt(request.params.programId);
+
+            if (!programId || programId <= 0) {
+                return response.status(400).json({status: "error",message: "Invalid Program ID."});
+            }
+
+            const data = await programService.getProgramDetailsById(programId);
+            if (!data) {
+                return response.status(404).json({status: "error",message: "Program not found."});
+            }
+
+            data.fileViewUrl = data.fileUrl ? await ProgramController.generateSignedUrl(data.fileUrl) : "";
+            data.impactFileViewUrl = data.impactFileUrl ? await ProgramController.generateSignedUrl(data.impactFileUrl) : "";
+            data.joinFileViewUrl = data.joinFileUrl ? await ProgramController.generateSignedUrl(data.joinFileUrl) : "";
+            data.ProgramNeeds =
+                await Promise.all(
+                    data.ProgramNeeds.map(
+                        async (need) => ({
+                            ...need,
+                            fileViewUrl: need.fileUrl ? await ProgramController.generateSignedUrl( need.fileUrl) : ""
+                        })
+                    )
+                );
+            if(data.Mentors && data.Mentors?.length){
+                data.Mentors = await Promise.all(
+                    data.Mentors.map(
+                        async (item) => ({
+                            ...item,
+                            fileViewUrl: item.fileUrl ? await ProgramController.generateSignedUrl( item.fileUrl) : ""
+                        })
+                    )
+                );    
+            }    
+
+                console.log('res >>>', data);
+
+            // return response.status(200).json({status: "success",data});
+            return responder.sendResponse(response, 200, "success", data, "Program retrieved successfully.");
+
+        } catch (error) {
+            console.error("getProgramById Error:",error);
+
+            return next(error);
+        }
+    },
+
     //use this for backend list
     
     getProgramddList: async (request, response, next) => {

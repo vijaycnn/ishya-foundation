@@ -46,9 +46,47 @@ export async function getHomePage() {
   return result?.data?.[0] || null;
 }
 
+export async function getAboutPage() { 
+  
+  const result = await callAPI(`/page/detail/about`);
+  
+  // console.log('UI home >>>>', result?.data?.[0])
+
+  if (result?.status !== "success") {
+    throw new Error(
+      result?.message || "Failed to fetch home page data"
+    );
+  }
+
+//   console.log("HOME API RESULT >>>", result);
+  console.log("ABOUT PAGE LIST >>>", result?.data[0]);
+//   console.log("partners >>>", result?.data[0]?.partners);
+  return result?.data?.[0] || null;
+}
+
 export async function getLearningPage() { 
   
   const result = await callAPI(`/learningpage/pageList/learningPage`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  console.log("API RESULT >>>", result);
+  return result?.data || null;
+}
+
+export async function getAllProgram() { 
+  
+  const result = await callAPI(`/program/getList`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  console.log("API RESULT >>>", result);
+  return result?.data || null;
+}
+
+export async function getProgramPage(programId) { 
+  
+  const result = await callAPI(`/program/detail/${programId}`);
   if (result?.status !== "success") {
     throw new Error(result?.message || "Failed to fetch page data");
   }

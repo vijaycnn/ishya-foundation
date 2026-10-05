@@ -18,12 +18,16 @@ let DataProvider = {
         });
     });
   },
-  getHomePageProgramList: async () => {
+  getHomePageProgramList: async (showRecord = true) => {
     return new Promise(async function (resolve, reject) {
-      let columns = ["id", "name", "title", "shortDesc", "fileUrl"];        
+      let columns = ["id", "name", "title", "shortDesc", "fileUrl"];  
+      let filter = { status: 1 };
+      if(showRecord){
+        filter = {...filter, showRecord : 1 }
+      }      
       await conn.Programs.findAll({
         attributes:columns,
-        where: { status: 1, showRecord : 1 },
+        where: filter,
         include: [
             {
                 model: conn.ProgramTypes,
@@ -41,6 +45,47 @@ let DataProvider = {
           reject(err);
         });
     });
+  },
+  getProgramDetailsById: async (programId) => {
+    const program = await conn.Programs.findOne({
+            where: {
+                id: programId,
+                status: 1
+            },
+            include: [
+                {
+                    model: conn.ProgramTypes,
+                    attributes: ["id", "name"],
+                    required: true,
+                },
+                {
+                    model: conn.ProgramNeeds,
+                    required: false,
+                    where: {
+                        status: 1
+                    },
+                    order: [
+                        ["id", "ASC"]
+                    ]
+                },
+                {
+                    model: conn.Mentors,
+                    required: false,
+                    where: {
+                        status: 1, isdeleted:0
+                    },
+                    order: [
+                        ["id", "ASC"]
+                    ]
+                }
+            ]
+    });
+    if (!program) {
+        return null;
+    }
+
+    const data = program.get({plain: true});
+    return data;
   },
   
   getProgramList: async (all = false) => {

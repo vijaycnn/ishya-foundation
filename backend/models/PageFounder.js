@@ -1,33 +1,43 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Programs extends Model {
+  class PageFounders extends Model {
     static associate(models) {
       // define association here
-      Programs.belongsTo(models.ProgramTypes, {foreignKey: 'programTypeId'});
-      Programs.hasMany(models.ProgramNeeds, {foreignKey: "programId"});
-      Programs.hasMany(models.Mentors, {foreignKey: "programId"});
-    //   Programs.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
+      PageFounders.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
     }
   }
-  Programs.init({
+  PageFounders.init({
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    programTypeId :{
-        allowNull: false,
-        type: DataTypes.INTEGER
-    },
-    name: {
+    pageId: DataTypes.INTEGER,
+    name1: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    shortDesc: {
+    designation1: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    fileUrl1: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    name2: {
       allowNull: true,
-      type: DataTypes.TEXT
+      type: DataTypes.STRING
+    },
+    designation2: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
+    fileUrl2: {
+      allowNull: true,
+      type: DataTypes.STRING
     },
     title: {
       allowNull: false,
@@ -36,43 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     remarks: {
       allowNull: true,
       type: DataTypes.TEXT
-    },
-    fileUrl: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    impactHeading: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    impactTitle: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    impactFileUrl: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    impactDescription: {
-      allowNull: true,
-      type: DataTypes.TEXT
-    },
-    joinTitle: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    joinFileUrl: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    joinDescription: {
-      allowNull: true,
-      type: DataTypes.TEXT
-    },
-    showRecord: {
-      allowNull: true,
-      type: DataTypes.INTEGER
-    },
+    },    
     status:{
       type:DataTypes.INTEGER,
       defaultValue:1
@@ -95,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'Programs',
+    modelName: 'PageFounders',
   });
-  return Programs;
+  return PageFounders;
 };

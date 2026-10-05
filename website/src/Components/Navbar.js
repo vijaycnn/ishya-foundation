@@ -1,7 +1,7 @@
 "use client";
 
 import media from "@/lib/media";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles/Navbar.css";
 import Logo from "../Images/IshyaLogo.png";
 import { FaSearch, FaHandsHelping, FaBars, FaTimes } from "react-icons/fa";
@@ -9,9 +9,10 @@ import Link from "next/link";
 
 const Navbar = ({homeData, menu}) => {
 
-  // console.log('menu >>>', menu);
-  const programList = menu.map(item => item.name);
-
+  const programList = ["All", ...menu.map(item => item.name)];
+  useEffect(() => {
+    localStorage.setItem("menu",JSON.stringify(programList));
+  }, [menu]);
 
   const [openMenus, setOpenMenus] = useState({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -33,8 +34,8 @@ const Navbar = ({homeData, menu}) => {
     {
       label: "About Us",
       link: "/about-us/who-are-we",
-      // menu: ["Who are we", "Finances & Reporting", "Ishya Learning Centre"],
-      menu: [ "Ishya Learning Centre"],
+      menu: ["Who are we", "Finances & Reporting", "Ishya Learning Centre"],
+      // menu: [ "Ishya Learning Centre"],
 
     },
     {

@@ -1,27 +1,19 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Programs extends Model {
+  class Donates extends Model {
     static associate(models) {
       // define association here
-      Programs.belongsTo(models.ProgramTypes, {foreignKey: 'programTypeId'});
-      Programs.hasMany(models.ProgramNeeds, {foreignKey: "programId"});
-      Programs.hasMany(models.Mentors, {foreignKey: "programId"});
-    //   Programs.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
     }
   }
-  Programs.init({
+  Donates.init({
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    programTypeId :{
-        allowNull: false,
-        type: DataTypes.INTEGER
-    },
-    name: {
+    title: {
       allowNull: false,
       type: DataTypes.STRING
     },
@@ -29,50 +21,30 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.TEXT
     },
-    title: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
     remarks: {
-      allowNull: true,
+      allowNull: false,
       type: DataTypes.TEXT
     },
-    fileUrl: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    impactHeading: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    impactTitle: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    impactFileUrl: {
-      allowNull: true,
-      type: DataTypes.STRING
-    },
-    impactDescription: {
-      allowNull: true,
+    donateDesc: {
+      allowNull: false,
       type: DataTypes.TEXT
     },
-    joinTitle: {
+    btnText: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    btnLink: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    joinFileUrl: {
+    fileUrl1: {
       allowNull: true,
       type: DataTypes.STRING
     },
-    joinDescription: {
+    fileUrl2: {
       allowNull: true,
-      type: DataTypes.TEXT
-    },
-    showRecord: {
-      allowNull: true,
-      type: DataTypes.INTEGER
-    },
+      type: DataTypes.STRING
+    },    
     status:{
       type:DataTypes.INTEGER,
       defaultValue:1
@@ -95,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'Programs',
+    modelName: 'Donates',
   });
-  return Programs;
+  return Donates;
 };

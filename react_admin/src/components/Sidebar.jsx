@@ -10,7 +10,7 @@ import {
   BiFile,
   BiCarousel,
   BiNews,
-  BiWindowAlt,
+  BiWindowAlt, BiInfoSquare
 } from "react-icons/bi";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 
@@ -76,6 +76,19 @@ const Sidebar = () => {
                 <span className="nav-link-text">Home Page</span>
                 </Link>
 
+              <Link to={`${adminAlias}/aboutpage`} className={`nav-link ${ isActive([`${adminAlias}/aboutpage`]) ? "active" : "" }`} >
+                <span className="nav-link-icon">
+                  <BiImages />
+                </span>
+                <span className="nav-link-text">About Page</span>
+                </Link>
+
+              <Link to={`${adminAlias}/donatepage`} className={`nav-link ${ isActive([`${adminAlias}/donatepage`]) ? "active" : "" }`} >
+                <span className="nav-link-icon">
+                  <BiImages />
+                </span>
+                <span className="nav-link-text">Donate Page</span>
+              </Link>
 
                 <Link
                   to={`${adminAlias}/programs`}
@@ -137,6 +150,20 @@ const Sidebar = () => {
                   <span className="nav-link-text">News</span>
                 </Link>
 
+                <Link to={`${adminAlias}/contactpage`} className={`nav-link ${ isActive([`${adminAlias}/contactpage`]) ? "active" : "" }`} >
+                  <span className="nav-link-icon">
+                    <BiImages />
+                  </span>
+                  <span className="nav-link-text">ContactUs Page</span>
+                </Link> 
+
+                <Link to={`${adminAlias}/faqs`} className={`nav-link ${ isActive([`${adminAlias}/faqs`, `${adminAlias}/addFaq`, `${adminAlias}/editFaq`]) ? "active" : ""}`} >
+                  <span className="nav-link-icon">
+                    <BiInfoSquare />
+                  </span>
+                  <span className="nav-link-text">Faqs</span>
+                </Link>
+
                 <Link
                   to={`${adminAlias}/slides`}
                   className={`nav-link ${isActive([`${adminAlias}/slides`, `${adminAlias}/addSlide`, `${adminAlias}/editSlide`]) ? "active" : ""}`}
@@ -165,12 +192,6 @@ const Sidebar = () => {
                   <BiUpload />
                 </span>
                 <span className="nav-link-text">Upload Guideline</span>
-              </Link>
-              <Link to={`${adminAlias}/faqs`} className={`nav-link ${ isActive([`${adminAlias}/faqs`, `${adminAlias}/addFaq`, `${adminAlias}/editFaq`]) ? "active" : ""}`} >
-                <span className="nav-link-icon">
-                  <BiInfoSquare />
-                </span>
-                <span className="nav-link-text">Faqs</span>
               </Link>
               <Link to={`${adminAlias}/category`} className={`nav-link ${ isActive([`${adminAlias}/category`, `${adminAlias}/addCategory`, `${adminAlias}/editCategory`]) ? "active" : "" }`} >
                 <span className="nav-link-icon">

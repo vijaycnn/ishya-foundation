@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     
     static associate(models) {
       // define association here
+      Mentors.belongsTo(models.Programs, {foreignKey: 'programId'});
     }
   }
   Mentors.init({
