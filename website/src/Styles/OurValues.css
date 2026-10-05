@@ -8,11 +8,10 @@
   padding: 30px;
   flex-direction: column;
 }
-.our-values-heading{
+.our-values-heading {
   margin: 10px;
-
 }
-.all-tiles{
+.all-tiles {
   display: flex;
   flex-direction: row;
 }
@@ -26,9 +25,19 @@
   overflow: hidden; /* Prevents text from overflowing */
   height: 100%; /* Ensure the tile takes up the full height */
   margin: 10px;
+  background: rgba(166, 199, 105);
+  color: #fff;
+}
+.value-tile:nth-child(even) {
+  background: rgba(109, 55, 128);
+}
+.value-tile h3 {
+  color: #000;
 }
 
-
+.value-tile h2 {
+  font-size: 2rem;
+}
 .icon {
   font-size: 2rem;
   margin-bottom: 0.5rem;
@@ -49,7 +58,8 @@
 }
 
 /* Media Queries for Responsiveness */
-@media (max-width: 768px) { /* Tablet and smaller */
+@media (max-width: 768px) {
+  /* Tablet and smaller */
   .our-values-container {
     flex-direction: column; /* Stack tiles vertically */
     align-items: center; /* Center horizontally */

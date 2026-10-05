@@ -20,6 +20,13 @@ h6 {
   font-family: "Playfair Display", serif;
 }
 
+.ql-align-center {
+  text-align: center;
+}
+.ql-align-right {
+  text-align: right;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
