@@ -55,6 +55,7 @@ const DonateSection = ({ data, onChange }) => {
       donateDesc: currentDonate?.donateDesc || "",
       btnText: currentDonate?.btnText || "",
       btnLink: currentDonate?.btnLink || "",
+      overlayText: currentDonate?.overlayText || "",
       fileUrl1: currentDonate?.fileUrl1 || "", 
       fileUrl2: currentDonate?.fileUrl2 || "", 
       
@@ -75,6 +76,7 @@ const DonateSection = ({ data, onChange }) => {
             donateDesc: donate?.donateDesc || "",
             btnText: donate?.btnText || "",
             btnLink: donate?.btnLink || "",
+            overlayText: donate?.overlayText || "",
             fileUrl1: donate?.fileUrl1 || "", 
             fileUrl2: donate?.fileUrl2 || "", 
             
@@ -91,6 +93,7 @@ const DonateSection = ({ data, onChange }) => {
             donateDesc : "",
             btnText : "",
             btnLink : "",
+            overlayText: "",
             fileUrl1: "",
             fileUrl2: "", 
           });
@@ -287,6 +290,7 @@ const DonateSection = ({ data, onChange }) => {
       donateDesc: donateFormData?.donateDesc || "",
       btnText: donateFormData?.btnText || "",
       btnLink: donateFormData?.btnLink || "",
+      overlayText: donateFormData?.overlayText || "",
       fileUrl1: fileUrl1, 
       fileUrl2: fileUrl2,     
     };
@@ -449,6 +453,20 @@ const DonateSection = ({ data, onChange }) => {
                     <img src={donateFormData.fileViewUrl1} height={100} width={100} alt="img" />
                 </>
             }
+        </Col>
+        <Col md={12}>
+          <Form.Group className="mb-4">
+            <Form.Label className="fw-medium">
+              Donate Image Text
+            </Form.Label>
+            <Form.Control
+              type="text"
+              name="overlayText"
+              value={donateFormData.overlayText}
+              placeholder="Enter Here"
+              onChange={handleChange} maxLength={255}
+            />
+          </Form.Group>
         </Col>
         <Col md={6}>
           <Form.Group className="mb-4">

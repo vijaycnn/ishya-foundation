@@ -20,6 +20,7 @@ const DonatePage = () => {
     donateDesc : "",
     btnText : "",
     btnLink : "",
+    overlayText: "",
     fileUrl1: "",
     fileUrl2: "",
   };

@@ -15,8 +15,16 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const menu = await getMenu();
-  const header = { contactNumber : '+919871005650' }
+  const result = await getMenu();
+  const menu = result?.data?.menu;
+  const contact = result?.data?.contact;
+  const footerContext = result?.data?.footerContext;
+
+  // console.log('menu result', result)
+  // console.log('menu ', menu)
+  // console.log('footer ', footerContext)
+
+  const header = { contactNumber : contact.contactNumber }
 
   return (
     <html lang="en">
@@ -30,11 +38,11 @@ export default async function RootLayout({ children }) {
         />
       </head>
       <body>
-        <Navbar homeData={header} menu={menu?.data} />
+        <Navbar homeData={header} menu={menu} />
 
         <Providers>{children}</Providers>
            
-        <Footer/>
+        <Footer contactData={contact} footer={footerContext} />
       </body>
     </html>
   );

@@ -41,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING
     },
+    overlayText: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
     fileUrl2: {
       allowNull: true,
       type: DataTypes.STRING

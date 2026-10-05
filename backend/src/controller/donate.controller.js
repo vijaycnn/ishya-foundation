@@ -152,6 +152,7 @@ let DonateController = {
                 let donateDesc = request.body.donateDesc.trim() || "";
                 let btnText = request.body.btnText.trim() || "";
                 let btnLink = request.body.btnLink.trim() || "";
+                let overlayText = request.body.overlayText.trim() || "";
                 
                 let fileUrl1 = request.body?.fileUrl1?.trim() || "";
                 let fileUrl2 = request.body?.fileUrl2?.trim() || "";
@@ -159,7 +160,7 @@ let DonateController = {
                 const data = {
                     title,
                     shortDesc, remarks, fileUrl1, fileUrl2,
-                    donateDesc, btnText, btnLink, 
+                    donateDesc, btnText, btnLink,  overlayText,
                     createdBy: request.user.userId
                 };
                 let created = await donateService.addDonate(data);
@@ -178,7 +179,7 @@ let DonateController = {
                         title,
                         title,
                         shortDesc, remarks, fileUrl1, fileUrl2,
-                        donateDesc, btnText, btnLink, 
+                        donateDesc, btnText, btnLink, overlayText, 
 
                         fileViewUrl1: image1,
                         fileViewUrl2: image2,                                
@@ -205,6 +206,7 @@ let DonateController = {
                 let donateDesc = request.body.donateDesc.trim() || "";
                 let btnText = request.body.btnText.trim() || "";
                 let btnLink = request.body.btnLink.trim() || "";
+                let overlayText = request.body.overlayText.trim() || "";
                 
                 let fileUrl1 = request.body?.fileUrl1?.trim() || "";
                 let fileUrl2 = request.body?.fileUrl2?.trim() || "";
@@ -212,7 +214,7 @@ let DonateController = {
                 const data = {
                     title,
                     shortDesc, remarks, fileUrl1, fileUrl2,
-                    donateDesc, btnText, btnLink, 
+                    donateDesc, btnText, btnLink, overlayText, 
                     updatedBy: request.user.userId
                 };
                 let updated = await donateService.editDonate(request.body.donateId, data);
@@ -229,7 +231,7 @@ let DonateController = {
                         id :request.body.donateId,
                         title,
                         shortDesc, remarks, fileUrl1, fileUrl2,
-                        donateDesc, btnText, btnLink, 
+                        donateDesc, btnText, btnLink, overlayText,
 
                         fileViewUrl1: image1,
                         fileViewUrl2: image2,                       

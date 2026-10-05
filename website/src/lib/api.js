@@ -81,6 +81,19 @@ export async function getContactPage() {
 //   console.log("partners >>>", result?.data[0]?.partners);
   return result?.data?.[0] || null;
 }
+export async function getDonatePage() { 
+  
+  const result = await callAPI(`/donate/getPage`);
+
+  if (result?.status !== "success") {
+    throw new Error(
+      result?.message || "Failed to fetch page data"
+    );
+  }
+
+  console.log("DONATE PAGE >>>", result?.data[0]);
+  return result?.data?.[0] || null;
+}
 
 
 export async function getLearningPage() { 
