@@ -34,8 +34,8 @@ const Navbar = ({homeData, menu}) => {
     {
       label: "About Us",
       link: "/about-us/who-are-we",
-      // menu: ["Who are we", "Finances & Reporting", "Ishya Learning Centre"],
-      menu: [ "Ishya Learning Centre"],
+      menu: ["Who are we", "Finances & Reporting", "Ishya Learning Centre"],
+      // menu: [ "Ishya Learning Centre"],
 
     },
     {

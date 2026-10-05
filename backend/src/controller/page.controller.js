@@ -100,6 +100,28 @@ let PageController = {
                             })
                         );
                     }
+                    if (row.PageFounders && row.PageFounders.length > 0) {
+
+                        const founder = row.PageFounders[0];
+                        if (founder.fileUrl1) {
+                            founder.fileViewUrl1 = await PageController.generateSignedUrl(founder.fileUrl1);
+                        }
+                        if (founder.fileUrl2) {
+                            founder.fileViewUrl2 = await PageController.generateSignedUrl(founder.fileUrl2);
+                        }
+                    }                    
+                    if(row.PageTeams && row.PageTeams.length > 0){
+                        //fetch here signed url for each row
+                        row.PageTeams = await Promise.all(
+                            row.PageTeams.map(async (item) => {
+
+                                if (item.fileUrl) {
+                                    item.fileViewUrl = await PageController.generateSignedUrl(item.fileUrl);
+                                }
+                                return item;
+                            })
+                        );                    
+                    }
 
                     const [
                         bannerUrl,

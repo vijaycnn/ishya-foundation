@@ -2,9 +2,9 @@
 
 import React from "react";
 import '../Styles/OurValues.css';
-
-const OurValues = () => {
-  const values = [
+import media from "@/lib/media";
+const OurValues = ( {features} ) => {
+ /* const values = [
     {
       icon: "🌟",
       title: "Food & Homeless charity",
@@ -27,12 +27,14 @@ const OurValues = () => {
       height: "450px",
     },
   ];
-
+*/
   return (
     <div className="our-values-container flex justify-between items-start gap-4 p-4">
       <div className="our-values-heading"><h2>Our Values</h2></div>
       <div className="all-tiles">
-      {values.map((value, index) => (
+      {features.map((value, index) => (
+
+        
         <div
           key={index}
           className={`value-tile rounded-lg shadow-lg p-4`}
@@ -41,10 +43,32 @@ const OurValues = () => {
             backgroundColor: value.bgColor,
           }}
         >
-          
-          <div className="icon text-3xl mb-2">{value.icon}</div>
+          {
+            (value?.fileViewUrl) &&
+            // <div className="icon text-3xl mb-2">{value.fileViewUrl}</div>
+            <>
+            <div className="icon text-3xl mb-2">
+            <img
+                src={media(value.fileViewUrl)}
+                alt="Main"
+                className="main-image" height={10} width={10}
+                loading="lazy"
+              />
+              </div>
+            </>
+          }
           <h3 className="title text-xl font-semibold mb-2">{value.title}</h3>
-          <p className="description-ourvalues text-sm">{value.description}</p>
+          {/* <p className="description-ourvalues text-sm">{value.description}</p> */}
+          {          
+          value?.remarks ? (
+            <>
+              <div
+                dangerouslySetInnerHTML={{ __html: value?.remarks || "" }}
+              />
+            </>
+          ) : (
+            ""
+          )}
         </div>
       ))}
       </div>
