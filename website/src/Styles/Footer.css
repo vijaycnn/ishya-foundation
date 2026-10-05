@@ -1,8 +1,8 @@
 .footer {
-  background-color: #6D3780;
+  background-color: #6d3780;
   color: #fff;
   padding: 40px 80px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   position: relative;
   clear: both;
   min-height: 300px;
@@ -60,7 +60,7 @@ h4 {
 }
 
 .footer-column ul li a.donate-now {
-  color: #A6C769;
+  color: #a6c769;
   font-weight: bold;
   text-decoration: none;
   transition: color 0.3s ease;
@@ -91,12 +91,13 @@ h4 {
 
 .subscribe-btn {
   padding: 10px 20px;
-  background-color: #A6C769;
+  background-color: #a6c769;
   color: #fff;
   border: none;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  white-space: nowrap;
 }
 
 .subscribe-btn:hover {
@@ -135,12 +136,11 @@ h4 {
 
 /* Media Queries for Responsiveness */
 @media (max-width: 1024px) {
-  .footer{
-    background-color: #6D3780;
-  color: #fff;
-  padding: 40px 20px;
-  font-family: 'Montserrat', sans-serif;
-  
+  .footer {
+    background-color: #6d3780;
+    color: #fff;
+    padding: 40px 20px;
+    font-family: "Montserrat", sans-serif;
   }
   .footer-container {
     flex-direction: column; /* Stack footer columns vertically */
@@ -189,7 +189,7 @@ h4 {
   .footer-container {
     padding: 10px; /* Adjust padding */
   }
-  
+
   .footer-logo img {
     width: 60px; /* Further reduce logo size */
   }
@@ -219,7 +219,7 @@ h4 {
   }
 
   .social-icons {
-    gap:10px;
+    gap: 10px;
     flex-direction: row; /* Stack social icons vertically */
     align-items: center; /* Center social icons */
   }
