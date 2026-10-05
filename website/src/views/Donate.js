@@ -43,8 +43,20 @@ const Donate = ({pageData}) => {
     <div>
       <PageHeader pageName="Donate Now" breadcrumb="Home/Donate" />
       <div className="donate-container">
+
         <div className="donate-header">
-          {/* <h1>EVERY <span className="green-text">PENNY</span> MATTERS</h1> */}
+        {          
+          pageData?.title ? (
+            <>
+              <div
+                dangerouslySetInnerHTML={{ __html: pageData?.title || "" }}
+              />
+            </>
+          ) : ("")}
+          </div>
+
+        {/* <div className="donate-header">
+          <h1>EVERY <span className="green-text">PENNY</span> MATTERS</h1>
           <h1>
             {pageData?.title}
           </h1>
@@ -59,9 +71,9 @@ const Donate = ({pageData}) => {
               />
             </>
           ) : ("")}
-          {/* <h2>SUPPORT US</h2>
-          <h3>JOIN HANDS WITH US TO CREATE A BETTER FUTURE FOR OUR SOCIETY</h3> */}
-        </div>
+          <h2>SUPPORT US</h2>
+          <h3>JOIN HANDS WITH US TO CREATE A BETTER FUTURE FOR OUR SOCIETY</h3>
+        </div> */}
 
         <div className="donate-info-box">
           {          

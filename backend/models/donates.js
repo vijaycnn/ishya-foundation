@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
     shortDesc: {
       allowNull: true,

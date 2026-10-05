@@ -475,12 +475,13 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
             <Form.Label className="fw-medium">
               Image Text
             </Form.Label>
-            <Form.Control
-              type="text"
-              name="fileUrlTxt1"
+            <ReactQuill
+              theme="snow"
+              name="remarks"
               value={aboutFormData.fileUrlTxt1}
-              placeholder="Enter Here"
-              onChange={handleChange}
+              onChange={(content) =>
+                setAboutFormData((prev) => ({ ...prev, fileUrlTxt1: content }))
+              }
             />
           </Form.Group>
         </Col>
@@ -519,12 +520,13 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
             <Form.Label className="fw-medium">
               Image Text
             </Form.Label>
-            <Form.Control
-              type="text"
-              name="fileUrlTxt2"
+            <ReactQuill
+              theme="snow"
+              name="remarks"
               value={aboutFormData.fileUrlTxt2}
-              placeholder="Enter Here"
-              onChange={handleChange}
+              onChange={(content) =>
+                setAboutFormData((prev) => ({ ...prev, fileUrlTxt2: content }))
+              }
             />
           </Form.Group>
         </Col>
