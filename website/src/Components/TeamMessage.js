@@ -58,7 +58,7 @@ const ProfileSection = ( {founderInfo}) => {
           <div className="profile-image-wrapper">
             <div className="profile-image-thumb">
               <img
-                src={media(founderInfo.fileViewUrl1)}
+                src={media(founderInfo.fileViewUrl2)}
                 alt="Profile"
                 className="profile-image"
                 loading="lazy"

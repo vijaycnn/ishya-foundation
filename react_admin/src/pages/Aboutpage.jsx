@@ -9,6 +9,7 @@ const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 import BannerSection from "../components/BannerSection";
 import AboutSection from "../components/AboutSection";
 import FeatureSection from "../components/FeatureSection";
+import ValueSection from "../components/ValueSection";
 import FounderSection from "../components/FounderSection";
 import TeamSection from "../components/TeamSection";
 
@@ -104,7 +105,7 @@ const AboutPage = () => {
                     about: pageData?.PageAbouts || pageAbout,
                     founder: pageData?.PageFounders || PageFounder,
                     feature: {
-                        items: pageData?.PageFeatures || []
+                        items: pageData?.PageValues || []
                     },
                     team: {
                         items: pageData?.PageTeams || []
@@ -192,11 +193,11 @@ const AboutPage = () => {
 
         <Accordion.Item eventKey="2">
           <Accordion.Header>
-            Section 3 - Feature Program
+            Section 3 - Our Values
           </Accordion.Header>
 
           <Accordion.Body>
-            <FeatureSection
+            <ValueSection
               data={formData.feature}
               pageId={pageId}
               onChange={(value) =>

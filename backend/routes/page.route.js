@@ -73,6 +73,11 @@ router.post("/feature/save", [auth.login], function (request, response, next) {
     pageController.saveFeature(request, response, next)
 });
 
+/////////////pageValue /////////////
+router.post("/value/save", [auth.login], function (request, response, next) {
+    pageController.savePageValue(request, response, next)
+});
+
 /////////////pageFounder /////////////
 router.post("/addPagefounder", [auth.login], function (request, response, next) {
     pageController.addPagefounder(request, response, next)
