@@ -1,6 +1,7 @@
 var momentz = require('moment-timezone');
 const responder = require('../utils/responder');
 const contactService = require('../services/contactus.service');
+const faqService = require('../services/faq.service');
 const moment = require('moment');
 
 const { S3Client,  GetObjectCommand } = require("@aws-sdk/client-s3");
@@ -17,6 +18,9 @@ let ContactController = {
         try {
             const data = await contactService.getPageData();
             const rows = data.rows?.map((row) => row.get({ plain: true }) ) || [];
+            
+            let faqData = await faqService.getFaqList(request, false);
+            const faqRows = faqData.rows?.map((row) => row.get({ plain: true }) ) || [];
 
             const filterRow = await Promise.all(
                 rows.map(async (row) => {
@@ -40,6 +44,7 @@ let ContactController = {
                     return row;
                 })
             );
+            filterRow[0].faqs = faqRows ?? [];
 
             const dataList = {
                 totalRecord: data.count,
