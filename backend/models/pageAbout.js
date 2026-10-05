@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     fileUrlTxt1: {
       allowNull: true,
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
     fileUrl2: {
       allowNull: true,
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     }, 
     fileUrlTxt2: {
       allowNull: true,
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
     tagTitle1: {
       allowNull: true,

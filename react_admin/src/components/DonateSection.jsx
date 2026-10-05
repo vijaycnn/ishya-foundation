@@ -343,22 +343,34 @@ const DonateSection = ({ data, onChange }) => {
               {error && <Alert variant="danger">⚠️{error}</Alert>}
               {successMsg && <Alert variant="success">{successMsg}</Alert>}
       <Row>
-        <Col md={6}>
+        <Col md={12}>
           <Form.Group className="mb-4">
             <Form.Label className="fw-medium">
               Title <span className="text-danger">*</span>
             </Form.Label>
-            <Form.Control
-              type="text"
-              name="title"
-              value={donateFormData.title}
-              placeholder="Enter Title"
-              onChange={handleChange} maxLength={255}
+            <ReactQuill
+                theme="snow"
+                name="shortDesc"
+                value={donateFormData.title}
+                onChange={(content) =>
+                setDonateFormData((prev) => ({ ...prev, title: content }))
+                }
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ color: [] }, { background: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ align: [] }],
+                    ["link"],
+                    ["clean"],
+                  ],
+                }}
             />
           </Form.Group>
         </Col>
 
-        <Col md={12}>
+        {/* <Col md={12}>
             <Form.Group className="mb-4">
             <Form.Label className="fw-medium">Short Description</Form.Label>
             <ReactQuill
@@ -370,7 +382,7 @@ const DonateSection = ({ data, onChange }) => {
                 }
             />
             </Form.Group>
-        </Col>
+        </Col> */}
         <Col md={12}>
             <Form.Group className="mb-4">
             <Form.Label className="fw-medium">Description<span className="text-danger">*</span></Form.Label>
@@ -381,6 +393,17 @@ const DonateSection = ({ data, onChange }) => {
                 onChange={(content) =>
                 setDonateFormData((prev) => ({ ...prev, remarks: content }))
                 }
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ color: [] }, { background: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ align: [] }],
+                    ["link"],
+                    ["clean"],
+                  ],
+                }}
             />
             </Form.Group>
         </Col>
@@ -394,6 +417,17 @@ const DonateSection = ({ data, onChange }) => {
                 onChange={(content) =>
                 setDonateFormData((prev) => ({ ...prev, donateDesc: content }))
                 }
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ color: [] }, { background: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ align: [] }],
+                    ["link"],
+                    ["clean"],
+                  ],
+                }}
             />
             </Form.Group>
         </Col>

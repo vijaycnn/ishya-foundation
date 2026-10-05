@@ -100,7 +100,8 @@ export default function About({ data }) {
           )}
           {data.fileUrlTxt1 && (
             <>
-              <div className="points-tile">{data.fileUrlTxt1}</div>
+            <div dangerouslySetInnerHTML={{ __html: data?.fileUrlTxt1 || "",}} />
+              {/* <div className="points-tile">{data.fileUrlTxt1}</div> */}
             </>
           )}
           {data?.fileViewUrl2 && (
@@ -117,7 +118,8 @@ export default function About({ data }) {
           )}
           {data.fileUrlTxt2 && (
             <>
-              <div className="points-tile">{data.fileUrlTxt2}</div>
+            <div dangerouslySetInnerHTML={{ __html: data?.fileUrlTxt2 || "",}} />
+              {/* <div className="points-tile">{data.fileUrlTxt2}</div> */}
             </>
           )}
         </div>
