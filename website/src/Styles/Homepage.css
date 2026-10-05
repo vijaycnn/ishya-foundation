@@ -102,12 +102,6 @@
   object-fit: cover; /* Ensures the image covers the space without distortion */
 }
 
-/* Footer */
-.footer {
-  font-size: 1rem;
-  color: #777;
-}
-
 /* Floating WhatsApp Button */
 
 /* Default (Desktop) Styles remain unchanged */

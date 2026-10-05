@@ -6,7 +6,7 @@ import "../Styles/Footer.css";
 import Logo from "../Images/IshyaLogo.png";
 import Link from "next/link";
 
-const Footer = ({contactData, footer}) => {
+const Footer = ({ contactData, footer }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
@@ -56,14 +56,14 @@ const Footer = ({contactData, footer}) => {
               <img src={media(Logo)} alt="Logo" style={{ width: "100px" }} />
             </Link>
           </div>
-          {
-            (footer?.remark) &&
+          {footer?.remark && (
             <>
-            <div
+              <div
+                className="footer-text"
                 dangerouslySetInnerHTML={{ __html: footer?.remark || "" }}
               />
             </>
-          }
+          )}
           {/* <p className="footer-text">
             Ishya Foundation empowers underprivileged children and women in
             Delhi through education. We believe education unlocks a brighter
