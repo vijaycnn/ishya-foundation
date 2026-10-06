@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 ///////////////////////////// LearningPage /////////////////////
 
 router.get('/pageList/:type', function (request, response, next) {
-    // console.log('list route reached', request.body);
+    // console.log('learning page route reached', request.body);
     learningpageController.getFrontList(request, response, next);
 });
 /////////////////  End Frontend /////////////////////////

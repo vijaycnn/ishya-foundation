@@ -131,6 +131,6 @@ export async function getGalleries() {
   if (result?.status !== "success") {
     throw new Error(result?.message || "Failed to fetch page data");
   }
-  console.log("API RESULT >>>", result);
+  console.log("Gallery API RESULT >>>", result);
   return result?.data || null;
 }
