@@ -56,7 +56,7 @@ let DataProvider = {
           },
         ],
         // raw: true,
-        logging:console.log
+        // logging:console.log
       })
         .then(async data => {
           resolve(data);

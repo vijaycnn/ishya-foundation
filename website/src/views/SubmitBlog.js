@@ -33,7 +33,6 @@ const SubmitBlog = () => {
 
   return (
     <div>
-      <Navbar />
       <PageHeader pageName="Submit Your Blog" breadcrumb="Home/Submit Blog" />
 
       <div className="submit-blog-container">
@@ -56,8 +55,6 @@ const SubmitBlog = () => {
           <button type="submit" className="submit-button">Submit Blog</button>
         </form>
       </div>
-
-      <Footer />
     </div>
   );
 };
