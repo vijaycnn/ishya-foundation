@@ -103,7 +103,7 @@ const blogPosts = [
 const Blogs = () => {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <PageHeader pageName="Blogs" breadcrumb="Home/Blogs" />
       <div className="blogs-header">
         <div className="header-text">
@@ -139,7 +139,7 @@ const Blogs = () => {
           </div>
         ))}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

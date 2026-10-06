@@ -12,7 +12,13 @@ const AboutProject = ({ image, heading, description, buttonText }) => {
       </div>
       <div className="content">
         <h1 style={{ color: "#A6C769", fontFamily: "Playfair Display" }}>{heading}</h1>
-        <p>{description}</p>
+        {              
+            (description) ?
+            <>
+            <div dangerouslySetInnerHTML={{ __html: description || "" }} />
+            </>: ''
+          }
+        {/* <p>{description}</p> */}
         <button style={{ backgroundColor: "#6D3780", color: "#FFF" }}>
           {buttonText}
         </button>

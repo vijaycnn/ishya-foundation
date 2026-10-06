@@ -40,12 +40,12 @@ let FaqController = {
                 return responder.sendResponse(response, 200, "error", '', "Missing Required!");
             }
             let checkIfExist = false;
-            checkIfExist = await faqService.checkExistFaq(request.body.categoryId, request.body.quest);
+            checkIfExist = await faqService.checkExistFaq(request.body?.categoryId, request.body.quest);
             if (checkIfExist == true) {
                 return responder.sendResponse(response, 200, "error", '', "Faq Already Exist");
             } else {
                 const faqData = {
-                    categoryId: request.body.categoryId,
+                    categoryId: request.body?.categoryId || null,
                     quest: request.body.quest.trim(),
                     answer: request.body.answer.trim(),
                     orderNumber: request.body.orderNumber,
@@ -80,12 +80,12 @@ let FaqController = {
                 return responder.sendResponse(response, 200, "error", '', "Missing Required!");
             }
             let checkIfExist = false;
-            checkIfExist = await faqService.checkExistFaq(request.body.categoryId, request.body.quest, request.body.faqId);
+            checkIfExist = await faqService.checkExistFaq(request.body?.categoryId, request.body.quest, request.body.faqId);
             if (checkIfExist == true) {
                 return responder.sendResponse(response, 200, "error", '', "Faq Already Exist");
             } else {
                 const faqData = {
-                    categoryId: request.body.categoryId,
+                    categoryId: request.body?.categoryId || null,
                     quest: request.body.quest.trim(),
                     answer: request.body.answer.trim(),
                     orderNumber: request.body.orderNumber,

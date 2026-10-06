@@ -1,16 +1,23 @@
 "use client";
 
 import media from "@/lib/media";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles/Navbar.css";
 import Logo from "../Images/IshyaLogo.png";
 import { FaSearch, FaHandsHelping, FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 
-const Navbar = () => {
+const Navbar = ({homeData, menu}) => {
+
+  const programList = ["All", ...menu.map(item => item.name)];
+  useEffect(() => {
+    localStorage.setItem("menu",JSON.stringify(programList));
+  }, [menu]);
+
   const [openMenus, setOpenMenus] = useState({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // console.log('homeData nav >>>>>>>', homeData);
   const handleMouseEnter = (menuName) => {
     setOpenMenus({ ...openMenus, [menuName]: true });
   };
@@ -28,19 +35,22 @@ const Navbar = () => {
       label: "About Us",
       link: "/about-us/who-are-we",
       menu: ["Who are we", "Finances & Reporting", "Ishya Learning Centre"],
+      // menu: [ "Ishya Learning Centre"],
+
     },
     {
       label: "Our Programs",
       link: "/ourprograms",
-      menu: [
-        "All",
-        "Education",
-        "Health & Wellbeing",
-        "Community Development",
-        "Women Empowerment",
-        "Environment",
-        "Art & Culture",
-      ],
+      menu: programList,
+      // [
+      //   "All",
+      //   "Education",
+      //   "Health & Wellbeing",
+      //   "Community Development",
+      //   "Women Empowerment",
+      //   "Environment",
+      //   "Art & Culture",
+      // ],
     },
     {
       label: "Media & Coverage",
@@ -60,14 +70,14 @@ const Navbar = () => {
           <ul className="navbar-left">
             <li>
               <a href="tel:9871005650">
-                <span>+919871005650</span>
+                <span>{homeData.contactNumber}</span>
               </a>
             </li>
           </ul>
           <ul className="navbar-right">
-            <li>
+            {/* <li>
               <Link href="/partnerships">Partnerships</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/subscribe">Subscribe to our Newsletter</Link>
             </li>

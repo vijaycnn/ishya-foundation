@@ -55,7 +55,8 @@ export const generateUrl = async (req, res) => {
     return res.json({
       status: "success",
       uploadUrl,
-      fileUrl: `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`
+      fileUrl: `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
+      key
     });
 
   } catch (err) {

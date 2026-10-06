@@ -29,6 +29,30 @@ function EditTestimonial() {
   const navigate = useNavigate();
   const [previousData, setPreviousData] = useState(null);
 
+  const [programList, setProgramList] = useState([]);
+  const getProgramList = async () => {
+    await axiosInstance.get(`/program/ddList`)
+      .then((response) => {
+        // console.log(">>> ", response.data);
+        if (response.data.status === "success") {
+          setProgramList(response?.data?.data);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        if (error.status === 403) {
+          // alert('Session Timeout');
+          handleLogout();
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (programList.length == 0) {
+      getProgramList();
+    }
+  }, []);
+
   const getMentor = async () => {
     setLoading(true);
     setPreviousData(null);
@@ -57,6 +81,8 @@ function EditTestimonial() {
     name: "",
     orderNumber: "",
     title: "",
+    rating : null,
+    programId: null,
     remark1: "",
     remark2: "",
     fileUrl: "",
@@ -67,6 +93,8 @@ function EditTestimonial() {
         name: previousData.name,
         orderNumber : previousData.orderNumber,
         title: previousData.title,
+        rating: previousData.rating,
+        programId: previousData.programId,
         remark1: previousData.remark1,
         remark2: previousData.remark2,
         fileUrl: previousData.fileUrl,
@@ -115,19 +143,23 @@ function EditTestimonial() {
   };
 
   const handleChange = (e) => {
-    const { name, type, value } = e.target;
+    const { name, type, value, checked } = e.target;
+
     setData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox"
+        ? checked
+        : name === "rating"
+          ? Number(value)
+          : value,
     }));
   };
 
   const validation = (values) => {
     setError("");
     let hasError = false;
-    if (
-      !values.name || values.name == "" || !values.title || values.title == "" || values.orderNumber == "" || !values.orderNumber || (uploadMediaFile == null && previousData.fileUrl == "")
-    ) {
+    //|| (uploadMediaFile == null && previousData.fileUrl == "")
+    if (!values.name || values.name == "" || !values.title || values.title == "" || values.orderNumber == "" || !values.orderNumber ) {
       setError("Mandatory fields are missing");
       hasError = true;
     }
@@ -155,7 +187,7 @@ function EditTestimonial() {
             if (response.data.status === "success") {
               //Now, process with data
               setLoading(true);
-              let fileUrl = previousData.filePath;
+              let fileUrl = previousData?.filePath || '';
               if (uploadMediaFile != null) {
                 let uploadRes = await uploadFileOnS3();
                 if (uploadRes) {
@@ -203,7 +235,7 @@ function EditTestimonial() {
 
   const uploadFileOnS3 = async () => {
     // console.log("fileObject >>", `${baseURL}/enquiry/upload-url`, uploadMediaFile);
-    setLoading(true);
+    
     const { uploadUrl, fileUrl } = await getUploadUrl(uploadMediaFile);
     // console.log("s3 url >>", uploadUrl, " ::::", fileUrl);
 
@@ -214,7 +246,6 @@ function EditTestimonial() {
     });
     // console.log("uploadRes", uploadRes);
     if (uploadRes.status == 200) {
-      setLoading(false);
       return fileUrl;
     } else {
       setError("File upload failed");
@@ -229,6 +260,8 @@ function EditTestimonial() {
       name: data.name,
       orderNumber: data.orderNumber,
       title: data.title,
+      rating: data.rating || null,
+      programId: data.programId || null,
       remark1: data.remark1,
       remark2: data.remark2,
       fileUrl: fileUrl,
@@ -243,6 +276,8 @@ function EditTestimonial() {
             name: "",
             orderNumber: "",
             title: "",
+            rating: null,
+            programId: null,
             remark1: "",
             remark2: "",
             fileUrl: "",
@@ -342,7 +377,7 @@ function EditTestimonial() {
                   <Form.Group className="mb-4">
                     <Form.Label className="fw-medium">
                       Image <small>(Max. FileSize 100 mb)</small>
-                      <span className="text-danger">*</span>
+                      {/* <span className="text-danger">*</span> */}
                     </Form.Label>
                     {fileError && (
                       <p className="mt-2 text-sm text-red-600">
@@ -382,6 +417,67 @@ function EditTestimonial() {
                     />
                   </Form.Group>
                 </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-4">
+                    <Form.Label className="fw-medium">
+                      Program
+                    </Form.Label>
+                    <Form.Select
+                      name="programId"
+                      onChange={handleChange}
+                      value={data.programId}
+                    >
+                      <option value="">Select Program</option>
+                      {programList.map((prog) => {
+                        return (
+                          <option value={prog.id} key={prog.id}>
+                            {prog.name}
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-4">
+                    <Form.Label className="fw-medium">
+                      Rating
+                    </Form.Label>
+
+                    <div className="d-flex gap-3 align-items-center">
+                      {[1, 2, 3, 4, 5].map((rating) => (
+                        <Form.Check
+                          key={rating}
+                          type="radio"
+                          id={`rating-${rating}`}
+                          name="rating"
+                          label={`${rating} ★`}
+                          value={rating}
+                          checked={Number(data.rating) === rating}
+                          onChange={handleChange}
+                        />
+                      ))}
+
+                      {data.rating && (
+                        <Button
+                          type="button"
+                          variant="link"
+                          size="sm"
+                          className="p-0 text-muted"
+                          onClick={() =>
+                            setData((prev) => ({
+                              ...prev,
+                              rating: null,
+                            }))
+                          }
+                        >
+                          Clear
+                        </Button>
+                      )}
+                    </div>
+                  </Form.Group>
+                </Col>
+
                 <Col md={12}>
                   <Form.Group className="mb-4">
                     <Form.Label className="fw-medium">Description</Form.Label>

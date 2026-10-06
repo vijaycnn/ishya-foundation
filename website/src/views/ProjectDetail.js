@@ -5,78 +5,97 @@ import { useParams } from "next/navigation";
 import '../Styles/ProjectDetail.css';
 import projects from "./ProjectsData";
 import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
+
 import PageHeader from "../Components/PageHeader";
 import AboutProject from "../Components/AboutProject";
 import TheNeed from "../Components/TheNeed";
 import TheImpact from "../Components/TheImpact";
 import Quotes from "../Components/Quotes";
-import Footer from "../Components/Footer";
 import useScrollAnimation from "../Components/ScrollAnimation";
 import JoinUs from "../Components/JoinUs";
 import ProjectTestimonials from "../Components/ProjectTestimonials";
 
-const ProjectDetail = () => {
+const ProjectDetail = ( {pageData} ) => {
+
+  const project = pageData;
   const { id } = useParams();
-  const project = projects.find((proj) => proj.id === parseInt(id));
-  const breadcrumbText = `Home/Our Programs / ${project.pagename || "Project"}`;
+  // const project = projects.find((proj) => proj.id === parseInt(id));
+  const breadcrumbText = `Home/Our Programs / ${project.name || "Project"}`;
 
   // ✅ Move the hook to the top (before any conditional returns)
   useScrollAnimation();
 
   return (
     <div className="project-page">
-      <Navbar />
-            <PageHeader pageName={project.pagename} breadcrumb={breadcrumbText} />
+      {/* <Navbar /> */}
+            <PageHeader pageName={project.name} breadcrumb={breadcrumbText} />
 
       {/* First Component */}
       <div className="hidden">
         <AboutProject
-          image={project.firstComponent?.image}
-          heading={project.firstComponent?.heading}
-          description={project.firstComponent?.description}
+          image={project.fileViewUrl}
+          heading={project.title}
+          description={project?.remarks}
           buttonText="Get Involved"
         />
       </div>
 
       {/* Second Component: THE NEED */}
-      <div className="hidden">
-        <TheNeed
-          images={project.theNeed?.images}
-          descriptions={project.theNeed?.descriptions}
-        />
-      </div>
+      {
+        (project.ProgramNeeds && project.ProgramNeeds?.length ) &&
+        <>
+          
+          <div className="hidden">
+            <TheNeed needs={project.ProgramNeeds}
+              // images={project.theNeed?.images}
+              // descriptions={project.theNeed?.descriptions}
+            />
+          </div>
+        </>
+      }
 
       {/* Third Component: THE IMPACT */}
       <div className="hidden">
-        <Quotes quote={project.quote} />
+        <Quotes quote={project.impactHeading} />
         <TheImpact
           heading="THE IMPACT"
-          subheading={project.theImpact?.subheading}
-          points={project.theImpact?.points}
-          image={project.theImpact?.image}
+          subheading={project?.impactTitle}
+          points={project?.impactDescription}
+          image={project?.impactFileViewUrl}
         />
       </div>
 
       {/* Testimonial Component */}
       <div className="hidden">
-        {project.testimonials ? (
-          <ProjectTestimonials
-            heading={project.testimonials.heading}
-            subheading={project.testimonials.subheading}
-            reviews={project.testimonials.reviews}  
-          />
-        ) : (
-          <div>No testimonials available.</div>
-        )}
+        {
+          (project.Mentors && project.Mentors?.length) &&
+          <>
+          <ProjectTestimonials testimonials={project.Mentors} />
+          </>
+          
+        //   (
+        //   <ProjectTestimonials
+        //     heading={project.testimonials.heading}
+        //     subheading={project.testimonials.subheading}
+        //     reviews={project.testimonials.reviews}  
+        //   />
+        // ) : (
+        //   <div>No testimonials available.</div>
+        // )
+        }
       </div>
 
-      <JoinUs
-        heading={project.JoinUs?.heading}
-        description={project.JoinUs?.description}
-        image={project.JoinUs?.image}
-      />
+        {
+          (project?.joinTitle || project?.joinDescription) &&
+            <JoinUs
+            heading={project?.joinTitle}
+            description={project?.joinDescription}
+            image={  project?.joinFileUrl ? project?.joinFileViewUrl : null}
+            /> 
+        }
       
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

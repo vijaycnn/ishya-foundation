@@ -12,11 +12,15 @@ const dotenv = require('dotenv');
 dotenv.config();
 const userRouter = require('./routes/users.route');
 const enquiryRouter = require('./routes/enquiry.route');
+const programRouter = require('./routes/program.route');
 const mentorRouter = require('./routes/mentor.route');
 const learningpageRouter = require('./routes/learningpage.route');
 const pageRouter = require('./routes/page.route');
+const contactRouter = require('./routes/contact.route');
+const donateRouter = require('./routes/donate.route');
 
 const galleryRouter = require('./routes/gallery.route');
+const partnerRouter = require('./routes/partner.route');
 const locationRouter = require('./routes/location.route');
 const faqRouter = require('./routes/faq.route');
 const bannerRouter = require('./routes/banner.route');
@@ -91,9 +95,14 @@ app.use(async function (req, res, next) {
 
 // let routePrefix = process.env.ROUTE_PREFIX.trim();
 
+app.use('/api/program',  programRouter);
 app.use('/api/mentor',  mentorRouter);
 app.use('/api/learningpage',  learningpageRouter);
+app.use('/api/gallery',  galleryRouter);
 app.use('/api/page',  pageRouter);
+app.use('/api/partner',  partnerRouter);
+app.use('/api/contactus',  contactRouter);
+app.use('/api/donate',  donateRouter);
 
 //////
 app.use('/api/user',  userRouter);
@@ -102,7 +111,6 @@ app.use('/api/location',  locationRouter);
 app.use('/api/faq',  faqRouter);
 app.use('/api/banner',  bannerRouter);
 app.use('/api/slide',  slideRouter);
-app.use('/api/gallery',  galleryRouter);
 app.use('/api/slideFile',  slideFileRouter);
 
 

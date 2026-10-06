@@ -10,11 +10,18 @@ const TheImpact = ({ heading, subheading, points, image }) => {
       <div className="content">
         <h2>{heading}</h2>
         <h3>{subheading}</h3>
-        <ul>
+        {              
+          (points) ?
+          <>
+          <div dangerouslySetInnerHTML={{ __html: points || "" }} />
+          </>: ''
+        }
+        {/* <ul>
           {points.map((point, index) => (
             <li key={index}>{point}</li>
           ))}
-        </ul>
+        </ul> */}
+
       </div>
       <div className="image-container">
         <img src={media(image)} alt="Impact"loading="lazy" />

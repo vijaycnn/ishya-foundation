@@ -1,13 +1,13 @@
 'use strict';
 const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class PagePartner extends Model {
+  class PageTeams extends Model {
     static associate(models) {
       // define association here
-      PagePartner.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
+      PageTeams.belongsTo(models.PageMasters, {foreignKey: 'pageId'});
     }
   }
-  PagePartner.init({
+  PageTeams.init({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     pageId: DataTypes.INTEGER,
-    title: {
-      allowNull: true,
-      type: DataTypes.STRING
+    orderNumber: {
+      type: DataTypes.INTEGER,
+      defaultValue:1
     },
     fileUrl: {
       allowNull: false,
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'PagePartner',
+    modelName: 'PageTeams',
   });
-  return PagePartner;
+  return PageTeams;
 };

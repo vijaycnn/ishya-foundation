@@ -9,14 +9,24 @@ const JoinUs = ({ heading, description, image}) => {
     <div className="join-us-container">
       <div className="join-us-content">
         {/* Image on the Left */}
+        {
+          (image) && 
+
         <div className="join-us-image">
           <img src={media(image)} alt="Join Us" loading="lazy"/>
         </div>
+        }
 
         {/* Text on the Right */}
         <div className="join-us-text">
           <h2>{heading}</h2>
-          <p>{description}</p>
+          {              
+            (description) ?
+            <>
+            <div dangerouslySetInnerHTML={{ __html: description || "" }} />
+            </>: ''
+          }
+          {/* <p>{description}</p> */}
           <button type="button">
             Join Us
           </button>

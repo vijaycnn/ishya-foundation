@@ -29,11 +29,49 @@ let DataProvider = {
             where: { status: 1},
             required: false
           },
+          {
+            model: conn.PageZigZags,
+            where: { status: 1},
+            required: false
+          },
+          {
+            model: conn.PageFeatures,
+            where: { status: 1},
+            required: false
+          },
+          {
+            model: conn.PageValues,
+            where: { status: 1},
+            required: false
+          },
+          {
+            model: conn.PageFounders,
+            where: { status: 1},
+            required: false
+          },
+          {
+            model: conn.PageTeams,
+            where: { status: 1},
+            required: false
+          },
         ],
         // raw: true,
         logging:console.log
       })
         .then(async data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  ////////////////Edit PageMaster////////////////////
+  updatePageMaster: async (body, pageId) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageMasters.update(body, {
+        where: { id: pageId },
+      })
+        .then(data => {
           resolve(data);
         }).catch(err => {
           reject(err);
@@ -141,6 +179,514 @@ let DataProvider = {
   },
   ///////End Page Video  ////////////////
 
+  ///////Page ZigZag service //////////////
+  saveZigZag: async (body, request) => {
+      const transaction = await conn.sequelize.transaction();
+
+      try {
+        const {
+          pageId,
+          zigzagTitle,
+          items = [],
+          deletedIds = [],
+        } = body;
+
+        const userId = request.user?.userId || null;
+
+        // --------------------------------------
+        // Validate page
+        // --------------------------------------
+
+        const page = await conn.PageMasters.findOne({
+          where: {
+            id: pageId,
+            status: 1,
+          },
+          transaction,
+        });
+
+        if (!page) {
+          throw new Error("Home page record not found.");
+        }
+
+        // --------------------------------------
+        // Update PageMasters
+        // --------------------------------------
+
+        await conn.PageMasters.update(
+          {
+            zigzagTitle: zigzagTitle?.trim() || null,
+            updatedBy: userId,
+          },
+          { where: { id: pageId }, transaction, }
+        );
+
+        // --------------------------------------
+        // Delete removed rows
+        // --------------------------------------
+
+        if (Array.isArray(deletedIds) && deletedIds.length > 0) {
+          await conn.PageZigZags.update(
+            {
+              status: 0,
+              updatedBy: userId,
+            },
+            {
+              where: {
+                id: {
+                  [conn.Sequelize.Op.in]:
+                    deletedIds,
+                },
+                pageId,
+              },
+              transaction,
+            }
+          );
+        }
+
+        // --------------------------------------
+        // Create / Update
+        // --------------------------------------
+
+        const savedItems = [];
+
+        for (const item of items) {
+
+          const itemData = {
+            pageId,
+            fileUrl: item.fileUrl,
+            remarks: item.remarks || "",
+            orderNumber: item.orderNumber,
+            status: 1,
+            updatedBy: userId,
+          };
+
+          if (item.id && Number(item.id) > 0) {
+
+            const [updatedCount] = await conn.PageZigZags.update(
+                itemData,
+                {
+                  where: {
+                    id: item.id,
+                    pageId,
+                  },
+                  transaction,
+                }
+              );
+
+            if (updatedCount === 0) {
+              throw new Error( `Zig-Zag item ${item.id} not found.`);
+            }
+
+            savedItems.push({id: item.id,...itemData,});
+
+          } else {
+
+            const created = await conn.PageZigZags.create(
+                {...itemData, createdBy: userId, }, {transaction,}
+              );
+
+            savedItems.push(created);
+          }
+        }
+
+        // --------------------------------------
+        // Commit
+        // --------------------------------------
+
+        await transaction.commit();
+
+        return { zigzagTitle: zigzagTitle?.trim() || "", items: savedItems,};
+
+      } catch (error) {
+
+        await transaction.rollback();
+
+        console.error("saveZigZag service error:",error);
+
+        throw error;
+      }
+  },
+  ///////End Page ZigZag //////////////
+  
+  ///////Page Feature service //////////////
+  saveFeature: async (body, request) => {
+      const transaction = await conn.sequelize.transaction();
+
+      try {
+        const {
+          pageId,
+          items = [],
+          deletedIds = [],
+        } = body;
+
+        const userId = request.user?.userId || null;
+
+        // --------------------------------------
+        // Validate page
+        // --------------------------------------
+
+        const page = await conn.PageMasters.findOne({
+          where: {
+            id: pageId,
+            status: 1,
+          },
+          transaction,
+        });
+
+        if (!page) {
+          throw new Error("Page record not found.");
+        }
+
+        // --------------------------------------
+        // Delete removed rows
+        // --------------------------------------
+
+        if (Array.isArray(deletedIds) && deletedIds.length > 0) {
+          await conn.PageFeatures.update(
+            {
+              status: 0,
+              updatedBy: userId,
+            },
+            {
+              where: {
+                id: {
+                  [conn.Sequelize.Op.in]:
+                    deletedIds,
+                },
+                pageId,
+              },
+              transaction,
+            }
+          );
+        }
+
+        // --------------------------------------
+        // Create / Update
+        // --------------------------------------
+
+        const savedItems = [];
+
+        for (const item of items) {
+
+          const itemData = {
+            pageId,
+            title: item.title,
+            btnText: item.btnText,
+            btnLink: item.btnLink,
+            fileUrl: item.fileUrl,
+            remarks: item.remarks || "",
+            orderNumber: item.orderNumber,
+            status: 1,
+            updatedBy: userId,
+          };
+
+          if (item.id && Number(item.id) > 0) {
+
+            const [updatedCount] = await conn.PageFeatures.update(
+                itemData,
+                {
+                  where: {
+                    id: item.id,
+                    pageId,
+                  },
+                  transaction,
+                }
+              );
+
+            if (updatedCount === 0) {
+              throw new Error( `Feature item ${item.id} not found.`);
+            }
+
+            savedItems.push({id: item.id,...itemData,});
+
+          } else {
+
+            const created = await conn.PageFeatures.create(
+                {...itemData, createdBy: userId, }, {transaction,}
+              );
+
+            savedItems.push(created);
+          }
+        }
+
+        // --------------------------------------
+        // Commit
+        // --------------------------------------
+
+        await transaction.commit();
+
+        return { items: savedItems,};
+
+      } catch (error) {
+
+        await transaction.rollback();
+
+        console.error("saveFeature service error:",error);
+
+        throw error;
+      }
+  },
+  ///////End Page Feature //////////////
+  
+  ///////Page Value service //////////////
+  savePageValue: async (body, request) => {
+      const transaction = await conn.sequelize.transaction();
+
+      try {
+        const {
+          pageId,
+          items = [],
+          deletedIds = [],
+        } = body;
+
+        const userId = request.user?.userId || null;
+
+        // --------------------------------------
+        // Validate page
+        // --------------------------------------
+
+        const page = await conn.PageMasters.findOne({
+          where: {
+            id: pageId,
+            status: 1,
+          },
+          transaction,
+        });
+
+        if (!page) {
+          throw new Error("Page record not found.");
+        }
+
+        // --------------------------------------
+        // Delete removed rows
+        // --------------------------------------
+
+        if (Array.isArray(deletedIds) && deletedIds.length > 0) {
+          await conn.PageValues.update(
+            {
+              status: 0,
+              updatedBy: userId,
+            },
+            {
+              where: {
+                id: {
+                  [conn.Sequelize.Op.in]:
+                    deletedIds,
+                },
+                pageId,
+              },
+              transaction,
+            }
+          );
+        }
+
+        // --------------------------------------
+        // Create / Update
+        // --------------------------------------
+
+        const savedItems = [];
+
+        for (const item of items) {
+
+          const itemData = {
+            pageId,
+            // title: item.title,
+            remarks: item.remarks || "",
+            orderNumber: item.orderNumber,
+            status: 1,
+            updatedBy: userId,
+          };
+
+          if (item.id && Number(item.id) > 0) {
+
+            const [updatedCount] = await conn.PageValues.update(
+                itemData,
+                {
+                  where: {
+                    id: item.id,
+                    pageId,
+                  },
+                  transaction,
+                }
+              );
+
+            if (updatedCount === 0) {
+              throw new Error( `Values item ${item.id} not found.`);
+            }
+
+            savedItems.push({id: item.id,...itemData,});
+
+          } else {
+
+            const created = await conn.PageValues.create(
+                {...itemData, createdBy: userId, }, {transaction,}
+              );
+
+            savedItems.push(created);
+          }
+        }
+
+        // --------------------------------------
+        // Commit
+        // --------------------------------------
+
+        await transaction.commit();
+
+        return { items: savedItems,};
+
+      } catch (error) {
+
+        await transaction.rollback();
+
+        console.error("savePageValue service error:",error);
+
+        throw error;
+      }
+  },
+  
+  ///////Page Founder service //////////////
+  addPagefounder: async (body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageFounders.create(body)
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  editPagefounder: async (id, body) => {
+    return new Promise(function (resolve, reject) {
+      conn.PageFounders.update(body, {
+        where: { id: id },
+      })
+        .then(data => {
+          resolve(data);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  ///////End Page Founder  ////////////////
+
+  ///////Page Team service //////////////
+  saveTeam: async (body, request) => {
+      const transaction = await conn.sequelize.transaction();
+
+      try {
+        const {
+          pageId,
+          items = [],
+          deletedIds = [],
+        } = body;
+
+        const userId = request.user?.userId || null;
+
+        // --------------------------------------
+        // Validate page
+        // --------------------------------------
+
+        const page = await conn.PageMasters.findOne({
+          where: {
+            id: pageId,
+            status: 1,
+          },
+          transaction,
+        });
+
+        if (!page) {
+          throw new Error("page record not found.");
+        }
+
+        // --------------------------------------
+        // Delete removed rows
+        // --------------------------------------
+
+        if (Array.isArray(deletedIds) && deletedIds.length > 0) {
+          await conn.PageTeams.update(
+            {
+              status: 0,
+              updatedBy: userId,
+            },
+            {
+              where: {
+                id: {
+                  [conn.Sequelize.Op.in]:
+                    deletedIds,
+                },
+                pageId,
+              },
+              transaction,
+            }
+          );
+        }
+
+        // --------------------------------------
+        // Create / Update
+        // --------------------------------------
+
+        const savedItems = [];
+
+        for (const item of items) {
+
+          const itemData = {
+            pageId,
+            fileUrl: item.fileUrl,
+            orderNumber: item.orderNumber,
+            status: 1,
+            updatedBy: userId,
+          };
+
+          if (item.id && Number(item.id) > 0) {
+
+            const [updatedCount] = await conn.PageTeams.update(
+                itemData,
+                {
+                  where: {
+                    id: item.id,
+                    pageId,
+                  },
+                  transaction,
+                }
+              );
+
+            if (updatedCount === 0) {
+              throw new Error( `Team item ${item.id} not found.`);
+            }
+
+            savedItems.push({id: item.id,...itemData,});
+
+          } else {
+
+            const created = await conn.PageTeams.create(
+                {...itemData, createdBy: userId, }, {transaction,}
+              );
+
+            savedItems.push(created);
+          }
+        }
+
+        // --------------------------------------
+        // Commit
+        // --------------------------------------
+
+        await transaction.commit();
+
+        return { items: savedItems,};
+
+      } catch (error) {
+
+        await transaction.rollback();
+
+        console.error("saveTeam service error:",error);
+
+        throw error;
+      }
+  },
+  ///////End Page Team //////////////
+
+
 
   getList: async (type, all = false) => {
     return new Promise(async function (resolve, reject) {
@@ -215,18 +761,6 @@ let DataProvider = {
         });
     });
   },
-  update: async (body, mentorId) => {
-    return new Promise(function (resolve, reject) {
-      conn.LearningPages.update(body, {
-        where: { id: mentorId },
-      })
-        .then(data => {
-          resolve(data);
-        }).catch(err => {
-          reject(err);
-        });
-    });
-  },
   
   //Use this service to soft delete purpose
   changeStatus: async (body) => {
@@ -238,24 +772,6 @@ let DataProvider = {
       })
         .then(data => {
           resolve(data);
-        }).catch(err => {
-          reject(err);
-        });
-    });
-  },
-  delete: async (mentorId) => {
-    return new Promise(function (resolve, reject) {
-      conn.LearningPages.update({
-        isdeleted : 1
-      },{
-        where: { id: mentorId },
-      })
-        .then(data => {
-          if (data !== null) {
-            resolve(data);
-          } else {
-            reject('No Record found');
-          }
         }).catch(err => {
           reject(err);
         });

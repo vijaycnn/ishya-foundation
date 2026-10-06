@@ -49,7 +49,7 @@ function EditFaq() {
 
   useEffect(() => {
     if (categoryList.length == 0) {
-      getCategoryList();
+      // getCategoryList();
     }
   }, []);
   const avoidAlphabets = (event) => {
@@ -86,7 +86,7 @@ function EditFaq() {
   }, []);
 
   const [data, setData] = useState({
-    categoryId: "",
+    // categoryId: "",
     orderNumber: 1,
     quest: "",
     answer: "",
@@ -94,7 +94,7 @@ function EditFaq() {
   useEffect(() => {
     if (previousData) {
       setData({
-        categoryId: previousData.categoryId,
+        // categoryId: previousData.categoryId,
         orderNumber: previousData.orderNumber,
         quest: previousData.quest,
         answer: previousData.answer,
@@ -113,8 +113,7 @@ function EditFaq() {
     setError("");
     let hasError = false;
     if (
-      !values.categoryId ||
-      values.categoryId == "" ||
+      // !values.categoryId || values.categoryId == "" ||
       !values.orderNumber ||
       values.orderNumber == "" ||
       !values.quest ||
@@ -139,7 +138,7 @@ function EditFaq() {
         setLoading(true);
         let body = {
           faqId: previousData.id,
-          categoryId: data.categoryId,
+          // categoryId: data.categoryId,
           orderNumber: data.orderNumber,
           quest: data.quest,
           answer: data.answer,
@@ -151,7 +150,7 @@ function EditFaq() {
             setLoading(false);
             if (response.data.status === "success") {
               setData({
-                categoryId: "",
+                // categoryId: "",
                 orderNumber: 1,
                 quest: "",
                 answer: "",
@@ -217,7 +216,7 @@ function EditFaq() {
         <Form onSubmit={handleSubmit}>
           {/* <Alert alert={alert} /> */}
           <Row>
-            <Col md={4}>
+            {/* <Col md={4}>
               <Form.Group className="mb-4">
                 <Form.Label className="fw-medium">
                   Category<span className="text-danger">*</span>
@@ -237,7 +236,7 @@ function EditFaq() {
                   })}
                 </Form.Select>
               </Form.Group>
-            </Col>
+            </Col> */}
             <Col md={4}>
               <Form.Group className="mb-4">
                 <Form.Label className="fw-medium">

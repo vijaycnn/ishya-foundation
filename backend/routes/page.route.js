@@ -3,14 +3,21 @@ const router = express.Router();
 const pageController = require('../src/controller/page.controller');
 const auth = require('../middleware/auth');  
 
+//////////////////Frontend /////////////////////
+router.get('/detail/:type',  function (request, response, next) {
+    console.log('pageData route reached', request.body);
+    pageController.getHomePage(request, response, next);
+});
+
+router.get('/getList:type', function (request, response, next) {
+    // console.log('list route reached', request.body);
+    pageController.getFrontList(request, response, next);
+});
+
 ///////////////////////////// pageData /////////////////////
 router.get('/:type',  [auth.login], function (request, response, next) {
     console.log('pageData route reached', request.body);
     pageController.getPageData(request, response, next);
-});
-router.get('/getList:type', function (request, response, next) {
-    // console.log('list route reached', request.body);
-    pageController.getFrontList(request, response, next);
 });
 router.post("/valid", [auth.login], function (request, response, next) {
     pageController.checkValid(request, response, next)
@@ -46,6 +53,42 @@ router.post("/addPagevideo", [auth.login], function (request, response, next) {
 });
 router.post("/updatePagevideo", [auth.login], function (request, response, next) {
     pageController.updatePagevideo(request, response, next)
+});
+/////////////pageProject /////////////
+router.post("/updatePageproject", [auth.login], function (request, response, next) {
+    pageController.updatePageproject(request, response, next)
+});
+/////////////pageTestimonial /////////////
+router.post("/updatePagetestimonial", [auth.login], function (request, response, next) {
+    pageController.updatePagetestimonial(request, response, next)
+});
+
+
+/////////////pageZigZag /////////////
+router.post("/zigzag/save", [auth.login], function (request, response, next) {
+    pageController.saveZigZag(request, response, next)
+});
+/////////////pageFeature /////////////
+router.post("/feature/save", [auth.login], function (request, response, next) {
+    pageController.saveFeature(request, response, next)
+});
+
+/////////////pageValue /////////////
+router.post("/value/save", [auth.login], function (request, response, next) {
+    pageController.savePageValue(request, response, next)
+});
+
+/////////////pageFounder /////////////
+router.post("/addPagefounder", [auth.login], function (request, response, next) {
+    pageController.addPagefounder(request, response, next)
+});
+router.post("/updatePagefounder", [auth.login], function (request, response, next) {
+    pageController.updatePagefounder(request, response, next)
+});
+
+/////////////pageTeam /////////////
+router.post("/team/save", [auth.login], function (request, response, next) {
+    pageController.saveTeam(request, response, next)
 });
 
 router.get("/getById/:pageType/:mentorId", [auth.login], function (request, response, next) {

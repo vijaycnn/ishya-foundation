@@ -9,10 +9,10 @@ export default function WorkInProgress() {
   
   return (
     <>
-    <Navbar/>
+    {/* <Navbar/> */}
     <PageHeader pageName="News" breadcrumb="Home/News" />
     <NewsComponent/>
-    <Footer/>
+    {/* <Footer/> */}
     </>
   );
 }

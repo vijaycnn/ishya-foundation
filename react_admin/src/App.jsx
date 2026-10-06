@@ -17,6 +17,10 @@ import Testimonials from "./pages/master/Testimonial";
 import AddTestimonial from "./pages/master/AddTestimonial";
 import EditTestimonial from "./pages/master/EditTestimonial";
 
+import Programs from "./pages/master/Program";
+import AddProgram from "./pages/master/AddProgram";
+import EditProgram from "./pages/master/EditProgram";
+
 import LearningPages from "./pages/master/LearningPages";
 import AddLearningPage from "./pages/master/AddLearningPage";
 import EditLearningPage from "./pages/master/EditLearningPage";
@@ -25,7 +29,11 @@ import AddNews from "./pages/master/AddNews";
 import EditNews from "./pages/master/EditNews";
 
 import Gallery from "./pages/master/Gallery";
+import PartnerLogo from "./pages/master/PartnerLogo";
 import Homepage from "./pages/Homepage";
+import Aboutpage from "./pages/Aboutpage";
+import Contactpage from "./pages/Contactpage";
+import Donatepage from "./pages/Donatepage";
 
 ////////////////
 import Participate from "./pages/Participate";
@@ -109,6 +117,69 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path={`${adminAlias}/aboutpage`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Aboutpage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/contactpage`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Contactpage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/donatepage`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Donatepage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path={`${adminAlias}/programs`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Programs />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/addProgram`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <AddProgram />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/editProgram/:id`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <EditProgram />
+                </Layout>
+              </ProtectedRoute>
+            }
+          /> 
+
           <Route
             path={`${adminAlias}/testimonials`}
             element={
@@ -210,9 +281,80 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path={`${adminAlias}/partners`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <PartnerLogo />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={`${adminAlias}/faqs`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Faqs />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/addFaq`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <AddFaq />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/editFaq/:id`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <EditFaq />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/slides`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Slides />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/addSlide`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <AddSlide />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/editSlide/:id`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <EditSlide />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
 
-          /////////////
+          /////////////Not in use /////////////////
           <Route
             path={`${adminAlias}/participant`}
             element={
@@ -285,36 +427,6 @@ function App() {
             }
           />
           <Route
-            path={`${adminAlias}/faqs`}
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Layout setIsAuthenticated={setIsAuthenticated}>
-                  <Faqs />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={`${adminAlias}/addFaq`}
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Layout setIsAuthenticated={setIsAuthenticated}>
-                  <AddFaq />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={`${adminAlias}/editFaq/:id`}
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Layout setIsAuthenticated={setIsAuthenticated}>
-                  <EditFaq />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path={`${adminAlias}/category`}
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -345,36 +457,7 @@ function App() {
             }
           />
 
-          <Route
-            path={`${adminAlias}/slides`}
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Layout setIsAuthenticated={setIsAuthenticated}>
-                  <Slides />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={`${adminAlias}/addSlide`}
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Layout setIsAuthenticated={setIsAuthenticated}>
-                  <AddSlide />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={`${adminAlias}/editSlide/:id`}
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Layout setIsAuthenticated={setIsAuthenticated}>
-                  <EditSlide />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
+          
 
           {/* <Route path="*" element={<Navigate to="/admin" />} /> */}
         </Routes>

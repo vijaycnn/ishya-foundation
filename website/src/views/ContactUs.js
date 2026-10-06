@@ -3,17 +3,15 @@
 import media from "@/lib/media";
 import { React, useState } from "react";
 import axios from "axios";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
 import FAQComponent from "../Components/Faq";
 import PageHeader from "../Components/PageHeader";
 import "../Styles/ContactUs.css";
-import Map from "../Images/foundation-map.png";
-import IshyaEntrance from "../Images/IshyaEntrance.png";
-import QrImage from "../Images/qr-code.png";
 import Quotes from "../Components/Quotes";
 
-const ContactUs = () => {
+const ContactUs = ( {data}) => {
+
+  const emailList = data?.email ? data.email.split(",").map(email => email.trim()).filter(Boolean) : [];
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -57,10 +55,7 @@ const ContactUs = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/contact",
-        formData,
-      );
+      const response = await axios.post("http://localhost:3001/contact", formData,);
       setResponseMessage(response.data.message);
       setFormData({
         first_name: "",
@@ -81,153 +76,191 @@ const ContactUs = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <PageHeader pageName="Contact Us" breadcrumb="Home / Contact Us" />
 
       <div className="contact-us-head">
-        <h1>We'd Love to Hear From You</h1>
+        <h1>{data?.title}</h1>
       </div>
 
       <div className="contact-container">
-        <div className="location-section">
-          {/* <a
-            href="https://maps.app.goo.gl/t1dPuNHj75jCKvR38"
-            target="_blank"
-            rel="noopener noreferrer"
-          >  </a> */}
-          <img
-            src={media(Map)}
+        {
+          (data?.mapFileViewUrl) &&
+          <div className="location-section">
+            <img
+            src={media(data?.mapFileViewUrl)}
             alt="Map Location"
             className="location-image zoom-hover"
-          />
-        </div>
+            />
+          </div>
+        }
 
         <div className="address-section">
           <h3 className="sub-heading">Address</h3>
           <div className="address-details">
             <div className="address-item contact-address-item">
               <p>
-                <strong>Registered address:-</strong> <br />
-                Ishya Foundation, 904, 9th Floor, Surya Kiran Building, K.G.
-                Marg, Connaught Place, Delhi – 110001 <br />
-                <a
-                  href="https://maps.app.goo.gl/t1dPuNHj75jCKvR38"
-                  className="map-btn"
-                  target="_blank"
-                >
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 24 24"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
-                  </svg>{" "}
-                  View Map
-                </a>
+                <strong>{data.addressTitle1}</strong> <br />
+                {data.address1} <br />
+                {
+                  (data?.location1) &&
+                  <>
+                  <a
+                    href={data?.location1}
+                    className="map-btn"
+                    target="_blank"
+                    >
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      strokeWidth="0"
+                      viewBox="0 0 24 24"
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                      >
+                      <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
+                    </svg>{" "}
+                    View Map
+                  </a>
+                  </>
+                }
               </p>
-              <p>
-                <strong>ISHYA Learning Center 1:- </strong> <br />
-                2B, Chhalera, Sector - 44, Noida, 201303
-                <br />
-                <a
-                  href="https://maps.app.goo.gl/bWMAVuPBj5krAz67A"
-                  className="map-btn"
-                  target="_blank"
-                >
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 24 24"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
+              {
+                (data?.addressTitle2) &&
+                <>                
+                <p>
+                  <strong>{data?.addressTitle2} </strong> <br />
+                  {data?.address2}
+                  <br />
+                  {
+                    (data?.location2) &&
+                    <>
+                  <a
+                    href={data?.location2}
+                    className="map-btn"
+                    target="_blank"
+                    >
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      strokeWidth="0"
+                      viewBox="0 0 24 24"
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                      >
+                      <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
+                    </svg>{" "}
+                    View Map
+                  </a>
+                    </>
+                  }
+                </p>
+                </>
+              }
+              {
+                (data?.addressTitle3) &&
+                <>                
+                <p>
+                  <strong>{data?.addressTitle3}</strong> <br />
+                  {data?.address3} <br />
+                  {
+                    (data?.location3) &&
+                    <>
+                  <a
+                    href={data?.location3}
+                    className="map-btn"
+                    target="_blank"
                   >
-                    <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
-                  </svg>{" "}
-                  View Map
-                </a>
-              </p>
-              <p>
-                <strong>ISHYA Learning Center 2:- </strong> <br />
-                73B, khizarabad, Friends Colony East, Jamia Nagar, New Friends
-                Colony, Delhi – 110025 <br />
-                <a
-                  href="https://maps.app.goo.gl/JE15SLBtGZr3a7ZE8"
-                  className="map-btn"
-                  target="_blank"
-                >
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 24 24"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
-                  </svg>{" "}
-                  View Map
-                </a>
-              </p>
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      strokeWidth="0"
+                      viewBox="0 0 24 24"
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                      >
+                      <path d="M12 2C7.589 2 4 5.589 4 9.995 3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12 0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
+                    </svg>{" "}
+                    View Map
+                  </a>
+                    </>
+                  }
+                </p>
+                </>
+                }
             </div>
-
+            {
+              (data?.contactNumber) &&
+              <>
             <div className="address-item">
               <h3 className="sub-heading">Phone No.:</h3>
               <p>
                 <a
-                  href="tel:9871005650"
+                  href={`tel:${data?.contactNumber}`}
                   className="zoom-hover"
                   target="_blank"
                   rel="noopener noreferrer"
-                >
-                  +91 9871005650
+                  >
+                  {data?.contactNumber}
                 </a>
               </p>
             </div>
-            <div className="address-item">
-              {/* Clickable WhatsApp Number */}
-              <h3 className="sub-heading">WhatsApp:</h3>
+              </>
+            }
+            {
+              (data?.watsappFileViewUrl) &&
+              <>              
+              <div className="address-item">
+                {/* Clickable WhatsApp Number */}
+                <h3 className="sub-heading">WhatsApp:</h3>
 
-              <p>
-                <a
-                  href="https://wa.me/919876543210"
-                  className="zoom-hover"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={media(QrImage)} alt="QR" width={100} />
-                </a>
-              </p>
-            </div>
+                <p>
+                  <a
+                    href="https://wa.me/919876543210"
+                    className="zoom-hover"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >
+                    <img src={media(data?.watsappFileViewUrl)} alt="QR" width={100} />
+                  </a>
+                </p>
+              </div>
+              </>
+            }
 
             {/* Clickable Email */}
-            <div className="address-item">
-              <h3 className="sub-heading">Email:</h3>
-              <p>
-                <a href="mailto:contact_us@ishya.co.in" className="zoom-hover">
-                  contact_us@ishya.co.in
-                </a>
-              </p>
-              <p>
-                <a href="mailto:admin@ishya.co.in" className="zoom-hover">
-                  admin@ishya.co.in
-                </a>
-              </p>
-            </div>
+            {
+              (data?.email) &&
+              <>
+              <div className="address-item">
+                <h3 className="sub-heading">Email:</h3>              
+                {
+                  emailList.map((value) => {
+                    const email = value.trim();
+
+                    return (
+                      <p key={email}>
+                        <a href={`mailto:${email}`} className="zoom-hover">
+                          {email}
+                        </a>
+                      </p>
+                    );
+                  })
+                }
+              </div>
+              </>
+            }
           </div>
         </div>
       </div>
 
       <div className="form-container">
         <div className="form-content">
-          <h3 className="form-subheading">Get in Touch</h3>
-          <h2 className="form-heading">Send Us a Message</h2>
+          <h3 className="form-subheading">{data?.formTitle}</h3>
+          <h2 className="form-heading">{data?.formHeading}</h2>
           <form className="contact-form" onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="input-group">
@@ -305,26 +338,30 @@ const ContactUs = () => {
             <p className="response-message">{responseMessage}</p>
           )}
         </div>
-
-        <div className="form-image-section">
-          {/* Clickable Image with Zoom-in Effect */}
-          <a
-            href="https://goo.gl/maps/your-location"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={media(IshyaEntrance)}
-              alt="Form Decoration"
-              className="form-image zoom-hover"
-            />
-          </a>
-        </div>
+          {
+            (data?.formFileViewUrl) &&
+            <>
+              <div className="form-image-section">
+                {/* Clickable Image with Zoom-in Effect */}
+                <a
+                  href="https://goo.gl/maps/your-location"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >
+                  <img
+                    src={media(data?.formFileViewUrl)}
+                    alt="Form Decoration"
+                    className="form-image zoom-hover"
+                    />
+                </a>
+              </div>
+            </>
+          }
       </div>
 
-      <Quotes quote="Help others without any reason and give without the expectation of receiving anything in return. - Roy T. Bennett" />
-      <FAQComponent />
-      <Footer />
+      <Quotes quote={data?.heading} />
+      <FAQComponent data={data} faqs={data?.faqs} />
+      {/* <Footer /> */}
     </div>
   );
 };

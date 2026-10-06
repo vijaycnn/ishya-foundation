@@ -325,7 +325,7 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
     };
     let urlEndPoint = `/page/addPageabout`;
     if(aboutFormData?.id > 0){
-        urlEndPoint = `page/updatePageabout`;
+        urlEndPoint = `/page/updatePageabout`;
     }
     console.log("postData >>", urlEndPoint, body);
 
@@ -357,61 +357,6 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
     } finally {
         setIsLoading(false);
         setIsSubmit(false);
-    }
-  };
-  const handleAboutSubmit1 = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccessMsg("");
-    setIsSubmit(true);
-    // console.log("formData >>", formData);
-    try {
-      let hasError = validation(aboutFormData);
-      if (!hasError && previousData.id > 0) {
-        setIsLoading(true);
-        let validateBody = {
-          mentorId: previousData.id,
-          name: data.name,
-          title: data.title ? data.title : "",
-        };
-        await axiosInstance
-          .post(`/mentor/valid`, validateBody)
-          .then(async (response) => {
-            console.log("validate response >>> ", response.data);
-            if (response.data.status === "success") {
-              //Now, process with data
-              setIsLoading(true);
-              let fileUrl = previousData.filePath;
-              if (uploadMediaFile != null) {
-                let uploadRes = await uploadFileOnS3();
-                if (uploadRes) {
-                  fileUrl = uploadRes;
-                }
-              }
-              await formProcess(fileUrl);
-              setIsLoading(false);
-            } else if (response.data.status === "error") {
-              setError(response.data.message);
-            }
-          })
-          .catch((error) => {
-            console.log(">>> ", error.status, error);
-            if (error.status === 403) {
-              handleLogout();
-            }
-            setError("Something went wrong, please try again");
-            setIsLoading(false);
-            setIsSubmit(false);
-          });
-        setIsLoading(false);
-      }
-      setIsSubmit(false);
-    } catch (error) {
-      // console.log("Catch Err >>", error);
-      setError(error.message);
-      alert(error.message);
-      setIsLoading(false);
-      setIsSubmit(false);
     }
   };
   
@@ -530,12 +475,13 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
             <Form.Label className="fw-medium">
               Image Text
             </Form.Label>
-            <Form.Control
-              type="text"
-              name="fileUrlTxt1"
+            <ReactQuill
+              theme="snow"
+              name="remarks"
               value={aboutFormData.fileUrlTxt1}
-              placeholder="Enter Here"
-              onChange={handleChange}
+              onChange={(content) =>
+                setAboutFormData((prev) => ({ ...prev, fileUrlTxt1: content }))
+              }
             />
           </Form.Group>
         </Col>
@@ -574,12 +520,13 @@ const AboutSection = ({ data = [], pageId, onChange }) => {
             <Form.Label className="fw-medium">
               Image Text
             </Form.Label>
-            <Form.Control
-              type="text"
-              name="fileUrlTxt2"
+            <ReactQuill
+              theme="snow"
+              name="remarks"
               value={aboutFormData.fileUrlTxt2}
-              placeholder="Enter Here"
-              onChange={handleChange}
+              onChange={(content) =>
+                setAboutFormData((prev) => ({ ...prev, fileUrlTxt2: content }))
+              }
             />
           </Form.Group>
         </Col>

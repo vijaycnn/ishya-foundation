@@ -9,12 +9,11 @@ const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND + "/api";
 import BannerSection from "../components/BannerSection";
 import AboutSection from "../components/AboutSection";
 import FootprintSection from "../components/FootprintSection";
+import ProjectSection from "../components/ProjectSection";
+import TestimonialSection from "../components/TestimonialSection";
 import VideoSection from "../components/VideoSection";
-// import ProjectSection from "./components/ProjectSection";
-// import TestimonialSection from "./components/TestimonialSection";
-// import ZigZagSection from "./components/ZigZagSection";
-// import PartnershipSection from "./components/PartnershipSection";
-// import OtherSection from "./components/OtherSection";
+import ZigZagSection from "../components/ZigZagSection";
+import FeatureSection from "../components/FeatureSection";
 
 
 const HomePage = () => {
@@ -61,7 +60,7 @@ const HomePage = () => {
   );
 
   const initialFormData = {
-    
+    pageData: {},
     banner:pageBanner,
     about: pageAbout,
     footprints: pageMap,
@@ -72,16 +71,17 @@ const HomePage = () => {
     },
 
     testimonials: {
-        mode: "latest",
-        limit: 3,
         testimonialIds: []
     },
 
-    zigZag: [],
+    zigZag: {
+      title: "",
+      items: []
+    },
 
-    partnerships: [],
-
-    other: [],
+    feature: {
+      items: []
+    },
   };
   const [formData, setFormData] = useState(initialFormData);
 
@@ -118,12 +118,20 @@ const HomePage = () => {
           setPageId(id);
 
           setFormData({
+            pageData: pageData,
             banner: pageData?.PageBanners || [],
             about: pageData?.PageAbouts || pageAbout,
             footprints: pageData?.PageMaps || pageMap,
             video: pageData?.PageVideos || pageVideo,
+            zigZag: {
+              title: pageData?.zigzagTitle || "",
+              items: pageData?.PageZigZags || [],
+            },
+            feature: {
+              items: pageData?.PageFeatures || []
+            }
           });
-					setItems(response.data?.data);
+					// setItems(response.data?.data);
           // setPageBanner(response.data?.data?.pageBanner);
 				}
 			}).catch((error) => {
@@ -180,17 +188,9 @@ const HomePage = () => {
         <div>
           <h4>Home Page CMS</h4>
           <p className="text-muted mb-0">
-            Manage homepage content and sections {pageId}
+            Manage homepage content and sections
           </p>
         </div>
-
-        <Button
-          variant="primary"
-          onClick={handleSubmit}
-          disabled={saving}
-        >
-          {saving ? "Saving..." : "Save Home Page"}
-        </Button>
       </div>
 
       <Accordion defaultActiveKey="0">
@@ -243,9 +243,41 @@ const HomePage = () => {
           </Accordion.Body>
         </Accordion.Item>
 
+        <Accordion.Item eventKey="3">
+          <Accordion.Header>
+            Section 4 - Latest Projects
+          </Accordion.Header>
+
+          <Accordion.Body>
+            <ProjectSection
+              data={formData.pageData}
+              pageId={pageId}
+              onChange={(value) =>
+                handleSectionChange("projects", value)
+              }
+            />
+          </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="4">
+          <Accordion.Header>
+            Section 5 - Testimonial
+          </Accordion.Header>
+
+          <Accordion.Body>
+            <TestimonialSection
+              data={formData.pageData}
+              pageId={pageId}
+              onChange={(value) =>
+                handleSectionChange("testimonials", value)
+              }
+            />
+          </Accordion.Body>
+        </Accordion.Item>
+
         <Accordion.Item eventKey="5">
           <Accordion.Header>
-            Section 4 - Image / Video
+            Section 6 - Image / Video
           </Accordion.Header>
 
           <Accordion.Body>
@@ -258,38 +290,6 @@ const HomePage = () => {
             />
           </Accordion.Body>
         </Accordion.Item>
-
-        {/* <Accordion.Item eventKey="3">
-          <Accordion.Header>
-            Section 4 - Latest Projects
-          </Accordion.Header>
-
-          <Accordion.Body>
-            <ProjectSection
-              data={formData.projects}
-              onChange={(value) =>
-                handleSectionChange("projects", value)
-              }
-            />
-          </Accordion.Body>
-        </Accordion.Item>
-
-        <Accordion.Item eventKey="4">
-          <Accordion.Header>
-            Section 5 - Testimonials
-          </Accordion.Header>
-
-          <Accordion.Body>
-            <TestimonialSection
-              data={formData.testimonials}
-              onChange={(value) =>
-                handleSectionChange("testimonials", value)
-              }
-            />
-          </Accordion.Body>
-        </Accordion.Item>
-
-
         <Accordion.Item eventKey="6">
           <Accordion.Header>
             Section 7 - Zig-Zag Sections
@@ -298,6 +298,7 @@ const HomePage = () => {
           <Accordion.Body>
             <ZigZagSection
               data={formData.zigZag}
+              pageId={pageId}
               onChange={(value) =>
                 handleSectionChange("zigZag", value)
               }
@@ -307,44 +308,30 @@ const HomePage = () => {
 
         <Accordion.Item eventKey="7">
           <Accordion.Header>
-            Section 8 - Partnership Logos
+            Section 8 - Feature Program
           </Accordion.Header>
 
           <Accordion.Body>
-            <PartnershipSection
-              data={formData.partnerships}
+            <FeatureSection
+              data={formData.feature}
+              pageId={pageId}
               onChange={(value) =>
-                handleSectionChange("partnerships", value)
+                handleSectionChange("feature", value)
               }
             />
           </Accordion.Body>
         </Accordion.Item>
 
-        <Accordion.Item eventKey="8">
-          <Accordion.Header>
-            Section 9 - Other Section
-          </Accordion.Header>
-
-          <Accordion.Body>
-            <OtherSection
-              data={formData.other}
-              onChange={(value) =>
-                handleSectionChange("other", value)
-              }
-            />
-          </Accordion.Body>
-        </Accordion.Item>
-*/}
       </Accordion> 
 
       <div className="text-end mt-4">
-        <Button
+        {/* <Button
           variant="primary"
           onClick={handleSubmit}
           disabled={saving}
         >
           {saving ? "Saving..." : "Save Home Page"}
-        </Button>
+        </Button> */}
       </div>
 
     </div>

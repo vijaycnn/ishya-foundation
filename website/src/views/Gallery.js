@@ -2,8 +2,6 @@
 
 import media from "@/lib/media";
 import React, { useState } from "react";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
 import "../Styles/Gallery.css";
 import ShikshaSeSakshamNeed1 from '../Images/ProjectDetails/ShikshaSeSakshamNeed1.png';
 import ShikshaSeSakshamNeed2 from '../Images/ProjectDetails/ShikshaSeSakshamNeed2.png';
@@ -71,7 +69,6 @@ const GalleryPage = () => {
 
   return (
     <>
-      <Navbar />
       
       {/* Hero Section */}
       <div className="gallery-hero" >
@@ -110,7 +107,6 @@ const GalleryPage = () => {
         </div>
       )}
 
-      <Footer />
     </>
   );
 };

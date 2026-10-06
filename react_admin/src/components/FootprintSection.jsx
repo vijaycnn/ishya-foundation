@@ -226,7 +226,7 @@ const FootprintSection = ({ data =[], pageId, onChange }) => {
     };
     let urlEndPoint = `/page/addPagemap`;
     if(mapFormData?.id > 0){
-        urlEndPoint = `page/updatePagemap`;
+        urlEndPoint = `/page/updatePagemap`;
     }
     console.log("postData >>", urlEndPoint, body);
 

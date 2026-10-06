@@ -272,7 +272,7 @@ const BlogDetails = () => {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       
       {/* Hero Section with Blurred Background */}
       <div className="blog-detail-hero" style={{ backgroundImage: `url(${blog.image})` }}>
@@ -311,7 +311,7 @@ const BlogDetails = () => {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

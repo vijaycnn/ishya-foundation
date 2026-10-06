@@ -144,7 +144,7 @@ const newsletters = [
 const NewslettersPage = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <PageHeader pageName="Newsletters" breadcrumb="Home/Newsletters" />
       <div className="newsletter-container">
         <h3 className="newsletter-subtitle">
@@ -175,7 +175,7 @@ const NewslettersPage = () => {
           ))}
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

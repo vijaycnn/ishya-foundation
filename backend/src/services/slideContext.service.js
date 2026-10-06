@@ -2,6 +2,25 @@ const { QueryTypes } = require('sequelize');
 
 let SlideContextDataProvider = {
 
+  
+  getSlideContextBySlide: async (slideNumber) => {
+    return new Promise(function (resolve, reject) {
+      conn.SlideContexts.findOne({
+        attributes: [ "id", "slideNumber", "title", "subtitle", "remark"],
+        where: { slideNumber: slideNumber },
+        raw:true
+      })
+        .then(data => {
+          if (data !== null) {
+            resolve(data);
+          } else {
+            reject(false);
+          }
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
   getSlideContextList: async (all = false) => {
     return new Promise(async function (resolve, reject) {
       // console.log('search', search);

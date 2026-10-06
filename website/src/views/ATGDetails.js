@@ -1,13 +1,10 @@
 "use client";
 
 import React from 'react';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
 
 const ATGDetails = () => {
   return (
     <>
-    <Navbar/>
     <div style={{ textAlign: 'center', padding: '20px',marginTop: '100px' }}>
       <h2>ATG Details</h2>
       <iframe 
@@ -18,7 +15,6 @@ const ATGDetails = () => {
         style={{ border: "none" }}
       ></iframe>
     </div>
-    <Footer/>
     </>
   );
 };

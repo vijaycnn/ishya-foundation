@@ -42,7 +42,7 @@ function Faq() {
 
   useEffect(() => {
     if (categoryList.length == 0) {
-      getCategoryList();
+      // getCategoryList();
     }
   }, []);
 
@@ -73,8 +73,7 @@ function Faq() {
     setError("");
     let hasError = false;
     if (
-      !values.categoryId ||
-      values.categoryId == "" ||
+      // !values.categoryId || values.categoryId == "" ||
       !values.orderNumber ||
       values.orderNumber == "" ||
       !values.quest ||
@@ -98,7 +97,7 @@ function Faq() {
       if (!hasError) {
         setLoading(true);
         let body = {
-          categoryId: formData.categoryId,
+          // categoryId: formData.categoryId,
           orderNumber: formData.orderNumber,
           quest: formData.quest,
           answer: formData.answer,
@@ -109,7 +108,7 @@ function Faq() {
             // console.log('response >>> ', response.data);
             if (response.data.status === "success") {
               setFormData({
-                categoryId: "",
+                // categoryId: "",
                 orderNumber: 1,
                 quest: "",
                 answer: "",
@@ -177,7 +176,7 @@ function Faq() {
         <Form onSubmit={handleSubmit}>
           {/* <Alert alert={alert} /> */}
           <Row>
-            <Col md={4}>
+            {/* <Col md={4}>
               <Form.Group className="mb-4">
                 <Form.Label className="fw-medium">
                   Category<span className="text-danger">*</span>
@@ -197,7 +196,7 @@ function Faq() {
                   })}
                 </Form.Select>
               </Form.Group>
-            </Col>
+            </Col> */}
 
             <Col md={4}>
               <Form.Group className="mb-4">
