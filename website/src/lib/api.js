@@ -95,7 +95,6 @@ export async function getDonatePage() {
   return result?.data?.[0] || null;
 }
 
-
 export async function getLearningPage() { 
   
   const result = await callAPI(`/learningpage/pageList/learningPage`);
@@ -119,6 +118,16 @@ export async function getAllProgram() {
 export async function getProgramPage(programId) { 
   
   const result = await callAPI(`/program/detail/${programId}`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  console.log("API RESULT >>>", result);
+  return result?.data || null;
+}
+
+export async function getGalleries() { 
+  
+  const result = await callAPI(`/gallery/getList`);
   if (result?.status !== "success") {
     throw new Error(result?.message || "Failed to fetch page data");
   }
