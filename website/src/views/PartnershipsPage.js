@@ -126,7 +126,6 @@ const PartnershipsPage = () => {
   
     return (
       <div>
-        <Navbar />
         <PageHeader pageName="Partnerships" breadcrumb="Home/Partnerships" />
   
         {/* ✅ Corrected: Mapping through partnersData */}
@@ -146,7 +145,7 @@ const PartnershipsPage = () => {
       />
       <PartnerWithUs/>
       <Partnerships logos={partnershipsPageLogos} logoLinks={partnershipsPageLogoLinks} />;
-      <Footer />
+      
       </div>
     );
   };
