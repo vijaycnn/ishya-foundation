@@ -134,3 +134,12 @@ export async function getGalleries() {
   console.log("Gallery API RESULT >>>", result);
   return result?.data || null;
 }
+export async function getNews() { 
+  
+  const result = await callAPI(`/learningpage/pageList/news`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  console.log("News API RESULT >>>", result);
+  return result?.data || null;
+}

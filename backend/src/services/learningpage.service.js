@@ -9,7 +9,7 @@ let DataProvider = {
       let filter = { isdeleted: 0, type: type };
       let columns = ["id", "type", "title", "fileUrl", "remark1", "remark2", "orderNumber", "status", "createdAt"];
       if(!all){
-        columns = ["id", "type", "title", "fileUrl", "remark1" ];
+        columns = ["id", "type", "title", "fileUrl", "remark1", "createdAt" ];
         filter = {...filter, status:1}
       }
       await conn.LearningPages.findAndCountAll({
