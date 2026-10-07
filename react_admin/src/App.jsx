@@ -27,6 +27,9 @@ import EditLearningPage from "./pages/master/EditLearningPage";
 import News from "./pages/master/News";
 import AddNews from "./pages/master/AddNews";
 import EditNews from "./pages/master/EditNews";
+import NewsLetters from "./pages/master/NewsLetters";
+import AddNewsLetters from "./pages/master/AddNewsLetters";
+import EditNewsLetters from "./pages/master/EditNewsLetters";
 
 import Gallery from "./pages/master/Gallery";
 import PartnerLogo from "./pages/master/PartnerLogo";
@@ -271,6 +274,37 @@ function App() {
               </ProtectedRoute>
             }
           /> 
+          <Route
+            path={`${adminAlias}/newsletters`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <NewsLetters />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/addNewsLetter`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <AddNewsLetters />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/editNewsLetter/:id`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <EditNewsLetters />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path={`${adminAlias}/galleries`}
             element={

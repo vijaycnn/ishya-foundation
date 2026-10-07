@@ -7,9 +7,9 @@ let DataProvider = {
     return new Promise(async function (resolve, reject) {
       // console.log('search', search);
       let filter = { isdeleted: 0, type: type };
-      let columns = ["id", "type", "title", "fileUrl", "remark1", "remark2", "orderNumber", "status", "createdAt"];
+      let columns = ["id", "type", "title", "fileUrl", "attachFileUrl", "remark1", "remark2", "orderNumber", "status", "createdAt"];
       if(!all){
-        columns = ["id", "type", "title", "fileUrl", "remark1", "createdAt" ];
+        columns = ["id", "type", "title", "fileUrl", "attachFileUrl", "remark1", "createdAt" ];
         filter = {...filter, status:1}
       }
       await conn.LearningPages.findAndCountAll({
@@ -61,7 +61,7 @@ let DataProvider = {
   getById: async (mentorId) => {
     return new Promise(function (resolve, reject) {
       conn.LearningPages.findOne({
-        attributes: [ "*",['fileUrl', 'filePath']],
+        attributes: [ "*", ['fileUrl', 'filePath'], ['attachFileUrl', 'attachFilePath']],
         where: { id: mentorId },
         raw:true
       })
