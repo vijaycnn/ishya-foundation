@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";  
 import axios from "axios"; 
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+// import Navbar from "../Components/Navbar";
+// import Footer from "../Components/Footer";
 import "../Styles/JoinUsPage.css";
 
 const categories = ["Volunteer", "Teacher", "Donor", "Partner"];
@@ -109,7 +109,6 @@ const JoinUsPage = () => {
 
   return (
     <>
-      <Navbar />
       <div className="joinus-container">
         <div className="background-overlay"></div>
         <div className="joinus-content">
@@ -187,7 +186,6 @@ const JoinUsPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

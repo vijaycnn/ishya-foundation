@@ -141,6 +141,16 @@ const Sidebar = () => {
                 </Link>
 
                 <Link
+                  to={`${adminAlias}/blogs`}
+                  className={`nav-link ${isActive([`${adminAlias}/blogs`, `${adminAlias}/addBlog`, `${adminAlias}/editBlog`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiNews />
+                  </span>
+                  <span className="nav-link-text">Blogs</span>
+                </Link>
+
+                <Link
                   to={`${adminAlias}/news`}
                   className={`nav-link ${isActive([`${adminAlias}/news`, `${adminAlias}/addNews`, `${adminAlias}/editNews`]) ? "active" : ""}`}
                 >
@@ -148,6 +158,16 @@ const Sidebar = () => {
                     <BiNews />
                   </span>
                   <span className="nav-link-text">News</span>
+                </Link>
+
+                <Link
+                  to={`${adminAlias}/newsletters`}
+                  className={`nav-link ${isActive([`${adminAlias}/newsletters`, `${adminAlias}/addNewsLetter`, `${adminAlias}/editNewsLetter`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiNews />
+                  </span>
+                  <span className="nav-link-text">NewsLetters</span>
                 </Link>
 
                 <Link to={`${adminAlias}/contactpage`} className={`nav-link ${ isActive([`${adminAlias}/contactpage`]) ? "active" : "" }`} >

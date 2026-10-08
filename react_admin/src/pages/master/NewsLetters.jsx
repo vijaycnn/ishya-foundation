@@ -1,12 +1,4 @@
-import {
-  Container,
-  Form,
-  Badge,
-  Row,
-  Col,
-  Button,
-  Table,
-} from "react-bootstrap";
+import { Badge, Row, Col, Button, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
@@ -14,10 +6,11 @@ import moment from "moment";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import axiosInstance from "../../helper/constants/axiosInstance";
+const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND+'/api';
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 
-function Faq() {
+function NewsLetters() {
   const [offset, setOffset] = useState(0);
   const [perPage, setPerPage] = useState(20);
   const [pageCount, setPageCount] = useState(0);
@@ -25,6 +18,7 @@ function Faq() {
   const [totalRecords, setTotalRecords] = useState(0);
   const [items, setItems] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const pageType = `newsletter`;
 
   const navigate = useNavigate();
 
@@ -75,7 +69,7 @@ function Faq() {
     setCurrentPage(selectedPage);
     setOffset(offset);
   };
-  const getFaqs = async () => {
+  const getMentors = async () => {
     setIsLoading(true);
 
     const body = {
@@ -83,7 +77,7 @@ function Faq() {
     };
     // console.log('body>>> ', body);
     await axiosInstance
-      .get(`/faq/list`, body)
+      .get(`/learningpage/list/${pageType}`, body)
       .then((response) => {
         // console.log('>>> ', response.data);
         setIsLoading(false);
@@ -103,26 +97,13 @@ function Faq() {
       });
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("isAuthenticated");
-    localStorage.clear("auth-token");
-    localStorage.clear();
-    navigate(adminAlias);
-  };
-
-  useEffect(() => {
-    if (!isLoading) {
-      getFaqs();
-    }
-  }, [offset, perPage, filteredData]);
-
-  const changeStatus = async (index, currentStatus, faqId) => {
+  const changeStatus = async (index, currentStatus, mentorId) => {
     setIsLoading(true);
 
-    const body = { faqId, status: currentStatus == 1 ? 0 : 1 };
+    const body = { pageType, mentorId, status: currentStatus == 1 ? 0 : 1 };
     // console.log('body>>> ', body);
     await axiosInstance
-      .post(`/faq/changeStatus`, body)
+      .post(`/learningpage/changeStatus`, body)
       .then((response) => {
         // console.log('>>> ', response.data);
         setIsLoading(false);
@@ -141,17 +122,61 @@ function Faq() {
     setIsLoading(false);
   };
 
+  
+  const handleDownload = async (id) => {
+    try {
+      const url = `${baseURL}/learningpage/newsletter/${id}/download`;
+      setIsLoading(true);
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to download PDF");
+      }
+
+      const blob = await response.blob();
+
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+
+      link.href = downloadUrl;
+      link.download = `newsletter-${id}.pdf`;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      link.remove();
+
+      window.URL.revokeObjectURL(downloadUrl);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Download error:", error);
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("isAuthenticated");
+    localStorage.clear("auth-token");
+    localStorage.clear();
+    navigate(adminAlias);
+  };
+
+  useEffect(() => {
+    if (!isLoading) {
+      getMentors();
+    }
+  }, [offset, perPage, filteredData]);
+
   const showItems = () => {
     return isLoading == false ? (
       <>
         <Table responsive className="table v-align-middle table-striped medium">
           <thead>
             <tr>
-              {/* <th style={{ width: "80px" }}>Sr. No.</th> */}
-              {/* <th>Category</th> */}
-              <th className="text-center">Order No.</th>
-              <th>Quest</th>
-              {/* <th>Answer</th> */}
+              {/* <th style={{ width: "80px" }}>Order. No.</th> */}
+              <th>Image</th>
+              <th>Title</th>
+              <th>NewLetter File</th>
               <th>Status</th>
               <th width="120" className="col-fixed">
                 Action
@@ -163,11 +188,24 @@ function Faq() {
               return (
                 <>
                   <tr key={item.id}>
-                    {/* <td>{$index+ offset + 1}</td> */}
-                    {/* <td>{item.FaqCategory.category}</td> */}
-                    <td className="text-center">{item.orderNumber}</td>
-                    <td>{item.quest}</td>
-                    {/* <td>{item.answer}</td> */}
+                    {/* <td>{item.orderNumber}</td> */}
+                    <td>
+                      <img
+                        src={item.fileUrl}
+                        height={60}
+                        width={60}
+                        alt="img"
+                      />
+                    </td>
+                    <td>{item.title}</td>
+                    <td>
+                        {/* <a target="_blank" href={item.attachFileUrl} alt="" >View File</a> */}
+
+                        <button type="button" className="newsletter-button" onClick={() => handleDownload(item.id)} >
+                          View File
+                        </button>
+                    </td>
+                    {/* <td>{item.remark1}</td> */}
                     {/* <td>{moment(item.createdAt).format('DD-MM-YYYY')}</td> */}
                     <td>
                       {item.status == 1 ? (
@@ -179,7 +217,7 @@ function Faq() {
                     <td className="col-fixed">
                       <Link
                         title="Edit"
-                        to={`${adminAlias}/editFaq/${base64_encode(
+                        to={`${adminAlias}/editNewsLetter/${base64_encode(
                           `Hvg_myg8Bbg5vvdgvpp+` + item.id
                         )}`}
                         className="btn btn-icon"
@@ -210,7 +248,7 @@ function Faq() {
   };
   return (
     <>
-      <h1 className="h4 mb-4 font-secondary fw-medium">Faqs</h1>
+      <h1 className="h4 mb-4 font-secondary fw-medium">NewsLetters</h1>
 
       <div className="table-view bg-white rounded-4 p-4">
         <div className="mb-3 d-flex justify-content-between align-items-center">
@@ -222,10 +260,10 @@ function Faq() {
           </div>
           <div>
             <Link
-              to={`${adminAlias}/addFaq`}
+              to={`${adminAlias}/addNewsLetter`}
               className="btn btn-primary btn-sm"
             >
-              <span className="nav-link-text">Add Faq</span>
+              <span className="nav-link-text">Add NewsLetter</span>
             </Link>
           </div>
         </div>
@@ -269,4 +307,4 @@ function Faq() {
   );
 }
 
-export default Faq;
+export default NewsLetters;

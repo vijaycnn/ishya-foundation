@@ -1,12 +1,4 @@
-import {
-  Container,
-  Form,
-  Badge,
-  Row,
-  Col,
-  Button,
-  Table,
-} from "react-bootstrap";
+import { Badge, Row, Col, Button, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
@@ -17,7 +9,7 @@ import axiosInstance from "../../helper/constants/axiosInstance";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 
-function Faq() {
+function Blog() {
   const [offset, setOffset] = useState(0);
   const [perPage, setPerPage] = useState(20);
   const [pageCount, setPageCount] = useState(0);
@@ -25,6 +17,7 @@ function Faq() {
   const [totalRecords, setTotalRecords] = useState(0);
   const [items, setItems] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const pageType = `news`;
 
   const navigate = useNavigate();
 
@@ -75,7 +68,7 @@ function Faq() {
     setCurrentPage(selectedPage);
     setOffset(offset);
   };
-  const getFaqs = async () => {
+  const getBlogs = async () => {
     setIsLoading(true);
 
     const body = {
@@ -83,7 +76,7 @@ function Faq() {
     };
     // console.log('body>>> ', body);
     await axiosInstance
-      .get(`/faq/list`, body)
+      .get(`/blog/list`, body)
       .then((response) => {
         // console.log('>>> ', response.data);
         setIsLoading(false);
@@ -103,26 +96,13 @@ function Faq() {
       });
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("isAuthenticated");
-    localStorage.clear("auth-token");
-    localStorage.clear();
-    navigate(adminAlias);
-  };
-
-  useEffect(() => {
-    if (!isLoading) {
-      getFaqs();
-    }
-  }, [offset, perPage, filteredData]);
-
-  const changeStatus = async (index, currentStatus, faqId) => {
+  const changeStatus = async (index, currentStatus, mentorId) => {
     setIsLoading(true);
 
-    const body = { faqId, status: currentStatus == 1 ? 0 : 1 };
+    const body = { pageType, mentorId, status: currentStatus == 1 ? 0 : 1 };
     // console.log('body>>> ', body);
     await axiosInstance
-      .post(`/faq/changeStatus`, body)
+      .post(`/blog/changeStatus`, body)
       .then((response) => {
         // console.log('>>> ', response.data);
         setIsLoading(false);
@@ -141,17 +121,30 @@ function Faq() {
     setIsLoading(false);
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem("isAuthenticated");
+    localStorage.clear("auth-token");
+    localStorage.clear();
+    navigate(adminAlias);
+  };
+
+  useEffect(() => {
+    if (!isLoading) {
+      getBlogs();
+    }
+  }, [offset, perPage, filteredData]);
+
   const showItems = () => {
     return isLoading == false ? (
       <>
         <Table responsive className="table v-align-middle table-striped medium">
           <thead>
             <tr>
-              {/* <th style={{ width: "80px" }}>Sr. No.</th> */}
-              {/* <th>Category</th> */}
-              <th className="text-center">Order No.</th>
-              <th>Quest</th>
-              {/* <th>Answer</th> */}
+              <th>Image</th>
+              <th>Title</th>
+              <th>PublishAt</th>
+              <th>Publish By</th>
+              {/* <th>Description</th> */}
               <th>Status</th>
               <th width="120" className="col-fixed">
                 Action
@@ -163,12 +156,17 @@ function Faq() {
               return (
                 <>
                   <tr key={item.id}>
-                    {/* <td>{$index+ offset + 1}</td> */}
-                    {/* <td>{item.FaqCategory.category}</td> */}
-                    <td className="text-center">{item.orderNumber}</td>
-                    <td>{item.quest}</td>
-                    {/* <td>{item.answer}</td> */}
-                    {/* <td>{moment(item.createdAt).format('DD-MM-YYYY')}</td> */}
+                    <td>
+                      <img
+                        src={item.fileUrl}
+                        height={60}
+                        width={60}
+                        alt="img"
+                      />
+                    </td>
+                    <td>{item.title}</td>
+                    <td>{moment(item.publishAt).format('DD MMM, YYYY')}</td>
+                    <td>{item.publishBy}</td>
                     <td>
                       {item.status == 1 ? (
                         <Badge bg="success">Active</Badge>
@@ -179,7 +177,7 @@ function Faq() {
                     <td className="col-fixed">
                       <Link
                         title="Edit"
-                        to={`${adminAlias}/editFaq/${base64_encode(
+                        to={`${adminAlias}/editBlog/${base64_encode(
                           `Hvg_myg8Bbg5vvdgvpp+` + item.id
                         )}`}
                         className="btn btn-icon"
@@ -210,7 +208,7 @@ function Faq() {
   };
   return (
     <>
-      <h1 className="h4 mb-4 font-secondary fw-medium">Faqs</h1>
+      <h1 className="h4 mb-4 font-secondary fw-medium">Blogs</h1>
 
       <div className="table-view bg-white rounded-4 p-4">
         <div className="mb-3 d-flex justify-content-between align-items-center">
@@ -222,10 +220,10 @@ function Faq() {
           </div>
           <div>
             <Link
-              to={`${adminAlias}/addFaq`}
+              to={`${adminAlias}/addBlog`}
               className="btn btn-primary btn-sm"
             >
-              <span className="nav-link-text">Add Faq</span>
+              <span className="nav-link-text">Add Blog</span>
             </Link>
           </div>
         </div>
@@ -269,4 +267,4 @@ function Faq() {
   );
 }
 
-export default Faq;
+export default Blog;

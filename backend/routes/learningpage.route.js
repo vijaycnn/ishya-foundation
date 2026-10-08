@@ -8,9 +8,14 @@ const auth = require('../middleware/auth');
 ///////////////////////////// LearningPage /////////////////////
 
 router.get('/pageList/:type', function (request, response, next) {
-    // console.log('list route reached', request.body);
+    // console.log('learning page route reached', request.body);
     learningpageController.getFrontList(request, response, next);
 });
+
+router.get('/:type/:id/download', function (request, response, next) {
+    learningpageController.downloadAttachment(request, response, next);
+});
+// router.get("/:type/:id/download", learningpageController.downloadAttachment );
 /////////////////  End Frontend /////////////////////////
 
 

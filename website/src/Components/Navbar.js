@@ -75,9 +75,9 @@ const Navbar = ({homeData, menu}) => {
             </li>
           </ul>
           <ul className="navbar-right">
-            <li>
+            {/* <li>
               <Link href="/partnerships">Partnerships</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/subscribe">Subscribe to our Newsletter</Link>
             </li>

@@ -20,7 +20,8 @@ export default function WorkInProgress() {
   }, []);
 
   return (
-    <><Navbar/>
+    <>
+     {/* <Navbar/> */}
     <div className="container-work">
     <img src={media(construction)} alt="construction" className="construction" />
       <div className="dialog-box-work">
@@ -32,7 +33,7 @@ export default function WorkInProgress() {
         <img src={media(constructionImg)} alt="Under Construction" className="construction-img" />
     </div>
       </div>
-    <Footer/>
+     {/* <Footer/> */}
     </>
   );
 }

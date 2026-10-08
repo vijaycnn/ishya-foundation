@@ -11,7 +11,7 @@ let GalleryController = {
         try {
             let data = await galleryService.getGalleryList(request);
             const rows = data.rows.map((r) => r.get({ plain: true }));
-            const bannerImages = await Promise.all(
+            const groupedGalleries = await Promise.all(
                 rows.map(async (row) => {
                     if(row.fileUrl != ''){
                         let filePath = row.fileUrl.trim();
@@ -24,23 +24,23 @@ let GalleryController = {
                         let signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
 
                         // console.log('>>>', signedUrl);
-                        row.filePath = signedUrl.trim();
+                        row.fileViewUrl = signedUrl.trim();
                     }else{
-                        row.filePath = '';
+                        row.fileViewUrl = '';
                     }
                     return row;
                 })
             ); 
-            const groupedGalleries = bannerImages.reduce((acc, row) => {
-                const key = row.type.trim();
+            // const groupedGalleries = bannerImages.reduce((acc, row) => {
+            //     const key = row.type.trim();
 
-                if (!acc[key]) {
-                    acc[key] = [];
-                }
+            //     if (!acc[key]) {
+            //         acc[key] = [];
+            //     }
 
-                acc[key].push(row);
-                return acc;
-            }, {});
+            //     acc[key].push(row);
+            //     return acc;
+            // }, {});
 
             let dataList =  { 'totalRecord': data.count, 'list': groupedGalleries };
             return responder.sendFilterResponse(response, 200, "success", dataList, "Gallery List retrieved successfully.");

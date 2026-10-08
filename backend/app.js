@@ -18,11 +18,12 @@ const learningpageRouter = require('./routes/learningpage.route');
 const pageRouter = require('./routes/page.route');
 const contactRouter = require('./routes/contact.route');
 const donateRouter = require('./routes/donate.route');
-
+const blogRouter = require('./routes/blog.route');
 const galleryRouter = require('./routes/gallery.route');
 const partnerRouter = require('./routes/partner.route');
-const locationRouter = require('./routes/location.route');
 const faqRouter = require('./routes/faq.route');
+
+const locationRouter = require('./routes/location.route');
 const bannerRouter = require('./routes/banner.route');
 const slideRouter = require('./routes/slidecontext.route');
 const slideFileRouter = require('./routes/slidefile.route');
@@ -103,6 +104,7 @@ app.use('/api/page',  pageRouter);
 app.use('/api/partner',  partnerRouter);
 app.use('/api/contactus',  contactRouter);
 app.use('/api/donate',  donateRouter);
+app.use('/api/blog',  blogRouter);
 
 //////
 app.use('/api/user',  userRouter);

@@ -19,21 +19,16 @@ let LearningpageController = {
             const rows = data.rows.map((r) => r.get({ plain: true }));
             const mentors = await Promise.all(
                 rows.map(async (row) => {
-                    if(row.fileUrl != ''){
-                        let filePath = row.fileUrl.trim();
-                        let key = filePath.split(".amazonaws.com/")[1]
+                    const [
+                        fileUrl,
+                    ] = await Promise.all([
+                        row?.fileUrl ? LearningpageController.generateSignedUrl(row.fileUrl): null,
+                    ]);
+                    if (fileUrl) { row.image = fileUrl; }
 
-                        const command = new GetObjectCommand({
-                        Bucket: process.env.S3_BUCKET,
-                        Key: key,
-                        });
-                        let signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
+                    delete row.fileUrl;
+                    delete row.attachFileUrl;
 
-                        // console.log('>>>', signedUrl);
-                        row.image = signedUrl;
-                    }else{
-                        row.image = '';
-                    }
                     return row;
                 })
             );                
@@ -42,6 +37,142 @@ let LearningpageController = {
             return responder.sendFilterResponse(response, 200, "success", dataList, `${formattedType(type)} retrieved successfully.`);
         } catch (error) {
             return next(error);
+        }
+    },
+    generateSignedUrl: async (fileUrl) => {
+        if (!fileUrl) {
+            return null;
+        }
+
+        try {
+
+            let key = "";
+
+            const filePath = fileUrl.trim();
+
+            // If complete S3 URL is stored
+            if (filePath.includes(".amazonaws.com/")) {
+
+                const url = new URL(filePath);
+
+                key = decodeURIComponent(
+                    url.pathname.replace(/^\/+/, "")
+                );
+
+            } else {
+
+                // If only S3 key/path is stored
+                key = filePath.replace(/^\/+/, "");
+            }
+
+            if (!key) {
+                return null;
+            }
+
+            const command = new GetObjectCommand({
+                Bucket: process.env.S3_BUCKET,
+                Key: key,
+            });
+
+            return await getSignedUrl(
+                s3,
+                command,
+                {
+                    expiresIn: 900
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Generate S3 signed URL error:",
+                error
+            );
+
+            return null;
+        }
+    },
+    downloadAttachment: async (request, response, next) => {
+        try {
+            const { id } = request.params;
+
+            const newsletter = await learningpageService.getById(id);
+
+            if (!newsletter) {
+                return response.status(404).json({
+                    status: "error",
+                    message: "Newsletter not found."
+                });
+            }
+
+            if (!newsletter.attachFileUrl) {
+                return response.status(404).json({
+                    status: "error",
+                    message: "Newsletter attachment not found."
+                });
+            }
+
+            let key = "";
+            const filePath = newsletter.attachFileUrl.trim();
+
+            /*
+            * If DB contains:
+            * https://bucket.s3.ap-south-1.amazonaws.com/uploads/newsletter/file.pdf
+            *
+            * convert it to:
+            * uploads/newsletter/file.pdf
+            */
+            if (filePath.includes(".amazonaws.com/")) {
+                const url = new URL(filePath);
+
+                key = decodeURIComponent(url.pathname.replace(/^\/+/, ""));
+            } else {
+                // If DB already contains S3 key
+                key = filePath.replace(/^\/+/, "");
+            }
+
+            if (!key) {
+                return response.status(404).json({
+                    status: "error",
+                    message: "Invalid S3 file path."
+                });
+            }
+
+            const command = new GetObjectCommand({
+                Bucket: process.env.S3_BUCKET,
+                Key: key
+            });
+
+            const s3Response = await s3.send(command);
+
+            // Filename
+            const fileName = key.split("/").pop() || `newsletter-${id}.pdf`;
+
+            response.setHeader("Content-Type", s3Response.ContentType || "application/pdf" );
+
+            response.setHeader("Content-Disposition", `attachment; filename="${fileName}"` );
+
+            if (s3Response.ContentLength) {
+                response.setHeader(
+                    "Content-Length",
+                    s3Response.ContentLength
+                );
+            }
+
+            // Stream S3 → Node → Browser
+            s3Response.Body.pipe(response);
+
+        } catch (error) {
+            console.error("Newsletter download error:", error);
+
+            if (!response.headersSent) {
+                return response.status(500).json({
+                    status: "error",
+                    message: "Unable to download newsletter."
+                });
+            }
+
+            next(error);
         }
     },
     //use this for backend list
@@ -53,21 +184,13 @@ let LearningpageController = {
             const rows = data.rows.map((r) => r.get({ plain: true }));
             const mentors = await Promise.all(
                 rows.map(async (row) => {
-                    if(row.fileUrl != ''){
-                        let filePath = row.fileUrl.trim();
-                        let key = filePath.split(".amazonaws.com/")[1]
 
-                        const command = new GetObjectCommand({
-                        Bucket: process.env.S3_BUCKET,
-                        Key: key,
-                        });
-                        let signedUrl = await getSignedUrl(s3, command, { expiresIn: 900 });
-
-                        // console.log('>>>', signedUrl);
-                        row.fileUrl = signedUrl;
-                    }else{
-                        row.fileUrl = '';
-                    }
+                    const [
+                        fileUrl,
+                    ] = await Promise.all([
+                        row?.fileUrl ? LearningpageController.generateSignedUrl(row.fileUrl): null,
+                    ]);
+                    if (fileUrl) { row.fileUrl = fileUrl; }
                     return row;
                 })
             );                
@@ -96,7 +219,7 @@ let LearningpageController = {
     },  
     create: async (request, response, next) => {
         try {
-            console.log('create controller reached', request.body, request.user);
+            // console.log('create controller reached', request.body, request.user);
             let type = request.body.type;
             if(request.body.type.trim() == '' || request.body.title.trim() == ''){
                 return responder.sendResponse(response, 200, "error", '', "Missing Required!");
@@ -132,17 +255,27 @@ let LearningpageController = {
             const dataList = await learningpageService.getById(mentorId);
             if(dataList){
                 // console.log('fileUrl :::', dataList.fileUrl);
-                if(dataList.fileUrl != ''){
-                    let filePath = dataList.fileUrl.trim();
-                    let key = filePath.split(".amazonaws.com/")[1];
-                    const command = new GetObjectCommand({
-                        Bucket: process.env.S3_BUCKET,
-                        Key: key,
-                    });
-                    let signedUrl = await getSignedUrl(s3, command, { expiresIn: 900 });
-                    // console.log('>>>', signedUrl);
-                    dataList.fileUrl = signedUrl;
-                }
+                // if(dataList.fileUrl != ''){
+                //     let filePath = dataList.fileUrl.trim();
+                //     let key = filePath.split(".amazonaws.com/")[1];
+                //     const command = new GetObjectCommand({
+                //         Bucket: process.env.S3_BUCKET,
+                //         Key: key,
+                //     });
+                //     let signedUrl = await getSignedUrl(s3, command, { expiresIn: 900 });
+                //     // console.log('>>>', signedUrl);
+                //     dataList.fileUrl = signedUrl;
+                // }
+                const [
+                    fileUrl,
+                    attachFileUrl,
+                ] = await Promise.all([
+                    dataList?.fileUrl ? LearningpageController.generateSignedUrl(dataList.fileUrl): null,
+                    dataList?.attachFileUrl ? LearningpageController.generateSignedUrl(dataList.attachFileUrl): null,
+                ]);
+                if (fileUrl) { dataList.fileUrl = fileUrl; }
+                if (attachFileUrl) { dataList.attachFileUrl = attachFileUrl; }
+
                 return responder.sendResponse(response, 200, "success", dataList, `${formattedType(type)} retrieved successfully.`);
             }else{
                 return responder.sendResponse(response, 200, "error", {}, "No Record found");

@@ -3,19 +3,19 @@ var fs = require('fs'),  csv = require('csv');
 
 let DataProvider = {
 
-  getList: async (type, all = false) => {
+  getList: async (all = false) => {
     return new Promise(async function (resolve, reject) {
       // console.log('search', search);
-      let filter = { isdeleted: 0, type: type };
-      let columns = ["id", "type", "title", "fileUrl", "attachFileUrl", "remark1", "remark2", "orderNumber", "status", "createdAt"];
+      let filter = {  };
+      let columns = ["id", "slug", "title", "fileUrl", "remarks", "publishBy", "status", "publishAt"];
       if(!all){
-        columns = ["id", "type", "title", "fileUrl", "attachFileUrl", "remark1", "createdAt" ];
+        columns = ["id", "slug", "title", "fileUrl", "remarks", "publishAt", "publishBy" ];
         filter = {...filter, status:1}
       }
-      await conn.LearningPages.findAndCountAll({
+      await conn.Blogs.findAndCountAll({
         attributes:columns,
         where: filter,
-        order: [['orderNumber', 'ASC'], ['id', 'ASC']],
+        order: [ ['id', 'DESC']],
         // raw: true,
         logging:console.log
       })
@@ -28,7 +28,7 @@ let DataProvider = {
   },
   create: async (body) => {
     return new Promise(function (resolve, reject) {
-      conn.LearningPages.create(body)
+      conn.Blogs.create(body)
         .then(data => {
           resolve(data);
         }).catch(err => {
@@ -36,11 +36,11 @@ let DataProvider = {
         });
     });
   },
-  checkExist: async (type, title, id = 0) => {
+  checkExist: async (slug, title, id = 0) => {
     return new Promise(function (resolve, reject) {
-      conn.LearningPages.findOne({
+      conn.Blogs.findOne({
         where: { 
-          type : type.trim(),  
+          slug : slug.trim(),  
           title: title.trim(),          
           id: { [Op.not]: id }       
         },
@@ -58,11 +58,11 @@ let DataProvider = {
         });
     });
   },
-  getById: async (mentorId) => {
+  getById: async (blogId) => {
     return new Promise(function (resolve, reject) {
-      conn.LearningPages.findOne({
-        attributes: [ "*", ['fileUrl', 'filePath'], ['attachFileUrl', 'attachFilePath']],
-        where: { id: mentorId },
+      conn.Blogs.findOne({
+        attributes: [ "*", ['fileUrl', 'filePath'] ],
+        where: { id: blogId },
         raw:true
       })
         .then(data => {
@@ -76,10 +76,28 @@ let DataProvider = {
         });
     });
   },
-  update: async (body, mentorId) => {
+  getBySlug: async (slug) => {
     return new Promise(function (resolve, reject) {
-      conn.LearningPages.update(body, {
-        where: { id: mentorId },
+      conn.Blogs.findOne({
+        attributes: [ "*", ['fileUrl', 'filePath'] ],
+        where: { slug: slug },
+        raw:true
+      })
+        .then(data => {
+          if (data !== null) {
+            resolve(data);
+          } else {
+            reject(false);
+          }
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  update: async (body, blogId) => {
+    return new Promise(function (resolve, reject) {
+      conn.Blogs.update(body, {
+        where: { id: blogId },
       })
         .then(data => {
           resolve(data);
@@ -92,31 +110,13 @@ let DataProvider = {
   //Use this service to soft delete purpose
   changeStatus: async (body) => {
     return new Promise(function (resolve, reject) {
-      conn.LearningPages.update({
+      conn.Blogs.update({
         status: body.status
       }, {
-        where: { id: body.mentorId },
+        where: { id: body.blogId },
       })
         .then(data => {
           resolve(data);
-        }).catch(err => {
-          reject(err);
-        });
-    });
-  },
-  delete: async (mentorId) => {
-    return new Promise(function (resolve, reject) {
-      conn.LearningPages.update({
-        isdeleted : 1
-      },{
-        where: { id: mentorId },
-      })
-        .then(data => {
-          if (data !== null) {
-            resolve(data);
-          } else {
-            reject('No Record found');
-          }
         }).catch(err => {
           reject(err);
         });

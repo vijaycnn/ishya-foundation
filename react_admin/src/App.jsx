@@ -24,9 +24,16 @@ import EditProgram from "./pages/master/EditProgram";
 import LearningPages from "./pages/master/LearningPages";
 import AddLearningPage from "./pages/master/AddLearningPage";
 import EditLearningPage from "./pages/master/EditLearningPage";
+
+import Blog from "./pages/master/Blogs";
+import AddBlog from "./pages/master/AddBlog";
+import EditBlog from "./pages/master/EditBlog";
 import News from "./pages/master/News";
 import AddNews from "./pages/master/AddNews";
 import EditNews from "./pages/master/EditNews";
+import NewsLetters from "./pages/master/NewsLetters";
+import AddNewsLetters from "./pages/master/AddNewsLetters";
+import EditNewsLetters from "./pages/master/EditNewsLetters";
 
 import Gallery from "./pages/master/Gallery";
 import PartnerLogo from "./pages/master/PartnerLogo";
@@ -242,6 +249,37 @@ function App() {
           /> 
           
           <Route
+            path={`${adminAlias}/blogs`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Blog />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/addBlog`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <AddBlog />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/editBlog/:id`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <EditBlog />
+                </Layout>
+              </ProtectedRoute>
+            }
+          /> 
+          
+          <Route
             path={`${adminAlias}/news`}
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -271,6 +309,37 @@ function App() {
               </ProtectedRoute>
             }
           /> 
+          <Route
+            path={`${adminAlias}/newsletters`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <NewsLetters />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/addNewsLetter`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <AddNewsLetters />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/editNewsLetter/:id`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <EditNewsLetters />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path={`${adminAlias}/galleries`}
             element={
