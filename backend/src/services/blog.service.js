@@ -9,7 +9,7 @@ let DataProvider = {
       let filter = {  };
       let columns = ["id", "slug", "title", "fileUrl", "remarks", "publishBy", "status", "publishAt"];
       if(!all){
-        columns = ["id", "slug", "title", "fileUrl", "attachFileUrl", "remarks", "publishAt", "publishBy" ];
+        columns = ["id", "slug", "title", "fileUrl", "remarks", "publishAt", "publishBy" ];
         filter = {...filter, status:1}
       }
       await conn.Blogs.findAndCountAll({
@@ -63,6 +63,24 @@ let DataProvider = {
       conn.Blogs.findOne({
         attributes: [ "*", ['fileUrl', 'filePath'] ],
         where: { id: blogId },
+        raw:true
+      })
+        .then(data => {
+          if (data !== null) {
+            resolve(data);
+          } else {
+            reject(false);
+          }
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  },
+  getBySlug: async (slug) => {
+    return new Promise(function (resolve, reject) {
+      conn.Blogs.findOne({
+        attributes: [ "*", ['fileUrl', 'filePath'] ],
+        where: { slug: slug },
         raw:true
       })
         .then(data => {

@@ -3,22 +3,14 @@
 import media from "@/lib/media";
 import React from "react";
 import { FaCalendarAlt, FaClock, FaUser } from "react-icons/fa"; // Calendar & Clock icons
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
 import PageHeader from '../Components/PageHeader';
+import { truncateHtml, formatDate } from "@/utils/dateFormat";
 import "../Styles/Blogs.css"; // Ensure styling is applied
-import Blog1 from "../Images/Blog1.png";
-import Blog2 from "../Images/Blog2.png"
-import Blog3 from "../Images/Blog3.png"
-import Blog4 from "../Images/Blog4.png"
-import Blog5 from "../Images/Blog5.png"
-import Blog6 from "../Images/Blog6.png"
-import Blog7 from "../Images/Blog7.png"
 
 import BlogHero from "../Images/bloghero.png"
 import Link from "next/link";
 
-
+/*
 // Sample Blog Data
 const blogPosts = [
   {
@@ -99,11 +91,13 @@ const blogPosts = [
     link: "/blog/react-vs-vue",
   },
 ];
+*/
 
-const Blogs = () => {
+const Blogs = ({pageData}) => {
+  const blogPosts = pageData;
+
   return (
     <div>
-      {/* <Navbar /> */}
       <PageHeader pageName="Blogs" breadcrumb="Home/Blogs" />
       <div className="blogs-header">
         <div className="header-text">
@@ -119,27 +113,32 @@ const Blogs = () => {
       </div>
 
       <div className="blogs-container">
-        {blogPosts.map((blog, index) => (
+        {
+          Array.isArray(blogPosts) &&
+        blogPosts.map((blog, index) => (
           <div key={blog.id} className={`blog-item ${index % 2 === 0 ? "left" : "right"}`}>
-            <Link href={`/blog/${blog.id}`} className="blog-image">
+            <Link href={`/blog/${blog.slug}`} className="blog-image">
               <img src={media(blog.image)} alt={blog.title} loading="lazy"/>
             </Link>
             <div className="blog-content">
-              <Link href={`/blog/${blog.id}`} className="blog-title">{blog.title}</Link>
+              <Link href={`/blog/${blog.slug}`} className="blog-title">{blog.title}</Link>
               <div className="blog-meta">
-               <FaUser className="icon" /> 
-               <span>{blog.writer}</span> 
-                <FaCalendarAlt className="icon" />
-                <span>{blog.date}</span>
-                <FaClock className="icon" />
-                <span>{blog.readTime}</span>
+               <FaUser className="icon" /> <span>{blog.publishBy}</span> 
+                <FaCalendarAlt className="icon" /> <span>{formatDate(blog.publishAt)}</span>
+                {/* <FaClock className="icon" /> <span>{blog.readTime}</span> */}
               </div>
-              <Link href={`/blog/${blog.id}`} className="blog-excerpt">{blog.excerpt}</Link>
+              <Link href={`/blog/${blog.slug}`} className="blog-excerpt">{truncateHtml(blog.remarks, 380)}
+              {/* {              
+                (blog.remarks) ?
+                <>
+                <div dangerouslySetInnerHTML={{ __html: blog.remarks || "" }} />
+                </>: ''
+              } */}
+              </Link>
             </div>
           </div>
         ))}
       </div>
-      {/* <Footer /> */}
     </div>
   );
 };

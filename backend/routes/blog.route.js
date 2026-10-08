@@ -9,6 +9,9 @@ router.get('/getPage', function (request, response, next) {
     // console.log('learning page route reached', request.body);
     blogController.getFrontList(request, response, next);
 });
+router.get("/:slug", function (request, response, next) {
+    blogController.getBySlug(request, response, next)
+});
 /////////////////  End Frontend /////////////////////////
 
 

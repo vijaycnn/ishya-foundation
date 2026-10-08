@@ -144,3 +144,21 @@ export async function getNewsLetters() {
   // console.log("NewsLetters API RESULT >>>", result);
   return result?.data || null;
 }
+export async function getBlogs() { 
+  
+  const result = await callAPI(`/blog/getPage`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  // console.log("Blogs API RESULT >>>", result);
+  return result?.data || null;
+}
+export async function getBlogDetails(slug) { 
+  
+  const result = await callAPI(`/blog/${slug}`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  // console.log("Blogs API RESULT >>>", result);
+  return result?.data || null;
+}

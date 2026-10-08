@@ -185,6 +185,28 @@ let BlogController = {
             return next(error);
         }
     },
+    getBySlug:async(request, response, next) =>{
+        try {
+            let slug = request.params.slug;
+            // console.log('getById controller reached', request.params, request.user);
+
+            const dataList = await blogService.getBySlug(slug);
+            if(dataList){
+                const [
+                    fileUrl,
+                ] = await Promise.all([
+                    dataList?.fileUrl ? BlogController.generateSignedUrl(dataList.fileUrl): null,
+                ]);
+                if (fileUrl) { dataList.image = fileUrl; }
+
+                return responder.sendResponse(response, 200, "success", dataList, `Blog retrieved successfully.`);
+            }else{
+                return responder.sendResponse(response, 200, "error", {}, "No Record found");
+            }
+        } catch (error) {
+            return next(error);
+        }
+    },
     update: async (request, response, next) => {
         try {
             // console.log('update controller reached', request.body, request.user);

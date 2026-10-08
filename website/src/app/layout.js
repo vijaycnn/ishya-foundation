@@ -8,10 +8,10 @@ export const metadata = {
   title: "Ishya Foundation",
   description:
     "Ishya Foundation empowers underprivileged children and women through education, skills, and community programs.",
-  icons: {
-    icon: "/IshyaLogo.png",
-    apple: "/IshyaLogo.png",
-  },
+  // icons: {
+  //   icon: "/IshyaLogo.png",
+  //   apple: "/IshyaLogo.png",
+  // },
 };
 
 export default async function RootLayout({ children }) {
@@ -20,9 +20,6 @@ export default async function RootLayout({ children }) {
   const contact = result?.data?.contact;
   const footerContext = result?.data?.footerContext;
 
-  // console.log('menu result', result)
-  // console.log('menu ', menu)
-  // console.log('footer ', footerContext)
 
   const header = { contactNumber : contact.contactNumber }
 
