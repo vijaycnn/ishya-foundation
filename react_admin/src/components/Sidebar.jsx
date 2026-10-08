@@ -141,6 +141,16 @@ const Sidebar = () => {
                 </Link>
 
                 <Link
+                  to={`${adminAlias}/blogs`}
+                  className={`nav-link ${isActive([`${adminAlias}/blogs`, `${adminAlias}/addBlog`, `${adminAlias}/editBlog`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiNews />
+                  </span>
+                  <span className="nav-link-text">Blogs</span>
+                </Link>
+
+                <Link
                   to={`${adminAlias}/news`}
                   className={`nav-link ${isActive([`${adminAlias}/news`, `${adminAlias}/addNews`, `${adminAlias}/editNews`]) ? "active" : ""}`}
                 >

@@ -236,7 +236,7 @@ function EditNewsLetter() {
       body: JSON.stringify({
         fileName: file.name,
         fileType: file.type,
-        folderPath: 'News',
+        folderPath: 'NewsLetters',
       }),
     });
     return response.json();

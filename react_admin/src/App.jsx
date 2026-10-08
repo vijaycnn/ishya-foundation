@@ -24,6 +24,10 @@ import EditProgram from "./pages/master/EditProgram";
 import LearningPages from "./pages/master/LearningPages";
 import AddLearningPage from "./pages/master/AddLearningPage";
 import EditLearningPage from "./pages/master/EditLearningPage";
+
+import Blog from "./pages/master/Blogs";
+import AddBlog from "./pages/master/AddBlog";
+import EditBlog from "./pages/master/EditBlog";
 import News from "./pages/master/News";
 import AddNews from "./pages/master/AddNews";
 import EditNews from "./pages/master/EditNews";
@@ -239,6 +243,37 @@ function App() {
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <Layout setIsAuthenticated={setIsAuthenticated}>
                   <EditLearningPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          /> 
+          
+          <Route
+            path={`${adminAlias}/blogs`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Blog />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/addBlog`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <AddBlog />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={`${adminAlias}/editBlog/:id`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <EditBlog />
                 </Layout>
               </ProtectedRoute>
             }
