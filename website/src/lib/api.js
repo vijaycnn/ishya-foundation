@@ -23,6 +23,9 @@ const callAPI = async (endURL)=> {
   return response.json();
 }
 
+export function getNewsletterDownloadUrl(id) {
+  return `${API_BASE_URL}/learningpage/newsletter/${id}/download`;
+}
 export async function getMenu() {
   const result = await callAPI(`/program/menuList`);
   return result;
@@ -32,17 +35,12 @@ export async function getHomePage() {
   
   const result = await callAPI(`/page/detail/home`);
   
-  // console.log('UI home >>>>', result?.data?.[0])
-
   if (result?.status !== "success") {
     throw new Error(
       result?.message || "Failed to fetch home page data"
     );
   }
-
-//   console.log("HOME API RESULT >>>", result);
-  console.log("HOME PAGE LIST >>>", result?.data[0]);
-//   console.log("partners >>>", result?.data[0]?.partners);
+  // console.log("HOME PAGE LIST >>>", result?.data[0]);
   return result?.data?.[0] || null;
 }
 
@@ -50,17 +48,13 @@ export async function getAboutPage() {
   
   const result = await callAPI(`/page/detail/about`);
   
-  // console.log('UI home >>>>', result?.data?.[0])
-
   if (result?.status !== "success") {
     throw new Error(
       result?.message || "Failed to fetch home page data"
     );
   }
 
-//   console.log("HOME API RESULT >>>", result);
-  console.log("ABOUT PAGE LIST >>>", result?.data[0]);
-//   console.log("partners >>>", result?.data[0]?.partners);
+  // console.log("ABOUT PAGE LIST >>>", result?.data[0]);
   return result?.data?.[0] || null;
 }
 
@@ -76,9 +70,7 @@ export async function getContactPage() {
     );
   }
 
-//   console.log("HOME API RESULT >>>", result);
-  console.log("CONTACT PAGE LIST >>>", result?.data[0]);
-//   console.log("partners >>>", result?.data[0]?.partners);
+  // console.log("CONTACT PAGE LIST >>>", result?.data[0]);
   return result?.data?.[0] || null;
 }
 export async function getDonatePage() { 
@@ -91,7 +83,7 @@ export async function getDonatePage() {
     );
   }
 
-  console.log("DONATE PAGE >>>", result?.data[0]);
+  // console.log("DONATE PAGE >>>", result?.data[0]);
   return result?.data?.[0] || null;
 }
 
@@ -101,7 +93,7 @@ export async function getLearningPage() {
   if (result?.status !== "success") {
     throw new Error(result?.message || "Failed to fetch page data");
   }
-  console.log("API RESULT >>>", result);
+  // console.log("API RESULT >>>", result);
   return result?.data || null;
 }
 
@@ -111,7 +103,7 @@ export async function getAllProgram() {
   if (result?.status !== "success") {
     throw new Error(result?.message || "Failed to fetch page data");
   }
-  console.log("API RESULT >>>", result);
+  // console.log("API RESULT >>>", result);
   return result?.data || null;
 }
 
@@ -121,7 +113,7 @@ export async function getProgramPage(programId) {
   if (result?.status !== "success") {
     throw new Error(result?.message || "Failed to fetch page data");
   }
-  console.log("API RESULT >>>", result);
+  // console.log("API RESULT >>>", result);
   return result?.data || null;
 }
 
@@ -131,6 +123,42 @@ export async function getGalleries() {
   if (result?.status !== "success") {
     throw new Error(result?.message || "Failed to fetch page data");
   }
-  console.log("API RESULT >>>", result);
+  // console.log("Gallery API RESULT >>>", result);
+  return result?.data || null;
+}
+export async function getNews() { 
+  
+  const result = await callAPI(`/learningpage/pageList/news`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  // console.log("News API RESULT >>>", result);
+  return result?.data || null;
+}
+export async function getNewsLetters() { 
+  
+  const result = await callAPI(`/learningpage/pageList/newsletter`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  // console.log("NewsLetters API RESULT >>>", result);
+  return result?.data || null;
+}
+export async function getBlogs() { 
+  
+  const result = await callAPI(`/blog/getPage`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  // console.log("Blogs API RESULT >>>", result);
+  return result?.data || null;
+}
+export async function getBlogDetails(slug) { 
+  
+  const result = await callAPI(`/blog/${slug}`);
+  if (result?.status !== "success") {
+    throw new Error(result?.message || "Failed to fetch page data");
+  }
+  // console.log("Blogs API RESULT >>>", result);
   return result?.data || null;
 }
