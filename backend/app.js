@@ -19,11 +19,11 @@ const pageRouter = require('./routes/page.route');
 const contactRouter = require('./routes/contact.route');
 const donateRouter = require('./routes/donate.route');
 const blogRouter = require('./routes/blog.route');
-
 const galleryRouter = require('./routes/gallery.route');
 const partnerRouter = require('./routes/partner.route');
-const locationRouter = require('./routes/location.route');
 const faqRouter = require('./routes/faq.route');
+
+const locationRouter = require('./routes/location.route');
 const bannerRouter = require('./routes/banner.route');
 const slideRouter = require('./routes/slidecontext.route');
 const slideFileRouter = require('./routes/slidefile.route');

@@ -6,6 +6,7 @@ import moment from "moment";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import axiosInstance from "../../helper/constants/axiosInstance";
+const baseURL = import.meta.env.VITE_API_BASE_URL_BACKEND+'/api';
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 
@@ -121,6 +122,38 @@ function NewsLetters() {
     setIsLoading(false);
   };
 
+  
+  const handleDownload = async (id) => {
+    try {
+      const url = `${baseURL}/learningpage/newsletter/${id}/download`;
+      setIsLoading(true);
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to download PDF");
+      }
+
+      const blob = await response.blob();
+
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+
+      link.href = downloadUrl;
+      link.download = `newsletter-${id}.pdf`;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      link.remove();
+
+      window.URL.revokeObjectURL(downloadUrl);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Download error:", error);
+    }
+  };
+
   const handleLogout = () => {
     sessionStorage.removeItem("isAuthenticated");
     localStorage.clear("auth-token");
@@ -166,7 +199,11 @@ function NewsLetters() {
                     </td>
                     <td>{item.title}</td>
                     <td>
-                        <a target="_blank" href={item.attachFileUrl} alt="" >View File</a>
+                        {/* <a target="_blank" href={item.attachFileUrl} alt="" >View File</a> */}
+
+                        <button type="button" className="newsletter-button" onClick={() => handleDownload(item.id)} >
+                          View File
+                        </button>
                     </td>
                     {/* <td>{item.remark1}</td> */}
                     {/* <td>{moment(item.createdAt).format('DD-MM-YYYY')}</td> */}
