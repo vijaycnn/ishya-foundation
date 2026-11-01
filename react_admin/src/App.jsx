@@ -41,6 +41,7 @@ import Homepage from "./pages/Homepage";
 import Aboutpage from "./pages/Aboutpage";
 import Contactpage from "./pages/Contactpage";
 import Donatepage from "./pages/Donatepage";
+import Partnershippage from "./pages/Partnershippage";
 
 ////////////////
 import Participate from "./pages/Participate";
@@ -155,6 +156,16 @@ function App() {
             }
           />
 
+          <Route
+            path={`${adminAlias}/partnershippage`}
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <Partnershippage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path={`${adminAlias}/programs`}
