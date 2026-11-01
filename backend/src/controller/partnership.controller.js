@@ -1,35 +1,60 @@
-var momentz = require('moment-timezone');
 const responder = require('../utils/responder');
 const partnershipService = require('../services/partnership.service');
+const partnerService =  require('../services/partner.service');
+var momentz = require('moment-timezone');
 const moment = require('moment');
 
 const { S3Client,  GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const s3 = new S3Client({ region: "ap-south-1" });
-
 const { formattedType } = require("../utils/helper");
 
 let PageController = {
     
     //use this for frontend list
-    
     getHomePage: async (request, response, next) => {
-        try {
+        try {            
             const data = await partnershipService.getPageData();
             const rows = data.rows?.map((row) => row.get({ plain: true }) ) || [];
 
+            const partnerData = await partnerService.getHomePagePartnerList();
+            
+            const partnerDataWithSignedUrls = await Promise.all(
+                (partnerData || []).map(async (program) => {
+                    // Convert Sequelize instance to plain object
+                    const programObj = program.get ? program.get({ plain: true }) : program;
+
+                    // console.log("test row >>>", programObj);
+                    const fileViewUrl = programObj.fileUrl ? await PageController.generateSignedUrl(programObj.fileUrl) : null;
+                    return {...programObj, fileViewUrl, };
+                })
+            );
+
             const filterRow = await Promise.all(
                 rows.map(async (row) => {
+                    if(row.PartnershipBlogs && row.PartnershipBlogs.length > 0){
+                        row.PartnershipBlogs = await Promise.all(
+                            row.PartnershipBlogs.map(async (item) => {
 
-                    const [
-                        fileUrl1,
-                        fileUrl2,
-                    ] = await Promise.all([
-                        row?.fileUrl1 ? DonateController.generateSignedUrl(row.fileUrl1): null,
-                        row?.fileUrl2 ? DonateController.generateSignedUrl(row.fileUrl2): null,
-                    ]);
-                    if (fileUrl1) { row.fileViewUrl1 = fileUrl1; }
-                    if (fileUrl2) { row.fileViewUrl2 = fileUrl2; }
+                                if (item.fileUrl) {
+                                    item.fileViewUrl = await PageController.generateSignedUrl(item.fileUrl);
+                                }
+                                return item;
+                            })
+                        );
+                    }
+                    if(row.PartnershipContacts && row.PartnershipContacts.length > 0){
+                        row.PartnershipContacts = await Promise.all(
+                            row.PartnershipContacts.map(async (item) => {
+
+                                if (item.fileUrl) {
+                                    item.fileViewUrl = await PageController.generateSignedUrl(item.fileUrl);
+                                }
+                                return item;
+                            })
+                        );
+                    }
+                    row.partners = partnerDataWithSignedUrls;
 
                     return row;
                 })
@@ -51,7 +76,7 @@ let PageController = {
         } catch (error) {
             return next(error);
         }
-    },    
+    },
     /////////////////////////////End Frontend ///////////////////
 
     generateSignedUrl: async (fileUrl) => {
@@ -185,113 +210,6 @@ let PageController = {
             return next(error);
         }
     },
-    
-    addDonate: async (request, response, next) => {
-        try {
-            // console.log('create controller reached', request.body, request.user);
-            if(request.body.title.trim() == '' || request.body.remarks.trim() == '' || request.body.donateDesc.trim() == ''){
-                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
-            }            
-            {
-                let title = request.body.title.trim();
-                let shortDesc = request.body.shortDesc.trim() || "";
-                let remarks = request.body.remarks.trim() || "";                
-                let donateDesc = request.body.donateDesc.trim() || "";
-                let btnText = request.body.btnText.trim() || "";
-                let btnLink = request.body.btnLink.trim() || "";
-                let overlayText = request.body.overlayText.trim() || "";
-                
-                let fileUrl1 = request.body?.fileUrl1?.trim() || "";
-                let fileUrl2 = request.body?.fileUrl2?.trim() || "";
-
-                const data = {
-                    title,
-                    shortDesc, remarks, fileUrl1, fileUrl2,
-                    donateDesc, btnText, btnLink,  overlayText,
-                    createdBy: request.user.userId
-                };
-                let created = await partnershipService.addDonate(data);
-                if (created){
-
-                    const [
-                        image1,
-                        image2,
-                    ] = await Promise.all([
-                        fileUrl1 ? DonateController.generateSignedUrl(fileUrl1): null,
-                        fileUrl2 ? DonateController.generateSignedUrl(fileUrl2): null,
-                    ]);
-
-                    created = {
-                        id : created?.id,
-                        title,
-                        title,
-                        shortDesc, remarks, fileUrl1, fileUrl2,
-                        donateDesc, btnText, btnLink, overlayText, 
-
-                        fileViewUrl1: image1,
-                        fileViewUrl2: image2,                                
-                    }
-                    // console.log('>>>>>', created);
-                    return responder.sendResponse(response, 200, "success", created, "Donate details saved successfully.");
-                }
-                return responder.sendResponse(response, 200, "error", '', "Donate details save failed!");                
-            }
-        } catch (error) {
-            return next(error);
-        }
-    },
-    updateDonate: async (request, response, next) => {
-        try {
-            // console.log('create controller reached', request.body, request.user);
-            if(!request.body.donateId || request.body.donateId == null || request.body.title.trim() == '' || request.body.remarks.trim() == '' || request.body.donateDesc.trim() == ''){
-                return responder.sendResponse(response, 200, "error", '', "Missing Required!");
-            }
-            {
-                let title = request.body.title.trim();
-                let shortDesc = request.body.shortDesc.trim() || "";
-                let remarks = request.body.remarks.trim() || "";                
-                let donateDesc = request.body.donateDesc.trim() || "";
-                let btnText = request.body.btnText.trim() || "";
-                let btnLink = request.body.btnLink.trim() || "";
-                let overlayText = request.body.overlayText.trim() || "";
-                
-                let fileUrl1 = request.body?.fileUrl1?.trim() || "";
-                let fileUrl2 = request.body?.fileUrl2?.trim() || "";
-
-                const data = {
-                    title,
-                    shortDesc, remarks, fileUrl1, fileUrl2,
-                    donateDesc, btnText, btnLink, overlayText, 
-                    updatedBy: request.user.userId
-                };
-                let updated = await partnershipService.editDonate(request.body.donateId, data);
-                if (updated){
-
-                    const [
-                        image1,
-                        image2,
-                    ] = await Promise.all([
-                        fileUrl1 ? DonateController.generateSignedUrl(fileUrl1): null,
-                        fileUrl2 ? DonateController.generateSignedUrl(fileUrl2): null,
-                    ]);
-                    updated = {
-                        id :request.body.donateId,
-                        title,
-                        shortDesc, remarks, fileUrl1, fileUrl2,
-                        donateDesc, btnText, btnLink, overlayText,
-
-                        fileViewUrl1: image1,
-                        fileViewUrl2: image2,                       
-                    }
-                    // console.log('>>>>>', updated);
-                    return responder.sendResponse(response, 200, "success", updated, "Donate details updated successfully.");
-                }
-                return responder.sendResponse(response, 200, "error", '', "Donate details updation failed!");
-            }
-        } catch (error) {
-            return next(error);
-        }
-    },    
 
 
 };
