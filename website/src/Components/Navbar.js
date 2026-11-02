@@ -69,10 +69,10 @@ const Navbar = ({homeData, menu}) => {
     },
   ];
 
-  console.log("Navbar menu >>>", menu);
-console.log("Navbar programList >>>", programList);
-console.log("Navbar navItems >>>", navItems);
-console.log("openMenus >>>", openMenus);
+//   console.log("Navbar menu >>>", menu);
+// console.log("Navbar programList >>>", programList);
+// console.log("Navbar navItems >>>", navItems);
+// console.log("openMenus >>>", openMenus);
 
   return (
     <div>
@@ -86,9 +86,9 @@ console.log("openMenus >>>", openMenus);
             </li>
           </ul>
           <ul className="navbar-right">
-            {/* <li>
+            <li>
               <Link href="/partnerships">Partnerships</Link>
-            </li> */}
+            </li>
             <li>
               <Link href="/subscribe">Subscribe to our Newsletter</Link>
             </li>
