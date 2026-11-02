@@ -90,6 +90,13 @@ const Sidebar = () => {
                 <span className="nav-link-text">Donate Page</span>
               </Link>
 
+              <Link to={`${adminAlias}/partnershippage`} className={`nav-link ${ isActive([`${adminAlias}/partnershippage`]) ? "active" : "" }`} >
+                <span className="nav-link-icon">
+                  <BiImages />
+                </span>
+                <span className="nav-link-text">Partnership Page</span>
+              </Link>
+
                 <Link
                   to={`${adminAlias}/programs`}
                   className={`nav-link ${isActive([`${adminAlias}/programs`, `${adminAlias}/addProgram`, `${adminAlias}/editProgram`]) ? "active" : ""}`}

@@ -19,11 +19,17 @@ const Navbar = ({homeData, menu}) => {
 
   // console.log('homeData nav >>>>>>>', homeData);
   const handleMouseEnter = (menuName) => {
-    setOpenMenus({ ...openMenus, [menuName]: true });
+    setOpenMenus((prev) => ({
+      ...prev,
+      [menuName]: true,
+    }));
   };
 
   const handleMouseLeave = (menuName) => {
-    setOpenMenus({ ...openMenus, [menuName]: false });
+    setOpenMenus((prev) => ({
+      ...prev,
+      [menuName]: false,
+    }));
   };
 
   const toggleMobileMenu = () => {
@@ -63,6 +69,11 @@ const Navbar = ({homeData, menu}) => {
     },
   ];
 
+//   console.log("Navbar menu >>>", menu);
+// console.log("Navbar programList >>>", programList);
+// console.log("Navbar navItems >>>", navItems);
+// console.log("openMenus >>>", openMenus);
+
   return (
     <div>
       <nav className="navbar">
@@ -75,9 +86,9 @@ const Navbar = ({homeData, menu}) => {
             </li>
           </ul>
           <ul className="navbar-right">
-            {/* <li>
+            <li>
               <Link href="/partnerships">Partnerships</Link>
-            </li> */}
+            </li>
             <li>
               <Link href="/subscribe">Subscribe to our Newsletter</Link>
             </li>

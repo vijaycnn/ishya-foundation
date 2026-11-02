@@ -21,6 +21,7 @@ const donateRouter = require('./routes/donate.route');
 const blogRouter = require('./routes/blog.route');
 const galleryRouter = require('./routes/gallery.route');
 const partnerRouter = require('./routes/partner.route');
+const partnershipRouter = require('./routes/partnership.route');
 const faqRouter = require('./routes/faq.route');
 
 const locationRouter = require('./routes/location.route');
@@ -105,6 +106,7 @@ app.use('/api/partner',  partnerRouter);
 app.use('/api/contactus',  contactRouter);
 app.use('/api/donate',  donateRouter);
 app.use('/api/blog',  blogRouter);
+app.use('/api/partnership',  partnershipRouter);
 
 //////
 app.use('/api/user',  userRouter);
