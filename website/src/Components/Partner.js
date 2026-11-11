@@ -16,10 +16,16 @@ const Partner = ({ id, heading, imageSrc, subheading, description }) => {
       <img src={media(imageSrc)} alt={heading} className="partner-image" loading="lazy" />
 
       {/* Subheading */}
-      <h2 className="partner-subheading">{subheading}</h2>
+      {/* <h2 className="partner-subheading">{subheading}</h2> */}
 
       {/* Description */}
-      <p className="partner-description">{description}</p>
+      {/* <p className="partner-description">{description}</p> */}
+      {              
+        (description) ?
+        <>
+        <div dangerouslySetInnerHTML={{ __html: description || "" }} />
+        </>: ''
+      } 
       <div className="modern-line"></div> {/* Modern Line */}
     </div>
   );
