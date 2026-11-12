@@ -10,7 +10,18 @@ import {
   BiFile,
   BiCarousel,
   BiNews,
-  BiWindowAlt, BiInfoSquare
+  BiWindowAlt,
+  BiInfoSquare,
+  BiHomeAlt,
+  BiDonateHeart,
+  BiGroup,
+  BiEnvelope,
+  BiPhone,
+  BiFoodMenu,
+  BiBookOpen,
+  BiCard,
+  BiIdCard,
+  BiCommand,
 } from "react-icons/bi";
 const adminAlias = import.meta.env.VITE_API_ADMIN_ALIAS;
 
@@ -69,40 +80,52 @@ const Sidebar = () => {
                   </span>
                   <span className="nav-link-text">Banner</span>
               </Link> */}
-              <Link to={`${adminAlias}/homepage`} className={`nav-link ${ isActive([`${adminAlias}/homepage`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiImages />
-                </span>
-                <span className="nav-link-text">Home Page</span>
+                <Link
+                  to={`${adminAlias}/homepage`}
+                  className={`nav-link ${isActive([`${adminAlias}/homepage`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiHomeAlt />
+                  </span>
+                  <span className="nav-link-text">Home Page</span>
                 </Link>
 
-              <Link to={`${adminAlias}/aboutpage`} className={`nav-link ${ isActive([`${adminAlias}/aboutpage`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiImages />
-                </span>
-                <span className="nav-link-text">About Page</span>
+                <Link
+                  to={`${adminAlias}/aboutpage`}
+                  className={`nav-link ${isActive([`${adminAlias}/aboutpage`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiIdCard />
+                  </span>
+                  <span className="nav-link-text">About Page</span>
                 </Link>
 
-              <Link to={`${adminAlias}/donatepage`} className={`nav-link ${ isActive([`${adminAlias}/donatepage`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiImages />
-                </span>
-                <span className="nav-link-text">Donate Page</span>
-              </Link>
+                <Link
+                  to={`${adminAlias}/donatepage`}
+                  className={`nav-link ${isActive([`${adminAlias}/donatepage`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiDonateHeart />
+                  </span>
+                  <span className="nav-link-text">Donate Page</span>
+                </Link>
 
-              <Link to={`${adminAlias}/partnershippage`} className={`nav-link ${ isActive([`${adminAlias}/partnershippage`]) ? "active" : "" }`} >
-                <span className="nav-link-icon">
-                  <BiImages />
-                </span>
-                <span className="nav-link-text">Partnership Page</span>
-              </Link>
+                <Link
+                  to={`${adminAlias}/partnershippage`}
+                  className={`nav-link ${isActive([`${adminAlias}/partnershippage`]) ? "active" : ""}`}
+                >
+                  <span className="nav-link-icon">
+                    <BiGroup />
+                  </span>
+                  <span className="nav-link-text">Partnership Page</span>
+                </Link>
 
                 <Link
                   to={`${adminAlias}/programs`}
                   className={`nav-link ${isActive([`${adminAlias}/programs`, `${adminAlias}/addProgram`, `${adminAlias}/editProgram`]) ? "active" : ""}`}
                 >
                   <span className="nav-link-icon">
-                    <BiCommentDetail />
+                    <BiFoodMenu />
                   </span>
                   <span className="nav-link-text">Programs</span>
                 </Link>
@@ -136,13 +159,12 @@ const Sidebar = () => {
                   <span className="nav-link-text">Galleries</span>
                 </Link>
 
-
                 <Link
                   to={`${adminAlias}/partners`}
                   className={`nav-link ${isActive([`${adminAlias}/partners`]) ? "active" : ""}`}
                 >
                   <span className="nav-link-icon">
-                    <BiImages />
+                    <BiCommand />
                   </span>
                   <span className="nav-link-text">Partners</span>
                 </Link>
@@ -152,7 +174,7 @@ const Sidebar = () => {
                   className={`nav-link ${isActive([`${adminAlias}/blogs`, `${adminAlias}/addBlog`, `${adminAlias}/editBlog`]) ? "active" : ""}`}
                 >
                   <span className="nav-link-icon">
-                    <BiNews />
+                    <BiBookOpen />
                   </span>
                   <span className="nav-link-text">Blogs</span>
                 </Link>
@@ -172,19 +194,25 @@ const Sidebar = () => {
                   className={`nav-link ${isActive([`${adminAlias}/newsletters`, `${adminAlias}/addNewsLetter`, `${adminAlias}/editNewsLetter`]) ? "active" : ""}`}
                 >
                   <span className="nav-link-icon">
-                    <BiNews />
+                    <BiEnvelope />
                   </span>
                   <span className="nav-link-text">NewsLetters</span>
                 </Link>
 
-                <Link to={`${adminAlias}/contactpage`} className={`nav-link ${ isActive([`${adminAlias}/contactpage`]) ? "active" : "" }`} >
+                <Link
+                  to={`${adminAlias}/contactpage`}
+                  className={`nav-link ${isActive([`${adminAlias}/contactpage`]) ? "active" : ""}`}
+                >
                   <span className="nav-link-icon">
-                    <BiImages />
+                    <BiPhone />
                   </span>
-                  <span className="nav-link-text">ContactUs Page</span>
-                </Link> 
+                  <span className="nav-link-text">Contact Us</span>
+                </Link>
 
-                <Link to={`${adminAlias}/faqs`} className={`nav-link ${ isActive([`${adminAlias}/faqs`, `${adminAlias}/addFaq`, `${adminAlias}/editFaq`]) ? "active" : ""}`} >
+                <Link
+                  to={`${adminAlias}/faqs`}
+                  className={`nav-link ${isActive([`${adminAlias}/faqs`, `${adminAlias}/addFaq`, `${adminAlias}/editFaq`]) ? "active" : ""}`}
+                >
                   <span className="nav-link-icon">
                     <BiInfoSquare />
                   </span>
