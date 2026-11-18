@@ -1,44 +1,36 @@
+import { decode } from "he";
+
 export function formatDate(date) {
-  if (!date) return "";
+    if (!date) return "";
 
-  return new Date(date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-    timeZone: "UTC",
-  });
+    return new Date(date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+        timeZone: "UTC",
+    });
 }
 
-export function truncateHtmlOld(html, maxLength = 100) {
-  if (!html) return "";
-
-  // Remove HTML tags
-  const text = html.replace(/<[^>]*>/g, "");
-
-  // Decode common HTML entities
-  const temp = document.createElement("textarea");
-  temp.innerHTML = text;
-
-  const decodedText = temp.value.trim();
-
-  if (decodedText.length <= maxLength) {
-    return decodedText;
-  }
-
-  return decodedText.substring(0, maxLength).trim() + "...";
-}
 export function truncateHtml(html, maxLength = 100) {
-  if (!html) return "";
+    if (!html) return "";
 
-  // Remove HTML tags
-  const text = html.replace(/<[^>]*>/g, "");
+    // Decode HTML entities
+    let text = decode(String(html));
 
-  // Remove extra whitespace
-  const cleanText = text.replace(/\s+/g, " ").trim();
+    // Remove HTML tags
+    text = text.replace(/<[^>]*>/g, " ");
 
-  if (cleanText.length <= maxLength) {
-    return cleanText;
-  }
+    // Decode entities again
+    text = decode(text);
 
-  return cleanText.substring(0, maxLength).trim() + "...";
+    // Normalize whitespace
+    const cleanText = text
+        .replace(/[\s\u00A0]+/g, " ")
+        .trim();
+
+    if (cleanText.length <= maxLength) {
+        return cleanText;
+    }
+
+    return cleanText.substring(0, maxLength).trim() + "...";
 }

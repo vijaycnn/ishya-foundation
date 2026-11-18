@@ -6,8 +6,14 @@ export default defineConfig({
   base : '/admin/',
   plugins: [react()],
   server: {
-    port: 5174, // 👈 change this to your custom port
+    host: '127.0.0.1',
+    port: 5173, // 👈 change this to your custom port
     strictPort: true,
-    allowedHosts: ['0.0.0.0']
+    allowedHosts: ['0.0.0.0'],    
+    hmr: false,
+    cors: false,
+    fs: {
+      strict: true
+    }
   },
 })
