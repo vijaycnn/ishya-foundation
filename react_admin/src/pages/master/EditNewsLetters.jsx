@@ -183,14 +183,14 @@ function EditNewsLetter() {
         await axiosInstance
           .post(`/learningpage/valid`, validateBody)
           .then(async (response) => {
-            console.log("validate response >>> ", response.data);
+            // console.log("validate response >>> ", response.data);
             if (response.data.status === "success") {
               //Now, process with data
               setLoading(true);
               let fileUrl = previousData.filePath;
               let attachFileUrl = previousData.attachFilePath;
               if (uploadMediaFile != null) {
-                let uploadRes = await uploadFileOnS3();
+                let uploadRes = await uploadFileOnS3(uploadMediaFile);
                 if (uploadRes) {
                   fileUrl = uploadRes;
                 }
@@ -209,7 +209,7 @@ function EditNewsLetter() {
             }
           })
           .catch((error) => {
-            console.log(">>> ", error.status, error);
+            // console.log(">>> ", error.status, error);
             if (error.status === 403) {
               handleLogout();
             }
